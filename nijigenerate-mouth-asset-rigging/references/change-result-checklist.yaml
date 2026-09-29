@@ -1,0 +1,9 @@
+schema: nijigenerate-result-audit-v1
+title: "mouth-asset-rigging change result audit"
+items:
+  - id: mouth-asset-rigging-change-001
+    target: "updated mouth asset"
+    expected: "The user-selected version replaces the intended mouth at its original registered position/scale, with all five internal Parts and clips verified."
+  - id: mouth-asset-rigging-change-002
+    target: "surface controller"
+    expected: "The mouth DynamicComposite owns the intended broad surface without prohibited redundant Grid deformation; bounds cover the full expression envelope."

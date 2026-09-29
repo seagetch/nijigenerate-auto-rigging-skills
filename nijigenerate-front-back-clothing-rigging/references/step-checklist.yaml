@@ -1,0 +1,67 @@
+schema: nijigenerate-step-checklist-v1
+title: Front Back Clothing Projection And Binding Checklist
+sections:
+- name: 1. Target Audit
+  checklist:
+  - id: clothing-rig-001
+    target: all clothing grids, Parts, anchors, and helpers
+    check: Read UUIDs, hierarchy, transforms, meshes, axes, bindings, and node boundaries.
+  - id: clothing-rig-002
+    target: Body-linked clothing parameters
+    check: Record Body yaw/pitch axes, signs, and current keypoints.
+- name: 2. Canonical Depth Handoff
+  checklist:
+  - id: clothing-rig-003
+    target: downstream nijigenerate-depth-import-adjustment
+    check: Confirm the final clothing hierarchy and surface classification will be passed to depth import after this skill.
+  - id: clothing-rig-004
+    target: every front, back, side, hood, skirt, hem, and local surface
+    check: Confirm UUIDs, dimensions, transforms, classification, and inheritance are recorded before downstream depth import.
+  - id: clothing-rig-005
+    target: canonical clothing depth
+    check: Do not define or import clothing depth in this skill.
+- name: 3. Hierarchy And Projection
+  checklist:
+  - id: clothing-rig-006
+    target: inherited clothing
+    check: Record residual-only responsibility when parent Body/Head motion will supply the base.
+  - id: clothing-rig-007
+    target: hierarchy-isolated clothing
+    check: Record independent-surface responsibility when a node boundary blocks inheritance.
+  - id: clothing-rig-008
+    target: front and rear surfaces
+    check: Use separate grids when their projection responsibilities differ.
+  - id: clothing-rig-009
+    target: all clothing projection keys
+    check: Do not generate projection keys here; hand broad binding correction to nijigenerate-post-rig-adjustment after standard parameter generation.
+  - id: clothing-rig-010
+    target: neutral and corner keys
+    check: Preserve neutral structure and do not create custom yaw/pitch bindings.
+- name: 4. Local Helpers And Residuals
+  checklist:
+  - id: clothing-rig-011
+    target: rigid/local attachments
+    check: Correct root, pivot, hierarchy, and anchor structure before downstream parameter generation; do not add pose TRS here.
+  - id: clothing-rig-012
+    target: local contour residuals
+    check: Do not apply direct Part detail here; hand it to nijigenerate-post-rig-adjustment after standard parameter generation.
+  - id: clothing-rig-013
+    target: mask and physics candidates
+    check: Route occlusion masks and secondary motion to their dedicated skills.
+- name: 5. Verification
+  checklist:
+  - id: clothing-rig-014
+    target: current live model view
+    check: Capture neutral, Yaw sides, Body pitch endpoints, and relevant corners after setting exact keys.
+  - id: clothing-rig-015
+    target: front/rear/side surfaces and anchors
+    check: Verify front/back separation, continuous side wraps, stable anchors, and no tearing.
+  - id: clothing-rig-016
+    target: combined Body and clothing bindings
+    check: Verify motion does not double-apply or cancel.
+  - id: clothing-rig-017
+    target: edited parameters and bindings
+    check: Audit targets, keyed frames, neutral state, screenshots, and canonical depth-audit identifier.
+  - id: clothing-rig-018
+    target: saved model state
+    check: Restore neutral and save through resolved njc without changing canonical depth or unrelated state.

@@ -1,0 +1,23 @@
+schema: nijigenerate-result-audit-v1
+title: "depth-import-adjustment change result audit"
+items:
+  - id: depth-import-adjustment-change-001
+    target: "torso sections"
+    expected: "Height-dependent torso sections preserve visible side/back thickness and transition into shoulder/clavicle shape rather than repeating one extrusion."
+  - id: depth-import-adjustment-change-002
+    target: "adjacent surfaces"
+    expected: "Shoulder, arm, sleeve and waist/clothing attachment depths remain continuous; Body and Chest do not duplicate local peaks."
+  - id: depth-import-adjustment-change-003
+    target: "method and evidence"
+    expected: "Explicit mapped depth values and same-angle reference comparisons support the result; prohibited generated/formula replacements were not used."
+
+  - id: depth-import-adjustment-change-004
+    target: "directional reference preparation when requested"
+    expected: "Original art and exact-pose model captures are paired with each generated reference; actual axis meanings, near/far orientation, camera, accepted regions and rejected reference errors are recorded."
+  - id: depth-import-adjustment-change-005
+    target: "depth-first directional comparison"
+    expected: "The same direction ledger shows broad depth volume and attachment checks before Part residuals; initial generation is not rerun on an existing rig, and remaining Part-owned contour/occlusion items have an explicit handoff."
+
+# Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
+example_references:
+  - "../../nijigenerate-post-rig-adjustment/references/ao-visual-examples.md"

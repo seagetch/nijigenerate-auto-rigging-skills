@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Eye Blink Rigging"
+  short_description: "Rig face-local blinking without screen-axis errors"
+  default_prompt: "Use $nijigenerate-eye-blink-rigging to define per-eye face-local axes first, then rig neutral, smile, and deep blinking while preserving Iris geometry and open-eye visibility."

@@ -1,0 +1,9 @@
+schema: nijigenerate-result-audit-v1
+title: "front-back-clothing-rigging change result audit"
+items:
+  - id: front-back-clothing-rigging-change-001
+    target: "surface ownership"
+    expected: "Front/back/side surfaces and waistband contacts have explicit owners; spatial proximity is not treated as inheritance."
+  - id: front-back-clothing-rigging-change-002
+    target: "existing-rig repair"
+    expected: "Source/link repairs preserve accepted meshes/depth and verify actual pelvis rotation/translation rather than only hierarchy names."

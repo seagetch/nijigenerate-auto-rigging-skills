@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Post Rig Adjustment"
+  short_description: "Correct post-rig motion and head placement"
+  default_prompt: "Use $nijigenerate-post-rig-adjustment to correct generated Face, Body, head-to-neck, limb, and clothing motion by diagnosing depth and bone motion, preserving valid parents, and adjusting individual Part 2.5D detail within the user’s permitted scope."

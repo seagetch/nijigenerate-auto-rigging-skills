@@ -1,0 +1,18 @@
+[
+  {
+    "target": "body",
+    "kind": "range",
+    "label": "shoulder and chest volume",
+    "color": "#54d5ff",
+    "rect": { "x": 1800, "y": 2450, "w": 1400, "h": 900 },
+    "comment": "Map shoulder/chest cells before generating Body::Yaw-Pitch keys."
+  },
+  {
+    "target": "body",
+    "kind": "range",
+    "label": "pelvis and lower body volume",
+    "color": "#ffbd59",
+    "rect": { "x": 1700, "y": 3350, "w": 1600, "h": 950 },
+    "comment": "Lower body depth must stay broad enough to avoid a flat board."
+  }
+]

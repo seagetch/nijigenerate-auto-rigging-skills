@@ -1,0 +1,33 @@
+schema: nijigenerate-result-audit-v1
+title: Front Back Clothing Result Audit
+items:
+  - id: clothing-result-001
+    target: every visible clothing surface
+    expected: Front, rear, side, hood, sleeve, skirt, hem, and local surfaces are inventoried with an explicit responsibility.
+  - id: clothing-result-002
+    target: front/back/side broad surfaces
+    expected: Surfaces with different projection or inheritance responsibilities have separate appropriate GridDeformers.
+  - id: clothing-result-003
+    target: Body topwear front/back and other visible parent clothing
+    expected: Visible parent surfaces are included; the setup does not correct only small descendants while omitting the broad artwork.
+  - id: clothing-result-004
+    target: clothing hierarchy
+    expected: Each surface inherits Body motion intentionally, with no accidental neutral helper blocking inheritance.
+  - id: clothing-result-005
+    target: waist, shoulder, neck, hood, sleeve, and hem anchors
+    expected: Attachment anchors are stable and front/back surfaces remain connected at neutral.
+  - id: clothing-result-006
+    target: every clothing GridDeformer mesh
+    expected: Meshes were generated after final child membership and cover the maximum deformation envelope plus margin.
+  - id: clothing-result-007
+    target: depth and parameter bindings
+    expected: This phase created no custom yaw/pitch bindings and changed no canonical depth values.
+  - id: clothing-result-008
+    target: unrelated model state
+    expected: Face, limbs, masks, Physics, existing parameters, and neutral rendering are unchanged.
+evidence:
+  required:
+    - hierarchy and node-type readback with UUIDs
+    - grid-axis and controlled-child readback
+    - neutral screenshot showing anchors and front/back separation
+    - before/after unrelated-state diff

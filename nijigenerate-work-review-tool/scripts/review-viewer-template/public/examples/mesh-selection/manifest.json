@@ -1,0 +1,46 @@
+{
+  "schema": "review-viewer-manifest-v1",
+  "mode": "mesh-selection",
+  "model": {
+    "id": "mesh-selection-example",
+    "name": "Direct Face and Body Residual Review Example",
+    "createdAt": "2026-05-04"
+  },
+  "review": {
+    "schema": "mesh-selection-review-v1",
+    "mode": "mesh-selection",
+    "resultsDir": "reviews",
+    "latestReview": "reviews/latest-review.json"
+  },
+  "assets": {
+    "original": "images/original.svg"
+  },
+  "targets": [
+    {
+      "key": "faceLayers",
+      "label": "Yaw +1 Face Direct Residual",
+      "image": "images/overlay.svg",
+      "meshes": "meshes/layers.json#/targets/faceLayers",
+      "deformations": "deformations/initial.json#/targets/faceLayers",
+      "color": "#d4e157"
+    },
+    {
+      "key": "bodyLayers",
+      "label": "Yaw +1 Body Direct Residual",
+      "image": "images/overlay.svg",
+      "meshes": "meshes/layers.json#/targets/bodyLayers",
+      "deformations": "deformations/initial.json#/targets/bodyLayers",
+      "color": "#54d5ff"
+    }
+  ],
+  "initialTags": "tags/initial-tags.json",
+  "notes": {
+    "rule": "Direct residual edits are reviewed before application and again after application.",
+    "projection": {
+      "baseRig": "Use the accepted yaw/pitch projection first; keep these arrows as local residual cleanup only.",
+      "yawDeg": 30,
+      "pitchDeg": 20,
+      "pitchOrder": "local normal tilt first, then yaw"
+    }
+  }
+}

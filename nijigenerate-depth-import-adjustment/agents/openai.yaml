@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Depth Import Adjustment"
+  short_description: "Define and correct canonical model depth through njc"
+  default_prompt: "Use $nijigenerate-depth-import-adjustment to establish canonical Face, hair, Body, Chest, clothing, and DepthRig depth through njc."

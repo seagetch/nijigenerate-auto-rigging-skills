@@ -1,0 +1,117 @@
+schema: nijigenerate-step-checklist-v1
+title: Nijigenerate 後調整チェックリスト
+sections:
+- name: 1. 前提工程
+  checklist:
+  - id: post-rig-001
+    target: njc実行環境
+    check: 明示パス、NJC_PATH、PATHの順にnjcを解決し、現在のコマンドschemaを確認した。
+  - id: post-rig-002
+    target: DepthRigRoot・DepthBone・BoneSource
+    check: nijigenerate-depth-skeleton-setupが完了し、LockToRootの足を含む骨構造とBoneSourceが検証済みである。
+  - id: post-rig-003
+    target: GridDeformer深度
+    check: nijigenerate-depth-import-adjustmentが完了し、最終深度補正後のFit Z to Depthが数値検証済みである。
+  - id: post-rig-004
+    target: 標準Depthパラメータ
+    check: Fit Zの後に標準Depthパラメータが生成され、パラメータ・キー・バインディングを読み戻せる。
+  - id: post-rig-005
+    target: 保存先と変更前監査
+    check: 明示保存先、変更対象、禁止状態、非対象hash、変更前画像を記録した。
+- name: 2. 問題分類
+  checklist:
+  - id: post-rig-006
+    target: 問題が出る正確なパラメータ値
+    check: 中立、問題キー、反対側、隣接キー、必要な対角キーを設定して画像を取得した。
+  - id: post-rig-007
+    target: 問題の責任範囲
+    check: 深度、骨・BoneSource、Grid、Path、Part、Mask、Physicsのどれに属するかを分類した。
+  - id: post-rig-008
+    target: 深度または骨の問題
+    check: 深度問題をdepth-import-adjustmentへ、骨・BoneSource問題をdepth-skeleton-setupへ戻し、後調整で隠していない。
+  - id: post-rig-009
+    target: 既存生成バインディング
+    check: 対象UUID、パラメータ値、頂点順、配列長、既存値を変更前に読み取った。
+  - id: post-rig-031
+    target: 頭位置補正の責任範囲
+    check: DepthBone::Neck、Head::Root、neck Part、DepthBone::Headの基準TransformとBindingを分離して読み取り、目的を「頭位置補正」として一つに分類した。
+  - id: post-rig-032
+    target: DepthBone::Neck
+    check: Body::Yaw-Pitchのtransform.r.xを全25セルのisSetと値で確認し、基準Transformだけを見て未変更と判断していない。
+- name: 3. Grid・Path広域補正
+  checklist:
+  - id: post-rig-010
+    target: 複数Partに共通する広域問題
+    check: 大域運動を検査し、欠陥がある場合だけ許可された責任層を修正した。正しい親と禁止されたGrid XYは変更していない。
+  - id: post-rig-011
+    target: GridDeformer補正
+    check: 問題領域から周辺へ滑らかに減衰させ、アンカー・中心線・接続点を必要に応じて保持した。
+  - id: post-rig-012
+    target: PathDeformer補正
+    check: 現在の構造にPathがある場合だけ使い、根元・中間・先端の責任と固定端を明示した。
+  - id: post-rig-013
+    target: 生成済みdeform値
+    check: 既存値へ補正差分を加え、ゼロ配列や独自投影式でバインディング全体を置き換えていない。
+  - id: post-rig-014
+    target: 中立・隣接・反対側・対角キー
+    check: 広域補正後に新しい折れ、反転、二重適用、接続外れがない。
+  - id: post-rig-033
+    target: Head::Root残差
+    check: Neckの親寄与を確認した後、Head::Rootのtransform.t.x/yを必要なキーだけ補正し、neck Partを姿勢補正の代用にしていない。
+- name: 4. Part直接補正
+  checklist:
+  - id: post-rig-015
+    target: Part直接補正の入口
+    check: 親Grid・Pathの大域運動が正しく、問題が一つのPart内の局所輪郭へ限定されている。
+  - id: post-rig-016
+    target: 対象Partとメッシュ頂点
+    check: 現在画像と実メッシュから中心頂点と隣接頂点を特定し、名前だけで推測していない。
+  - id: post-rig-017
+    target: 局所補正値
+    check: 中心から隣接頂点へ補正を減衰させ、1頂点だけの尖りや段差を作っていない。
+  - id: post-rig-018
+    target: 中立と左右
+    check: 中立を保持し、キャラクター左右・画面左右・パラメータ符号を明示した。
+  - id: post-rig-019
+    target: 既存Partバインディング
+    check: 既存値を保持して差分を加え、非対象頂点と非対象パラメータを変更していない。
+- name: 5. 部位別確認
+  checklist:
+  - id: post-rig-020
+    target: 顔・口・髪・Headwear
+    check: 顔全体や口の出っ張りをPartで隠さず、頬・口角・髪先など真に局所的な問題だけをPart補正した。
+  - id: post-rig-021
+    target: Body・Chest・肩・腰
+    check: BodyとChestの二重適用を深度・骨・継承の責任層で解消し、残る可視面・輪郭・継ぎ目を個別Partで直した。
+  - id: post-rig-022
+    target: 腕・脚・接地足
+    check: 骨・Root・親寄与を確認し、問題がある許可層だけを直した。接地端を保持して残る関節輪郭をPart補正した。
+  - id: post-rig-023
+    target: 衣装
+    check: 前後階層と広域バインディングを先に直し、襟・袖口・裾などの局所輪郭だけをPart補正した。
+  - id: post-rig-024
+    target: 突き抜け・揺れ
+    check: 輪郭・可視面残差はPart、残存貫通はMask、二次動作はSimplePhysicsへ分類し、別の原因を隠していない。
+- name: 6. 検証と保存
+  checklist:
+  - id: post-rig-025
+    target: 2軸パラメータの方向別変形監査
+    check: 上下左右・四隅・中立の9状態をnjcで取得し、方向名と実際の軸値を対応付けた。
+  - id: post-rig-026
+    target: 変形内容の説明可能性
+    check: 現在メッシュ、剛体移動を除去した中立基準、直接Bindingの領域別dx・dy・頂点数を同じ方向単位で示した。
+  - id: post-rig-027
+    target: 全確認キー
+    check: 中立、端点、反対側、隣接、対角、Roll、主要な複合パラメータで表示を確認した。
+  - id: post-rig-028
+    target: 深度・骨・禁止状態
+    check: 深度配列、node Z、標準DepthBone、BoneSource、標準パラメータ生成状態が変わっていない。zSortは通常不変とし、頭位置補正の画像根拠がある例外だけを記録した。
+  - id: post-rig-029
+    target: 非対象状態
+    check: 非対象ノード、非対象パラメータ、階層、マスク、Physicsのhashまたは同等値が一致する。
+  - id: post-rig-030
+    target: 保存モデル
+    check: 中立へ戻し、明示保存先へFileCommand_SaveFileで保存して変更内容を読み戻した。
+  - id: post-rig-034
+    target: 頭・首・胴体の画像接続
+    check: 中立、Yaw端、Pitch端、四隅を画像で確認し、頭・首・胴体の連続性を数値監査だけでなく視認した。

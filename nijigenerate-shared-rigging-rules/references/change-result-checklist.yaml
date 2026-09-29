@@ -1,0 +1,18 @@
+schema: nijigenerate-result-audit-v1
+title: "shared-rigging-rules change result audit"
+items:
+  - id: shared-rigging-rules-change-001
+    target: "active scope"
+    expected: "Changed targets/properties and allowed methods match current user instructions; later approvals update only their named scope."
+  - id: shared-rigging-rules-change-002
+    target: "proportional changes"
+    expected: "The instruction-time baseline and final value are recorded; retries do not apply the factor again."
+  - id: shared-rigging-rules-change-003
+    target: "phase exit"
+    expected: "Current-stage prerequisites are OK; each DEFERRED item has a later owner and revisit trigger; unverified or failed items are not represented as OK."
+  - id: shared-rigging-rules-change-004
+    target: "refresh recovery"
+    expected: "All affected values and key matrices, not only counts, are compared; no unrelated recalculation is silently accepted."
+  - id: shared-rigging-rules-change-005
+    target: "regression and approval"
+    expected: "User-reported poses are rechecked; save authorization and visual acceptance have separate evidence."

@@ -1,0 +1,44 @@
+schema: nijigenerate-result-audit-v1
+title: Depth Skeleton Result Audit
+items:
+  - id: depth-skeleton-result-001
+    target: DepthRigRoot
+    expected: Exactly one intended DepthRigRoot exists under the correct body root.
+  - id: depth-skeleton-result-002
+    target: standard DepthBones
+    expected: All 19 standard bones exist with correct names, hierarchy, nonzero lengths, rest data, and flip pairs.
+  - id: depth-skeleton-result-003
+    target: side convention
+    expected: The active .L/.R to screen-side mapping is explicitly recorded and consistently applied.
+  - id: depth-skeleton-result-004
+    target: all DepthBone rest and visible transforms
+    expected: Both rest coordinates and app-visible transforms overlap current artwork landmarks, including the torso inclination.
+  - id: depth-skeleton-result-005
+    target: Foot.L and Foot.R
+    expected: Both feet have lockToRoot=true and their app-visible positions are correct in the resolved root coordinate frame.
+  - id: depth-skeleton-result-006
+    target: face GridDeformers
+    expected: Face grids use Head as the required BoneSource and contain no unintended limb source.
+  - id: depth-skeleton-result-007
+    target: arm and hand GridDeformers
+    expected: Each side contains its complete shoulder-to-hand DepthBone source chain.
+  - id: depth-skeleton-result-008
+    target: leg and legwear GridDeformers
+    expected: Each side contains its complete thigh-to-foot DepthBone source chain.
+  - id: depth-skeleton-result-009
+    target: body and lower-clothing GridDeformers
+    expected: Relevant torso, Pelvis, and both-leg source chains are complete and ordered.
+  - id: depth-skeleton-result-010
+    target: all GridDeformer BoneSources
+    expected: Every source UUID and inline weight/depth setting reads back exactly once with no omitted grid.
+  - id: depth-skeleton-result-011
+    target: unrelated model state
+    expected: Hierarchy outside DepthRigRoot, meshes, parameters, masks, Physics, and neutral appearance are unchanged.
+evidence:
+  required:
+    - 19-bone structural and transform readback
+    - artwork landmark versus app-visible bone coordinate table
+    - LockToRoot foot coordinate proof
+    - complete GridDeformer to BoneSource UUID map
+    - neutral screenshot with current bone overlay
+    - unrelated-state diff

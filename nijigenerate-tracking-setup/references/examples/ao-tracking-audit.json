@@ -1,0 +1,239 @@
+{
+  "target": "Ao-latest-20260928.inp",
+  "references": [
+    "Aka-20250728-1.inp",
+    "Midori-20250426-1.6.2.inp",
+    "Kurone-20240212-1.4-wld7.1.inp"
+  ],
+  "extension": "com.inochi2d.inochi-session.bindings",
+  "bindingCount": 20,
+  "parameterCount": 11,
+  "checks": [
+    {
+      "name": "Face::Yaw-Pitch (X)",
+      "param": 1102394103,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "Head"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Face::Yaw-Pitch (Y)",
+      "param": 1102394103,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "Head"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Body::Yaw-Pitch (X)",
+      "param": 3695798303,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "Head"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Body::Yaw-Pitch (Y)",
+      "param": 3695798303,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "Head"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Face::Roll",
+      "param": 1655607454,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "Head"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Body::Roll",
+      "param": 4070183123,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "Head"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Eye::R::Blink (X)",
+      "param": 3558050510,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "eyeBlinkRight"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Eye::R::Blink (Y)",
+      "param": 3558050510,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "mouthSmileRight",
+        "mouthFunnel"
+      ],
+      "extremeCases": 4
+    },
+    {
+      "name": "Eye::R::X-Y (X)",
+      "param": 3073093406,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "eyeLookInRight",
+        "eyeLookOutRight"
+      ],
+      "extremeCases": 4
+    },
+    {
+      "name": "Eye::R::X-Y (Y)",
+      "param": 3073093406,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "eyeLookUpRight",
+        "eyeLookDownRight"
+      ],
+      "extremeCases": 4
+    },
+    {
+      "name": "Eyebrow::R (X)",
+      "param": 3879745471,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "browInnerUp",
+        "browOuterUpRight",
+        "browDownRight"
+      ],
+      "extremeCases": 8
+    },
+    {
+      "name": "Eyebrow::R (Y)",
+      "param": 3879745471,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "browInnerUp",
+        "browOuterUpRight",
+        "browDownRight"
+      ],
+      "extremeCases": 8
+    },
+    {
+      "name": "Eye::L::Blink (X)",
+      "param": 886532858,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "eyeBlinkLeft"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Eye::L::Blink (Y)",
+      "param": 886532858,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "mouthSmileLeft",
+        "mouthFunnel"
+      ],
+      "extremeCases": 4
+    },
+    {
+      "name": "Eye::L::X-Y (X)",
+      "param": 1913828741,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "eyeLookOutLeft",
+        "eyeLookInLeft"
+      ],
+      "extremeCases": 4
+    },
+    {
+      "name": "Eye::L::X-Y (Y)",
+      "param": 1913828741,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "eyeLookUpLeft",
+        "eyeLookDownLeft"
+      ],
+      "extremeCases": 4
+    },
+    {
+      "name": "Eyebrow::L (X)",
+      "param": 3456770268,
+      "axis": 0,
+      "neutral": 0,
+      "sources": [
+        "browInnerUp",
+        "browOuterUpLeft",
+        "browDownLeft"
+      ],
+      "extremeCases": 8
+    },
+    {
+      "name": "Eyebrow::L (Y)",
+      "param": 3456770268,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "browInnerUp",
+        "browOuterUpLeft",
+        "browDownLeft"
+      ],
+      "extremeCases": 8
+    },
+    {
+      "name": "Mouth::Open (X)",
+      "param": 1214172981,
+      "axis": 0,
+      "neutral": 1,
+      "sources": [
+        "jawOpen"
+      ],
+      "extremeCases": 5
+    },
+    {
+      "name": "Mouth::Open (Y)",
+      "param": 1214172981,
+      "axis": 1,
+      "neutral": 0,
+      "sources": [
+        "mouthSmileRight",
+        "mouthSmileLeft",
+        "mouthFunnel"
+      ],
+      "extremeCases": 8
+    }
+  ],
+  "modelAndTextureBytesUnchanged": true,
+  "otherExtensionsUnchanged": true,
+  "originalBytes": 21610872,
+  "updatedBytes": 21616168,
+  "originalSHA256": "c9defbb18e3bac93fffefa8a2d453a742ff2c1006e3e114be646accf91cd1c23",
+  "updatedSHA256": "69f87543badd6d23e702722b8da0adfeddcc5b49921438c36b10977564ba0c01",
+  "unchangedPrefixSHA256": "fee2f426c95bcce96b1fb6ab38271b86f4141850edf9bb191a9f03805c41c6d3",
+  "runtimeTrackingTested": false,
+  "semanticsReference": "https://github.com/Inochi2D/inochi-session/blob/main/source/session/tracking/package.d",
+  "note": "RatioBinding uses parameter values; ExpressionBinding uses normalized axis offsets. Model geometry, textures, parameters and physical/linked parameters unchanged."
+}

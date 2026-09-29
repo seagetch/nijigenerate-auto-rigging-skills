@@ -1,0 +1,703 @@
+{
+  "face_pose_input_records": [
+    {
+      "key": [
+        0,
+        1
+      ],
+      "file": "example-inputs/pose-0_1.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after-0_1.png",
+      "sourceMeta": "example-inputs/after-mesh-0_1.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        1,
+        1
+      ],
+      "file": "example-inputs/pose-1_1.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after-1_1.png",
+      "sourceMeta": "example-inputs/after-mesh-1_1.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        -1,
+        0
+      ],
+      "file": "example-inputs/pose--1_0.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after--1_0.png",
+      "sourceMeta": "example-inputs/after-mesh--1_0.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        1,
+        0
+      ],
+      "file": "example-inputs/pose-1_0.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after-1_0.png",
+      "sourceMeta": "example-inputs/after-mesh-1_0.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        -1,
+        -1
+      ],
+      "file": "example-inputs/pose--1_-1.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after--1_-1.png",
+      "sourceMeta": "example-inputs/after-mesh--1_-1.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        0,
+        -1
+      ],
+      "file": "example-inputs/pose-0_-1.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after-0_-1.png",
+      "sourceMeta": "example-inputs/after-mesh-0_-1.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        1,
+        -1
+      ],
+      "file": "example-inputs/pose-1_-1.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after-1_-1.png",
+      "sourceMeta": "example-inputs/after-mesh-1_-1.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        -1,
+        1
+      ],
+      "file": "example-inputs/pose--1_1.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after--1_1.png",
+      "sourceMeta": "example-inputs/after-mesh--1_1.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    },
+    {
+      "key": [
+        0,
+        0
+      ],
+      "file": "example-inputs/pose-0_0.png",
+      "box": {
+        "left": 413,
+        "top": 310,
+        "width": 282,
+        "height": 426
+      },
+      "normalized": [
+        430,
+        650
+      ],
+      "source": "example-inputs/after-0_0.png",
+      "sourceMeta": "example-inputs/after-mesh-0_0.meta.json",
+      "referenceCoordinateMeta": "example-inputs/user-update-before-mesh--1_1.meta.json",
+      "referenceCrop": [
+        435,
+        210,
+        430,
+        650
+      ]
+    }
+  ],
+  "face_pose_check": [
+    {
+      "key": "0_1",
+      "landmarks": [
+        {
+          "name": "forehead cross",
+          "source": [
+            181.5846124389697,
+            297.9400389316142
+          ],
+          "reference": [
+            181.6120280574676,
+            297.0161777700203
+          ],
+          "distance": 0.9242678518910168
+        },
+        {
+          "name": "side cross",
+          "source": [
+            294.22240516186434,
+            335.1156524641225
+          ],
+          "reference": [
+            293.7247870909903,
+            334.4257759973106
+          ],
+          "distance": 0.8506193531311609
+        },
+        {
+          "name": "clock",
+          "source": [
+            86.02685646416481,
+            310.37760365886083
+          ],
+          "reference": [
+            86.246524958204,
+            308.64939097205615
+          ],
+          "distance": 1.7421174868837361
+        }
+      ],
+      "maxDrift": 1.7421174868837361,
+      "status": "POSE LANDMARKS CONSISTENT; visual review also required"
+    },
+    {
+      "key": "1_1",
+      "landmarks": [
+        {
+          "name": "forehead cross",
+          "source": [
+            192.03458929410982,
+            297.08239304184286
+          ],
+          "reference": [
+            191.46234207308788,
+            296.7623284879772
+          ],
+          "distance": 0.6556738523142183
+        },
+        {
+          "name": "side cross",
+          "source": [
+            281.0268019220503,
+            334.69165331909596
+          ],
+          "reference": [
+            280.69502192416826,
+            334.06907402630907
+          ],
+          "distance": 0.7054664717771106
+        },
+        {
+          "name": "clock",
+          "source": [
+            98.98603597273926,
+            310.64900231855495
+          ],
+          "reference": [
+            98.71479229324544,
+            311.02664792949923
+          ],
+          "distance": 0.46496165554895913
+        }
+      ],
+      "maxDrift": 0.7054664717771106,
+      "status": "POSE LANDMARKS CONSISTENT; visual review also required"
+    },
+    {
+      "key": "-1_0",
+      "landmarks": [
+        {
+          "name": "forehead cross",
+          "source": [
+            130.45107656743178,
+            318.65023783767754
+          ],
+          "reference": [
+            130.45279135580137,
+            317.35339242697074
+          ],
+          "distance": 1.2968465444185855
+        },
+        {
+          "name": "side cross",
+          "source": [
+            244.3659520762233,
+            347.6048954778159
+          ],
+          "reference": [
+            243.5863886227245,
+            346.6161682384391
+          ],
+          "distance": 1.2590872614384432
+        },
+        {
+          "name": "clock",
+          "source": [
+            49.413534328456294,
+            319.6367308734421
+          ],
+          "reference": [
+            49.291784357979836,
+            321.6728474315139
+          ],
+          "distance": 2.0397533413050604
+        }
+      ],
+      "maxDrift": 2.0397533413050604,
+      "status": "POSE LANDMARKS CONSISTENT; visual review also required"
+    },
+    {
+      "key": "1_0",
+      "landmarks": [
+        {
+          "name": "forehead cross",
+          "source": [
+            230.24421153371213,
+            318.7319554210919
+          ],
+          "reference": [
+            230.5984665961134,
+            317.1088018734098
+          ],
+          "distance": 1.661362118440781
+        },
+        {
+          "name": "side cross",
+          "source": [
+            318.7385839668155,
+            360.53337131259894
+          ],
+          "reference": [
+            318.2873263322677,
+            358.9453003717956
+          ],
+          "distance": 1.6509399643117444
+        },
+        {
+          "name": "clock",
+          "source": [
+            146.10018107847517,
+            316.72818239540953
+          ],
+          "reference": [
+            145.54505356590704,
+            319.2809254442604
+          ],
+          "distance": 2.612405716703754
+        }
+      ],
+      "maxDrift": 2.612405716703754,
+      "status": "POSE LANDMARKS CONSISTENT; visual review also required"
+    },
+    {
+      "key": "-1_-1",
+      "landmarks": [
+        {
+          "name": "forehead cross",
+          "source": [
+            98.54247201205386,
+            364.3981984025404
+          ],
+          "reference": [
+            98.41075115524526,
+            364.07855668075877
+          ],
+          "distance": 0.3457184033601918
+        },
+        {
+          "name": "side cross",
+          "source": [
+            216.31937021243766,
+            381.9256951010093
+          ],
+          "reference": [
+            216.0913405455504,
+            381.722318988798
+          ],
+          "distance": 0.30554765912848375
+        },
+        {
+          "name": "clock",
+          "source": [
+            17.07872427877823,
+            382.82763891386503
+          ],
+          "reference": [
+            17.199272970969616,
+            382.85522374420003
+          ],
+          "distance": 0.12366450603817111
+        }
+      ],
+      "maxDrift": 0.3457184033601918,
+      "status": "POSE LANDMARKS CONSISTENT; visual review also required"
+    },
+    {
+      "key": "1_-1",
+      "landmarks": [
+        {
+          "name": "forehead cross",
+          "source": [
+            262.6223869481632,
+            364.2255148166747
+          ],
+          "reference": [
+            262.90994454509,
+            363.42621454550493
+          ],
+          "distance": 0.8494529386860841
+        },
+        {
+          "name": "side cross",
+          "source": [
+            348.2889037875908,
+            401.0638696596903
+          ],
+          "reference": [
+            347.9429383162781,
+            400.65936846271353
+          ],
+          "distance": 0.5322718531880501
+        },
+        {
+          "name": "clock",
+          "source": [
+            172.0378051796629,
+            376.49835706462187
+          ],
+          "reference": [
+            172.77017151379567,
+            377.00723340790455
+          ],
+          "distance": 0.8918046759934674
+        }
+      ],
+      "maxDrift": 0.8918046759934674,
+      "status": "POSE LANDMARKS CONSISTENT; visual review also required"
+    },
+    {
+      "key": "0_-1",
+      "landmarks": [
+        {
+          "name": "forehead cross",
+          "source": [
+            181.42901137991822,
+            365.04769354918454
+          ],
+          "reference": [
+            181.40546590573643,
+            364.58010675981507
+          ],
+          "distance": 0.46817923378477716
+        },
+        {
+          "name": "side cross",
+          "source": [
+            294.0629647101107,
+            381.7198598288291
+          ],
+          "reference": [
+            293.92610820304986,
+            381.8171051945112
+          ],
+          "distance": 0.16788795272900933
+        },
+        {
+          "name": "clock",
+          "source": [
+            82.6481797841972,
+            377.86378415315556
+          ],
+          "reference": [
+            82.84461316444988,
+            377.6044230786906
+          ],
+          "distance": 0.3253524855062712
+        }
+      ],
+      "maxDrift": 0.46817923378477716,
+      "status": "POSE LANDMARKS CONSISTENT; visual review also required"
+    }
+  ],
+  "face_single_pose_check": {
+    "status": "VISUAL POSE REFERENCE: single key only",
+    "key": [
+      -1,
+      1
+    ],
+    "modelBoneAngles": {
+      "yawDegrees": -30,
+      "pitchDegrees": 20
+    },
+    "generated": "Ao-face-minus1-plus1-pose-locked.png",
+    "prompt": "single-pose-prompt.txt",
+    "tool": "built-in image_gen",
+    "review": {
+      "cameraFraming": "Same head scale and composition after resolution-only normalization.",
+      "headOrientation": "Rabbit-ear tips, bow flower, clock and both cross ornaments retain their corresponding image positions within manual observation tolerance. The side cross center was checked in a magnified coordinate overlay.",
+      "landmarkSpace": {
+        "origin": [
+          189,
+          203
+        ],
+        "T": [
+          1,
+          0
+        ],
+        "N": [
+          0,
+          -1
+        ],
+        "units": "pixels of normalized 430x650 image",
+        "basis": "screen camera frame; compares pose-guide image positions, does not infer anatomical height or recover 3D Euler angles"
+      },
+      "landmarks": [
+        {
+          "name": "screen-left rabbit tip",
+          "model": [
+            87,
+            39
+          ],
+          "reference": [
+            90,
+            39
+          ],
+          "modelLocal": {
+            "u": -102,
+            "v": 164
+          },
+          "referenceLocal": {
+            "u": -99,
+            "v": 164
+          },
+          "imageDistance": 3
+        },
+        {
+          "name": "screen-right rabbit tip",
+          "model": [
+            367,
+            36
+          ],
+          "reference": [
+            368,
+            36
+          ],
+          "modelLocal": {
+            "u": 178,
+            "v": 167
+          },
+          "referenceLocal": {
+            "u": 179,
+            "v": 167
+          },
+          "imageDistance": 1
+        },
+        {
+          "name": "bow flower center",
+          "model": [
+            189,
+            203
+          ],
+          "reference": [
+            192,
+            204
+          ],
+          "modelLocal": {
+            "u": 0,
+            "v": 0
+          },
+          "referenceLocal": {
+            "u": 3,
+            "v": -1
+          },
+          "imageDistance": 3.1622776601683795
+        },
+        {
+          "name": "clock center",
+          "model": [
+            83,
+            310
+          ],
+          "reference": [
+            82,
+            309
+          ],
+          "modelLocal": {
+            "u": -106,
+            "v": -107
+          },
+          "referenceLocal": {
+            "u": -107,
+            "v": -106
+          },
+          "imageDistance": 1.4142135623730951
+        },
+        {
+          "name": "forehead cross center",
+          "model": [
+            170,
+            290
+          ],
+          "reference": [
+            169,
+            291
+          ],
+          "modelLocal": {
+            "u": -19,
+            "v": -87
+          },
+          "referenceLocal": {
+            "u": -20,
+            "v": -88
+          },
+          "imageDistance": 1.4142135623730951
+        },
+        {
+          "name": "side cross center",
+          "model": [
+            274,
+            329
+          ],
+          "reference": [
+            274,
+            329
+          ],
+          "modelLocal": {
+            "u": 85,
+            "v": -126
+          },
+          "referenceLocal": {
+            "u": 85,
+            "v": -126
+          },
+          "imageDistance": 0
+        }
+      ],
+      "tolerance": "Manual image observations, approximately 3 pixels; not a subpixel measurement.",
+      "conclusion": "Suitable as a pose-locked visual reference for this one key. Do not claim that the generated Euler angles were independently measured to exact degrees.",
+      "remaining": "The multi-view sheet is RETAKE. Other keys still need equally pose-controlled references before literal contour transfer."
+    },
+    "modelState": "Both rejected deformation trials removed; bindings identical to pre-pass baseline. No file reload and no model save."
+  },
+  "note": "Original path fields below are historical provenance; use ao-angle-reference-manifest.json for bundled relative paths. Original status labels are historical checks, not a new global acceptance decision.",
+  "pathProvenance": "example-inputs paths are anonymized historical source labels, not bundled files or executable paths. Use ao-angle-reference-manifest.json for bundled reference images."
+}

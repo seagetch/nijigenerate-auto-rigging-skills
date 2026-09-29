@@ -1,0 +1,50 @@
+schema: nijigenerate-result-audit-v1
+title: Depth Import Adjustment Result Audit
+items:
+  - id: depth-result-001
+    target: supplied depth image
+    expected: The image is usable, correctly oriented, and mapped to the actual artwork and target grids.
+  - id: depth-result-002
+    target: every enabled GridDeformer
+    expected: Every enabled target has an explicit artwork-to-grid mapping and no intended target is omitted.
+  - id: depth-result-003
+    target: alpha-covered depth samples
+    expected: There are no unexplained zero-depth gaps or large disconnected islands within one visible surface.
+  - id: depth-result-004
+    target: per-layer depth scale and offset
+    expected: Scale and offset produce coherent relative placement before local correction and are not copied blindly from another model.
+  - id: depth-result-005
+    target: Face, mouth, cheeks, cranium, and neck
+    expected: Facial relief remains meaningful, mouth projection is not excessive at yaw, and upper/lower neck depth is continuous.
+  - id: depth-result-006
+    target: Front Hair, side hair, headwear, animal ears, and earwear
+    expected: Hair and accessories preserve volume without sinking through or excessively covering underlying face/head surfaces.
+  - id: depth-result-007
+    target: Body, Chest, waist, Pelvis, and lower body
+    expected: Depth forms a coherent human volume with no globally flat body and no isolated excessive protrusion.
+  - id: depth-result-008
+    target: front/back/side clothing
+    expected: Clothing keeps plausible front/back order and local relief without using zSort or flattening as a depth substitute.
+  - id: depth-result-009
+    target: effective Z at neutral and exact yaw/pitch keys
+    expected: Effective composed Z relationships are correct for every critical overlap, not merely raw depth arrays.
+  - id: depth-result-010
+    target: Fit Z to Depth
+    expected: Fit Z was run after the final depth correction and verified numerically for every DepthBone.
+  - id: depth-result-011
+    target: armed parameter and all Physics parameters
+    expected: The intended Depth parameter was armed, no Physics parameter was used, and all Physics targets/keys remain unchanged.
+  - id: depth-result-012
+    target: standard Depth parameters
+    expected: Standard parameters were generated only after verified Fit Z and their axes, targets, and bindings read back correctly.
+  - id: depth-result-013
+    target: unrelated model state and serialized size
+    expected: No unrelated binding, hierarchy, mesh, mask, Physics, or unexplained size change occurred.
+evidence:
+  required:
+    - source-image and artwork-to-grid mapping audit
+    - per-grid zero count, range, ordered-array hash, scale, and offset
+    - exact-key effective-Z tables and screenshots
+    - Fit Z before/after local and world Z table
+    - standard Depth parameter creation/readback chronology
+    - global parameter-target and serialized-size diff

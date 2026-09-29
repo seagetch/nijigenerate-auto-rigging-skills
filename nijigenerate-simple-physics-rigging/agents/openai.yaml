@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Simple Physics Rigging"
+  short_description: "Add hair and skirt SimplePhysics rigs"
+  default_prompt: "Use $nijigenerate-simple-physics-rigging to add SimplePhysics to hair and skirt parts."

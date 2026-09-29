@@ -1,0 +1,63 @@
+schema: nijigenerate-result-audit-v1
+title: Mouth Open Rigging Result Audit
+items:
+- id: mouth-open-result-001
+  target: task scope
+  expected: Mouth::Open rigging was explicitly requested; no parameter binding was added during an asset or structure-only stage.
+- id: mouth-open-result-002
+  target: Mouth::Open semantics
+  expected: Axis ranges, defaults, key values, and X/Y meanings match the active model and current user instruction.
+- id: mouth-open-result-003
+  target: five mouth targets
+  expected: Base, Tongue, Teeth::Lower, Teeth::Upper, and Outline are the intended deform targets with no unexpected Mouth::Open target.
+- id: mouth-open-result-004
+  target: binding key coverage
+  expected: Every intended X/Y combination is set for all five targets; a 5x3 grid has setCount 15 and an all-true isSet matrix per target.
+- id: mouth-open-result-005
+  target: coordinate convention
+  expected: Local-to-screen Y direction, screen sides, and near/far mapping were verified from rendered evidence rather than assumed.
+- id: mouth-open-result-006
+  target: neutral mouth axis
+  expected: Open, intermediate, and closed neutral states follow one model-specific oblique axis and do not straighten toward screen horizontal or local Y=0.
+- id: mouth-open-result-007
+  target: closure mechanics
+  expected: Upper and lower boundaries meet naturally, upper motion dominates by default, width does not expand, and the closed lip retains a continuous non-zero painted band.
+- id: mouth-open-result-008
+  target: Base and Outline registration
+  expected: Base follows Outline at every key with no detached cavity, gap, clipping seam, or mismatched closure line.
+- id: mouth-open-result-009
+  target: internal mouth artwork
+  expected: Upper teeth, lower teeth, and tongue remain contained and leave no color, transparent edge, or detached fragment at intermediate or full closure.
+- id: mouth-open-result-010
+  target: Y=0 displeased expression
+  expected: Both corners descend relative to the oblique axis at open, intermediate, and closed states; full closure remains clearly displeased rather than neutral.
+- id: mouth-open-result-011
+  target: Y=0.5 neutral expression
+  expected: The authored oblique neutral axis, face roll, width, and center anchor are preserved through closure.
+- id: mouth-open-result-012
+  target: Y=1 smile expression
+  expected: Both corners rise relative to the oblique axis without reversing the verified coordinate sign or lifting the entire mouth.
+- id: mouth-open-result-013
+  target: near/far perspective
+  expected: Corner displacement and foreshortening are independently calibrated from the artwork and do not read as a mechanically mirrored frontal mouth.
+- id: mouth-open-result-014
+  target: intermediate keys
+  expected: Closure and expression progress smoothly and monotonically without widening, horizontalization, crushing, broken pixels, foldover, or internal leakage.
+- id: mouth-open-result-015
+  target: rendered evidence
+  expected: Exact-key 3x3 screenshots, every additional intermediate, original-scale face views, and equal-scale close crops exist and support the visual claims.
+- id: mouth-open-result-016
+  target: unrelated model state
+  expected: No unrelated parameter, binding, hierarchy, mesh, depth, physics, BoneSource, mask, or draw-mode state changed.
+- id: mouth-open-result-017
+  target: save and acceptance state
+  expected: FileCommand_OpenFile was avoided, unresolved defects are reported, and the user—not Codex—accepted the rendered candidate before final save.
+evidence:
+  required:
+  - parameter UUID, semantics, defaults, and exact key list
+  - five target UUIDs and per-target setCount/isSet matrices
+  - face-roll, oblique-axis, coordinate-sign, and near/far mapping
+  - exact-key 3x3 screenshots and all authored intermediates
+  - original-scale face views and equal-scale mouth crops
+  - unrelated binding, vertex-count, and static hierarchy diffs
+  - FileCommand_OpenFile avoidance and save status

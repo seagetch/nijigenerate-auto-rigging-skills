@@ -1,0 +1,125 @@
+schema: nijigenerate-step-checklist-v1
+title: Nijigenerate Automatic Rigging Checklist
+sections:
+  - name: 1. Preflight
+    checklist:
+      - id: auto-rig-001
+        check: Resolve njc from an explicit path, NJC_PATH, or PATH and use no other mutation path.
+      - id: auto-rig-002
+        check: Record tree, meshes, parameters, bindings, Physics, DepthRig, BoneSources, flip pairs, masks, and serialized/file size.
+      - id: auto-rig-003
+        check: Record the accepted screen-side and pitch conventions before side-specific work.
+      - id: auto-rig-004
+        check: Confirm no reviewer/browser/SPA or FileCommand_OpenFile will be used unless explicitly requested.
+      - id: auto-rig-047
+        check: Read the shared workflow router, record the complete route manifest, and assign every applicable phase to its specialist owner.
+      - id: auto-rig-048
+        check: Verify every routed specialist is available and readable; stop before mutation rather than substituting a generic skill for any missing specialist.
+  - name: 2. Structure and mesh
+    checklist:
+      - id: auto-rig-005
+        check: Complete actual hierarchy, broad Face/Body/hair/limb/clothing GridDeformers, and front/back clothing structure.
+      - id: auto-rig-006
+        check: Replace a closed indivisible mouth with the required open-mouth DynamicComposite parts and clipping.
+      - id: auto-rig-007
+        check: Verify actual zSort draw order at neutral and deformation extremes.
+      - id: auto-rig-008
+        check: Verify each Grid covers the maximum deformation envelope plus margin, not only neutral artwork.
+      - id: auto-rig-043
+        check: AutoMesh every regular mouth Part individually and verify density, contour coverage, and deformation capacity by readback plus mesh-overlay images.
+      - id: auto-rig-009
+        check: Define semantic parameter shells and neutral/start keys before depth rigging, but defer eye-blink and mouth-open deformation to their dedicated specialists.
+  - name: 3. Depth skeleton and BoneSources
+    checklist:
+      - id: auto-rig-010
+        check: Create DepthRigRoot and verify all 19 standard DepthBones.
+      - id: auto-rig-011
+        check: Align both rest data and app-visible transforms to artwork, including torso inclination.
+      - id: auto-rig-012
+        check: Handle Foot.L and Foot.R as LockToRoot and verify their coordinate frame.
+      - id: auto-rig-013
+        check: Assign and read back the complete exact BoneSource chain for every GridDeformer.
+  - name: 4. Canonical depth
+    checklist:
+      - id: auto-rig-014
+        check: Inspect the supplied depth import state without applying.
+      - id: auto-rig-015
+        check: Repair alpha-covered zero gaps and disconnected depth islands before import.
+      - id: auto-rig-016
+        check: Tune scale, offset, and local relief per anatomy without globally flattening the model.
+      - id: auto-rig-017
+        check: Verify effective Z at neutral and exact yaw/pitch keys for every enabled GridDeformer.
+  - name: 5. Fit Z and standard parameters
+    checklist:
+      - id: auto-rig-018
+        check: Isolate the intended armed Depth parameter and snapshot every parameter and Physics binding before Fit Z.
+      - id: auto-rig-019
+        check: Run and numerically verify Fit Z after the final depth correction.
+      - id: auto-rig-020
+        check: Generate standard Depth parameters only after verified Fit Z.
+      - id: auto-rig-021
+        check: Globally diff all parameter targets, isSet states, Physics keys, and file size after generation.
+  - name: 6. Post-adjustment
+    checklist:
+      - id: auto-rig-022
+        check: Correct depth and DepthBone defects in their owning skills before Grid or Part residuals.
+      - id: auto-rig-023
+        check: Verify broad motion and correct only its permitted owning layer when defective; preserve valid parents before individual Part residuals.
+      - id: auto-rig-024
+        check: Recompute child residuals after every parent Grid, Pelvis, Spine, or DepthBone change.
+      - id: auto-rig-025
+        check: Audit all 25 cells and intermediate interpolation of each edited 5x5 binding.
+      - id: auto-rig-026
+        check: Evaluate Face, Front Hair, Body, shoulders, chest, torso, clothing, hips, skirt, and legs in both yaw directions.
+      - id: auto-rig-027
+        check: Correct Pelvis, Spine, Thigh, and Shin on DepthBones while preserving LockToRoot ankle targets.
+      - id: auto-rig-049
+        check: Finish and audit Body correction, including depth/bone ownership, permitted parent changes only when needed, and individual Part residuals, before beginning Face expression specialists.
+      - id: auto-rig-044
+        check: During Face rigging, bind tongue and upper/lower teeth to the full Face::Yaw-Pitch grid with perspective compression, pitch-specific tooth reveal, and preserved Mouth::Open composition.
+      - id: auto-rig-045
+        check: Verify the mouth-cavity Face rig using cropped images for all 25 cells and relevant Mouth::Open X/Y extremes; do not accept binding counts or shell exit code as visual proof.
+      - id: auto-rig-050
+        check: Run nijigenerate-eye-blink-rigging after broad Face motion is stable and require its step checklist, result audit, and exact-key same-scale images to be fully OK before advancing.
+      - id: auto-rig-051
+        check: Run nijigenerate-mouth-open-rigging after mouth assets, Part meshes, and Face mouth-cavity motion are valid; require its step checklist, result audit, and intermediate-key images to be fully OK before advancing.
+  - name: 7. Physics
+    checklist:
+      - id: auto-rig-028
+        check: Add physics only after authored pose deformation is stable.
+      - id: auto-rig-029
+        check: Author and verify Physics parameter keys before assigning SimplePhysics.
+      - id: auto-rig-030
+        check: Use Gravity 1.0 and derive Length from the current fixed-to-free endpoint distance.
+      - id: auto-rig-031
+        check: Include hair, skirt/lower clothing, sleeves, ears, ornaments, ribbons, and cords where the artwork supports motion.
+      - id: auto-rig-032
+        check: Re-read every Physics target and authored key after any automatic depth/grid refresh.
+  - name: 8. Final audit
+    checklist:
+      - id: auto-rig-037
+        check: Confirm the front/back clothing result audit is fully OK with recorded hierarchy, mesh, anchor, and unrelated-state evidence.
+      - id: auto-rig-038
+        check: Confirm the Depth skeleton result audit is fully OK with 19-bone, app-visible alignment, LockToRoot, and complete BoneSource evidence.
+      - id: auto-rig-039
+        check: Confirm the depth import result audit is fully OK with gap, anatomical depth, effective Z, Fit Z, standard-parameter chronology, and global-state evidence.
+      - id: auto-rig-040
+        check: Confirm the post-rig result audit is fully OK with broad-before-Part, both-yaw, all-corners, 25-cell, parent-residual, and neutral evidence.
+      - id: auto-rig-052
+        check: Confirm the eye-blink specialist result audit is fully OK for both eyes, all required closure styles, intermediate keys, clipping, and preserved eyelid/eyelash width.
+      - id: auto-rig-053
+        check: Confirm the mouth-open specialist result audit is fully OK for opening, closure, expression, tilted local axis, near/far behavior, clipping, and intermediate keys.
+      - id: auto-rig-041
+        check: If masks were used, confirm the occlusion result audit is fully OK with failing/neighbor/opposite-pose evidence.
+      - id: auto-rig-042
+        check: Confirm the Physics result audit is fully OK with complete candidate inventory, key-before-assignment, Gravity, measured Length, playback/reset, and preservation evidence.
+      - id: auto-rig-033
+        check: Verify neutral, endpoints, corners, all edited 5x5 cells, and adjacent interpolation values.
+      - id: auto-rig-046
+        check: Confirm face tilt is preserved and the tongue/teeth recede consistently with the visible mouth cavity in both yaw directions and both pitch directions.
+      - id: auto-rig-034
+        check: Verify no unrelated target, binding, hierarchy, mesh, mask, DepthBone, BoneSource, or Physics setting changed.
+      - id: auto-rig-035
+        check: Reject unexplained serialized/file-size growth and repeated full-size saves without verified improvement.
+      - id: auto-rig-036
+        check: Restore neutral, reset Physics, and save one final verified output through FileCommand_SaveFile.

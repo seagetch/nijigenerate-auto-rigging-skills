@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="5000" height="5000" viewBox="0 0 5000 5000">
+  <rect width="5000" height="5000" fill="#f7f4ee"/>
+  <ellipse cx="2500" cy="1750" rx="780" ry="920" fill="#f1c7b6"/>
+  <path d="M1500 2450 C1900 2200 3100 2200 3500 2450 L3300 4300 C3000 4580 2000 4580 1700 4300Z" fill="#6a78a8"/>
+  <path d="M1850 2450 C2120 3000 2880 3000 3150 2450" fill="none" stroke="#53608f" stroke-width="70" opacity="0.45"/>
+</svg>

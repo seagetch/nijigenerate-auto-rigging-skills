@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="5000" height="5000" viewBox="0 0 5000 5000">
+  <rect width="5000" height="5000" fill="#f7f4ee"/>
+  <ellipse cx="2500" cy="1750" rx="780" ry="920" fill="#f1c7b6"/>
+  <path d="M1500 2450 C1900 2200 3100 2200 3500 2450 L3300 4300 C3000 4580 2000 4580 1700 4300Z" fill="#6a78a8"/>
+  <g stroke="#54d5ff" stroke-width="12" opacity="0.85">
+    <path d="M1500 2450 L3500 2450 L3300 4300 L1700 4300Z" fill="none"/>
+    <path d="M1833 2450 L1967 4300"/>
+    <path d="M2167 2450 L2233 4300"/>
+    <path d="M2500 2450 L2500 4300"/>
+    <path d="M2833 2450 L2767 4300"/>
+    <path d="M3167 2450 L3033 4300"/>
+    <path d="M1540 2912 L3450 2912"/>
+    <path d="M1580 3375 L3400 3375"/>
+    <path d="M1640 3838 L3345 3838"/>
+  </g>
+  <text x="2500" y="2350" text-anchor="middle" font-family="Arial" font-size="90" fill="#233">NOT APPLIED depth map review</text>
+</svg>

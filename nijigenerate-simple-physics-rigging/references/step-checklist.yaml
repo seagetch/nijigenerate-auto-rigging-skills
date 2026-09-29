@@ -1,0 +1,154 @@
+schema: nijigenerate-step-checklist-v1
+title: Simple Physics Rigging Step Checklist
+sections:
+- name: 1. Planning From Artwork And Hierarchy
+  checklist:
+  - id: simple-physics-001
+    target: current live model view for the relevant pose
+    check: Capture current screen state and read the model part hierarchy before creating parameters.
+  - id: simple-physics-002
+    target: each candidate moving area in the artwork
+    check: 'Identify every visually plausible moving area: front hair, side hair, back hair, tail, topwear front chest/soft
+      cloth, topwear back lower apron or rear hanging cloth, skirt, apron panels, ribbons/frills, head ornaments, animal
+      ears, cords, tassels, hanging accessories, sleeves, cuffs, handwear, waist ornaments, wings, and other protruding
+      parts.'
+  - id: simple-physics-003
+    target: each physics candidate part or surface
+    check: For each candidate, decide include/exclude and record why.
+  - id: simple-physics-004
+    target: each included physics target and neighboring share candidates
+    check: Decide whether each target needs its own Physics parameter or can share with a neighboring part.
+  - id: simple-physics-005
+    target: each included physics target endpoint model
+    check: Identify fixed endpoint, free endpoint, parent control, and whether the target is flexible or rigid.
+  - id: simple-physics-006
+    target: accepted Body/Face depth behavior affected by physics
+    check: Confirm physics should not overwrite accepted Body/Face depth behavior.
+  - id: simple-physics-006a
+    target: shape-by-shape physics plan table
+    check: Record target shape, node UUID/name, include/exclude decision, parameter, fixed endpoint, free endpoint, binding type, and reason before mutation.
+  - id: simple-physics-006b
+    target: rendered artwork compared with hierarchy
+    check: Verify no visible long, soft, hanging, or protruding shape is missing from the plan.
+  - id: simple-physics-006c
+    target: broad Parts that contain local moving sub-shapes
+    check: If a visible moving shape is inside a larger Part, plan a local mesh weight mask instead of excluding it due to broad node naming.
+- name: 2. Parameter Definition
+  checklist:
+  - id: simple-physics-007
+    target: wide or long flexible physics targets
+    check: Create 2D Physics parameters for wide/long flexible objects that respond in X/Y.
+  - id: simple-physics-008
+    target: rigid or single-axis physics targets
+    check: Create 1D parameters for rigid or single-axis objects.
+  - id: simple-physics-009
+    target: each newly created Physics parameter
+    check: Use range `[-1, 1]`.
+  - id: simple-physics-010
+    target: each newly created Physics parameter
+    check: Set breakpoints `[0, 0.5, 1]` for 2D axes or 1D axis as applicable.
+  - id: simple-physics-011
+    target: each newly created Physics parameter
+    check: Rename unnamed parameters immediately after creation.
+  - id: simple-physics-012
+    target: neutral/start key for each edited parameter or binding
+    check: Verify parameter list, UUID, axes, key values, and neutral key.
+- name: 3. Deformation Keys
+  checklist:
+  - id: simple-physics-013
+    target: each Physics parameter deformation key set
+    check: Author deformation keys before assigning SimplePhysics node parameters.
+  - id: simple-physics-014
+    target: each Physics parameter deformation key set
+    check: Define neutral `(0,0)` or `0`.
+  - id: simple-physics-015
+    target: each Physics parameter deformation key set
+    check: Define left/right/up/down extremes; add diagonals only if interpolation fails.
+  - id: simple-physics-016
+    target: each Physics parameter deformation key set
+    check: Treat endpoints as large authored travel, not subtle idle motion.
+  - id: simple-physics-017
+    target: fixed attachment anchors for each physics target
+    check: 'Keep anchors stable: hair roots, skirt waist, sleeve shoulder, accessory base.'
+  - id: simple-physics-018
+    target: each included physics target endpoint model
+    check: Move free tips most, intermediate points smoothly, fixed endpoint least or zero.
+  - id: simple-physics-019
+    target: wide cloth and skirt physics targets
+    check: Avoid translating wide cloth or skirt as one rigid plate.
+  - id: simple-physics-019a
+    target: flexible physics targets such as hair, cloth, apron, cords, ears, and cuffs
+    check: Default to non-uniform `deform` bindings; use whole-node TRS only when the target is intentionally rigid and the reason is recorded.
+  - id: simple-physics-019b
+    target: each authored endpoint key
+    check: Verify the fixed endpoint has zero or near-zero weight, intermediate points ease, and the free endpoint moves most.
+  - id: simple-physics-019c
+    target: each broad Part with a local moving sub-shape
+    check: Verify unrelated artwork inside the same Part remains stable while the intended sub-shape moves.
+  - id: simple-physics-019d
+    target: endpoint screenshot for each included target
+    check: Capture and inspect an endpoint screenshot before assigning SimplePhysics; revise if it shows whole-shape translation or unrelated movement.
+- name: 4. SimplePhysics Node
+  checklist:
+  - id: simple-physics-020
+    target: each included moving target or control node
+    check: Add SimplePhysics as a child of the moving target or its control node.
+  - id: simple-physics-021
+    target: independently moving physics target groups
+    check: Prefer one node per independently moving area.
+  - id: simple-physics-022
+    target: created SimplePhysics node for each parameter
+    check: Name node consistently with the Physics parameter.
+  - id: simple-physics-023
+    target: current model hierarchy around each affected target node
+    check: Read created UUID and hierarchy after insertion.
+- name: 5. Assignment Safety
+  checklist:
+  - id: simple-physics-024
+    target: SimplePhysics assignment state for each created or revised physics node
+    check: Disable global physics/drivers before changing SimplePhysics parameter assignment.
+  - id: simple-physics-025
+    target: SimplePhysics assignment state for each created or revised physics node
+    check: Assign parameter only after deformation keys are authored and verified.
+  - id: simple-physics-026
+    target: SimplePhysics assignment state for each created or revised physics node
+    check: Clear or replace existing assignment only after recording old parameter, node, and settings.
+  - id: simple-physics-027
+    target: SimplePhysics assignment state for each created or revised physics node
+    check: Re-enable/reset physics after all assignment and setting commands are complete.
+- name: 6. Settings
+  checklist:
+  - id: simple-physics-028
+    target: mapping mode for each physics node
+    check: Use `XY` mapping for hair, skirts, ribbons, and cloth unless a 1D target is intended.
+  - id: simple-physics-029
+    target: SimplePhysics settings for each created or revised node
+    check: Measure Length from the current fixed-to-free endpoint distance, use Gravity 1.0 as the baseline, and tune Frequency and damping from the target's observed motion.
+  - id: simple-physics-030
+    target: SimplePhysics settings for each created or revised node
+    check: Tune Frequency for return speed, Damping for looseness/noise, OutputScale for runtime amplitude, and LocalOnly
+      only when parent motion should not drive the response.
+  - id: simple-physics-031
+    target: current live model view for the relevant pose
+    check: Prefer small tuning changes and screenshot/playback comparisons.
+- name: 7. Verification
+  checklist:
+  - id: simple-physics-032
+    target: current live model view for the relevant pose
+    check: Reset parameters and physics, then capture neutral.
+  - id: simple-physics-033
+    target: physics verification state for each authored Physics parameter
+    check: Exercise each authored Physics key and verify the parameter deformation itself.
+  - id: simple-physics-034
+    target: physics verification state for each authored Physics parameter
+    check: Toggle/reset physics and inspect playback where available.
+  - id: simple-physics-035
+    target: current live model view for the relevant pose
+    check: Capture representative body/head poses and occlusion-heavy poses.
+  - id: simple-physics-036
+    target: fixed attachment anchors for each physics target
+    check: Verify anchors remain stable and physics adds secondary motion without erasing depth rigging.
+  - id: simple-physics-037
+    target: pass audit artifact for edited targets and parameters
+    check: Save audit with parameter names/UUIDs, target nodes, SimplePhysics UUIDs, mapping mode, settings, screenshots,
+      and any non-default values.

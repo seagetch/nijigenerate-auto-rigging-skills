@@ -1,0 +1,83 @@
+schema: nijigenerate-step-checklist-v1
+title: Limb Root Positioning Step Checklist
+sections:
+- name: 1. Target Audit
+  checklist:
+  - id: limb-root-001
+    target: each appendage root/control node selected for repositioning
+    check: Identify target parent Node, child Parts/GridDeformers/PathDeformers, current transform, current root point, and
+      intended anatomical attachment.
+  - id: limb-root-002
+    target: current live model view for the relevant pose
+    check: Capture current overlay or screenshot showing the attachment area.
+  - id: limb-root-003
+    target: current model hierarchy around each affected target node
+    check: Read hierarchy to confirm which descendants must stay visually fixed while the root moves.
+  - id: limb-root-004
+    target: side-specific parameter convention for the current model
+    check: Record left/right side convention and mirror pair if applicable.
+- name: 2. Attachment Planning
+  checklist:
+  - id: limb-root-005
+    target: root position for each selected appendage
+    check: Locate the root at the anatomical or structural attachment point, not the part center.
+  - id: limb-root-006
+    target: arm root targets and shoulder attachment points
+    check: For arms, use shoulder attachment shown by current artwork.
+  - id: limb-root-007
+    target: leg root targets and hip/upper-leg attachment points
+    check: For legs, use hip/upper-leg attachment shown by current body/corset/bottomwear structure.
+  - id: limb-root-008
+    target: hand and foot roots at wrist/ankle attachment points
+    check: For hands/feet, use wrist/ankle attachment.
+  - id: limb-root-009
+    target: ribbon, tail, and wing roots at visible bases or sockets
+    check: For ribbons/tails/wings, use the visible base or socket.
+  - id: limb-root-010
+    target: moved roots relative to later Body, Face, and Physics deformation responsibilities
+    check: Confirm root placement agrees with later Body/Face/Physics deformation responsibilities.
+- name: 3. Preservation Plan
+  checklist:
+  - id: limb-root-011
+    target: descendant Parts/GridDeformers/PathDeformers under the moved root
+    check: Decide whether descendants must be held in place with LockToRoot or equivalent.
+  - id: limb-root-012
+    target: descendant Parts/GridDeformers/PathDeformers under the moved root
+    check: Record current child transforms and mesh state before moving root.
+  - id: limb-root-013
+    target: each edited parameter binding on each explicit target node
+    check: Preserve accepted user-edited coordinates and previous bindings.
+  - id: limb-root-014
+    target: each left/right paired target affected by the pass
+    check: Do not break flip pairs or symmetry while moving only one side.
+- name: 4. Move
+  checklist:
+  - id: limb-root-015
+    target: each model mutation command in the pass
+    check: Resolve `njc` from an explicit path, `NJC_PATH`, or `PATH`, and mutate only through that executable.
+  - id: limb-root-016
+    target: selected appendage root/control node
+    check: Move the root/control Node, not the child artwork, unless the user explicitly asks.
+  - id: limb-root-017
+    target: left/right appendage pair affected by root movement
+    check: If moving one side, mirror or verify the opposite side according to accepted convention.
+  - id: limb-root-018
+    target: post-move transforms of moved roots and children
+    check: Re-read node transforms and child positions after the move.
+- name: 5. Verify
+  checklist:
+  - id: limb-root-019
+    target: current live model view for the relevant pose
+    check: Capture neutral and relevant yaw/pitch/roll poses.
+  - id: limb-root-020
+    target: moved root attachment in neutral and driven poses
+    check: Verify attachment does not drift from Body/Head surface.
+  - id: limb-root-021
+    target: descendant Parts/GridDeformers/PathDeformers under the moved root
+    check: Verify children remained visually in place when that was intended.
+  - id: limb-root-022
+    target: rotation pivot behavior of each moved appendage root
+    check: Verify root-driven rotations now pivot from the attachment, not the part center.
+  - id: limb-root-023
+    target: pass audit artifact for edited targets and parameters
+    check: Save audit with old/new root positions, locked children, side convention, affected descendants, and screenshots.

@@ -1,0 +1,17 @@
+schema: nijigenerate-result-audit-v1
+title: "eye-blink-rigging change result audit"
+items:
+  - id: eye-blink-rigging-change-001
+    target: "axis and endpoint invariance"
+    expected: "Actual expression rows have the intended meanings; both canthi and adjacent tangents remain invariant across expressions at the same closure."
+  - id: eye-blink-rigging-change-002
+    target: "placement request when present"
+    expected: "Whole-eye movement includes the intended feature and clip relationship, not just endpoint vertices; Iris has no new Blink binding."
+  - id: eye-blink-rigging-change-003
+    target: "image matrix"
+    expected: "Every closure key in every expression row is visually compared in each eye’s local frame, including near/far and reported mixed poses."
+
+# Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
+example_references:
+  - "reference-images.md"
+  - "examples/ao-blink-whole-contour-endpoint-audit.json"

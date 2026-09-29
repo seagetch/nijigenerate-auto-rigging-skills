@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate 口素材リギング"
+  short_description: "元絵準拠の開口素材を生成・分割・構造化して監査する"
+  default_prompt: "Use $nijigenerate-mouth-asset-rigging to create and audit source-faithful rigging-ready mouth assets."

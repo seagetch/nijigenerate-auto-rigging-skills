@@ -1,0 +1,141 @@
+schema: nijigenerate-step-checklist-v1
+title: Eye Blink Rigging Step Checklist
+sections:
+- name: 1. Inputs And Semantics
+  checklist:
+  - id: eye-blink-001
+    target: active loaded model
+    check: Resolve njc explicitly, avoid FileCommand_OpenFile, and record the current model state before mutation.
+  - id: eye-blink-002
+    target: Eye::L::Blink and Eye::R::Blink
+    check: Read UUIDs, dimensions, axis ranges, defaults, exact key values, and expression semantics without assuming a 0..1 or -1..1 convention.
+  - id: eye-blink-003
+    target: exact authored default pose
+    check: Set both Blink parameters to their exact defaults and capture a pre-mutation full screenshot and face-scale eye crop.
+  - id: eye-blink-004
+    target: neutral, smile, and deep closed references
+    check: Obtain references with the same head yaw, pitch, roll, camera, scale, and crop as the target artwork.
+  - id: eye-blink-005
+    target: baseline screenshot crop
+    check: Verify that the crop contains both complete eyes and all four canthi at sufficient resolution; reject stale coordinates after any view change.
+  - id: eye-blink-037
+    target: each eye measurement frame
+    check: Record measurement space, authored open inner/outer canthus landmarks, O, T_open, lower-positive N_open, and rendered face-roll cross-check before any height or slope judgment.
+- name: 2. Eye Inventory
+  checklist:
+  - id: eye-blink-006
+    target: left and right Eyelash Parts
+    check: Read meshes, UVs, transforms, draw modes, clipping, hierarchy, static opacity/zSort, and existing Blink bindings.
+  - id: eye-blink-007
+    target: left and right Eyewhite and Iris Parts
+    check: Read meshes, transforms, clipping, static opacity/zSort, and every Blink binding; record any Iris binding or Eyewhite opacity/zSort binding as a defect.
+  - id: eye-blink-008
+    target: each eye contour
+    check: Identify inner canthus, outer canthus, upper contour, lower contour, painted opaque lash band, and canthus-adjacent vertices from topology and rendered evidence.
+  - id: eye-blink-009
+    target: character-left and character-right eyes
+    check: Record screen side, near/far status, canthus-axis slope, width, aperture, and occlusion; do not infer from names alone.
+  - id: eye-blink-010
+    target: all accepted eye resources
+    check: Snapshot binding rows, binding-resource hashes, static Part properties, and the default screenshot before mutation.
+  - id: eye-blink-038
+    target: all contour samples and planned endpoints
+    check: Record eye-local u=dot(P-O,T_open) and v=dot(P-O,N_open); raw screen X/Y cannot establish anatomical height or slope.
+- name: 3. Motion And Visibility Plan
+  checklist:
+  - id: eye-blink-011
+    target: each eye local frame
+    check: Define T_open from reviewed authored open inner/outer canthi in current rendered/deformed parent space and verify lower-lid-positive N_open.
+  - id: eye-blink-012
+    target: upper and lower lids
+    check: Plan separate displacement maps so upper-lid descent dominates and lower-lid rise remains secondary.
+  - id: eye-blink-013
+    target: each full-close expression
+    check: Specify closure drop, curvature, width, painted lash thickness, fixed endpoints, and endpoint-neighborhood easing independently.
+  - id: eye-blink-014
+    target: near and far eyes
+    check: Plan independent foreshortening, slope, curve handles, thickness, and expression drop; do not mirror normalized curves.
+  - id: eye-blink-015
+    target: both canthi and adjacent contour segments
+    check: Keep endpoint coordinates invariant by default and plan smooth tangent transitions over the inner and outer 20-35 percent neighborhoods.
+  - id: eye-blink-016
+    target: Eyewhite, Iris, and static Part zSort
+    check: Plan Eyewhite Y-only deformation, no Iris Blink bindings, no Blink opacity/zSort bindings, and model-specific static zSort that passes the visibility matrix.
+  - id: eye-blink-017
+    target: proposed mutation
+    check: Produce a dry-run plan listing only explicit parameter UUIDs, target UUIDs, expression rows, Blink-X keys, and static properties before applying.
+  - id: eye-blink-039
+    target: every planned intermediate and full-close endpoint chord
+    check: Preserve T_open within serialization tolerance unless a same-roll authored closed-eye reference and human-approved axis overlay explicitly authorize a different tangent.
+  - id: eye-blink-040
+    target: every endpoint height or slope statement
+    check: Mark UNVERIFIABLE if it compares raw screen Y, omits local v values, or claims one endpoint is higher/lower without declared O/T_open/N_open.
+  - id: eye-blink-041
+    target: proposed closed-eye slope versus rendered face roll
+    check: Retake any screen-horizontal, slope-reversed, or roll-contradicting candidate until landmark classification and transform mapping are corrected.
+- name: 4. Apply Full-Close Keys And Static Visibility
+  checklist:
+  - id: eye-blink-018
+    target: neutral full-close key
+    check: Place the seam toward the lower lid with a shallow downward sag relative to the oblique canthus chord.
+  - id: eye-blink-019
+    target: smile full-close key
+    check: Create relative upward curvature without moving the whole seam toward the open upper lid or disturbing endpoint neighborhoods.
+  - id: eye-blink-020
+    target: deep full-close key
+    check: Use a low relaxed curve visibly distinct from smile closure.
+  - id: eye-blink-021
+    target: Eyelash vertices
+    check: Preserve closed width, painted upper-lash thickness, outer wedge, inner taper, endpoint positions, and adjacent tangents.
+  - id: eye-blink-022
+    target: Eyewhite vertices
+    check: Set only Y deformation into a thin nonzero band following the lash seam and prove every X delta is zero.
+  - id: eye-blink-023
+    target: Iris Parts
+    check: Leave Iris geometry and opacity unchanged and verify no Blink deform, opacity, zSort, or zsort binding exists.
+  - id: eye-blink-024
+    target: Eyelash, Eyewhite, and Iris static zSort
+    check: Apply ordinary Part zSort with node-only context, verify static readback, and verify no Blink zSort binding was created.
+- name: 5. Every Expression Row And Intermediate Key
+  checklist:
+  - id: eye-blink-025
+    target: every Blink-X key on every actual expression row
+    check: Author or verify the complete key matrix rather than checking only neutral intermediates and expression full-close endpoints.
+  - id: eye-blink-026
+    target: upper-lid contour across each row
+    check: Verify monotonic downward movement toward the seam.
+  - id: eye-blink-027
+    target: lower-lid contour across each row
+    check: Verify only slight upward movement and no lower-lid-led closure.
+  - id: eye-blink-028
+    target: painted lash silhouette across each row
+    check: Verify no widening, crushing, fold, double line, sudden thickness change, or endpoint-neighborhood drift.
+  - id: eye-blink-029
+    target: Eyewhite and Iris visibility across each row
+    check: Verify Eyewhite narrows vertically, Iris geometry remains unchanged, both are visible at default, and neither leaks at full closure.
+  - id: eye-blink-042
+    target: endpoint chord across all authored Blink keys
+    check: Read back each chord angle in the declared eye-local frame and reject progressive flattening toward screen-horizontal, sign reversal, or unreviewed deviation from T_open.
+- name: 6. Visual Verification, Retake, And Save Gate
+  checklist:
+  - id: eye-blink-030
+    target: complete Blink-X by expression-row matrix
+    check: Capture exact-key screenshots at one verified face/eye scale and revalidate the crop contents.
+  - id: eye-blink-031
+    target: near and far eyes
+    check: Compare each eye separately in its declared local frame for slope, width, curve, painted thickness, position, and perspective; display T_open/N_open on the evidence image.
+  - id: eye-blink-032
+    target: movement, thickness, and canthus evidence
+    check: Record upper descent, lower rise, their ratio, painted thickness at inner/center/outer thirds, endpoint coordinates, and neighboring tangent continuity.
+  - id: eye-blink-033
+    target: exact authored default pose and accepted resources
+    check: Reset both eyes to default and compare open visibility and screenshot against baseline; verify every unedited binding/property hash remains unchanged.
+  - id: eye-blink-034
+    target: each Retake
+    check: Change only failed target properties or binding rows, read them back immediately, and rerun the full result checklist.
+  - id: eye-blink-035
+    target: active model and output file
+    check: Do not save or declare completion until every result item is OK and the user accepts the rendered candidate.
+  - id: eye-blink-036
+    target: final handoff
+    check: Report UUIDs, key matrix, perspective mapping, static zSort, screenshots, audit path, unchanged-state evidence, unresolved defects, save status, and FileCommand_OpenFile avoidance.

@@ -1,0 +1,69 @@
+schema: nijigenerate-result-audit-v1
+title: Eye Blink Rigging Result Audit
+items:
+- id: eye-blink-result-001
+  target: Blink parameter semantics
+  expected: Axis ranges, defaults, exact keys, and expression meanings match the active model and user instruction without implicit convention conversion.
+- id: eye-blink-result-002
+  target: left and right contour classification
+  expected: Inner/outer canthi, adjacent segments, upper/lower contours, and painted opaque lash bands come from actual topology and rendered evidence.
+- id: eye-blink-result-003
+  target: near/far perspective mapping
+  expected: Character side, screen side, near/far status, rendered face roll, eye-local O/T_open/N_open, eye-axis slope, and foreshortening are explicit and independently applied.
+- id: eye-blink-result-004
+  target: upper and lower lid motion
+  expected: Upper-lid descent visibly dominates; lower-lid rise is slight or has a reviewed model-specific justification.
+- id: eye-blink-result-005
+  target: neutral closed expression
+  expected: The seam is low enough and follows the oblique eye axis without reading as an upward smile arch.
+- id: eye-blink-result-006
+  target: smile closed expression
+  expected: Relative upward curvature is present while the seam remains low and both endpoint neighborhoods remain visually anchored.
+- id: eye-blink-result-007
+  target: deep closed expression
+  expected: The seam is low, relaxed, and visibly distinct from smile closure.
+- id: eye-blink-result-008
+  target: Eyelash silhouette
+  expected: Width does not exceed open width; painted upper-lash thickness, outer wedge, inner taper, exact canthus positions, adjacent tangents, and T_open are preserved at every tested key unless a reviewed tangent exception exists.
+- id: eye-blink-result-009
+  target: Eyewhite geometry and bindings
+  expected: Every set Eyewhite deform key has zero X delta, Y follows a thin nonzero closure band, and no Blink opacity, zSort, or zsort binding exists.
+- id: eye-blink-result-010
+  target: Iris geometry and bindings
+  expected: Iris geometry and opacity are unchanged and no Blink deform, opacity, zSort, or zsort binding exists.
+- id: eye-blink-result-011
+  target: static eye-part zSort
+  expected: Eyelash, Eyewhite, and Iris have verified ordinary Part zSort values applied without parameter context and no parameter-bound zSort rows.
+- id: eye-blink-result-012
+  target: eye-part visibility matrix
+  expected: Eyewhite and Iris are visible at exact default, behave continuously through intermediates, and leave no white, Iris color, detached line, or mesh crush at any full-close expression.
+- id: eye-blink-result-013
+  target: complete Blink-X by expression-row sequence
+  expected: Every actual expression row is captured at every Blink-X key and remains monotonic and smooth without widening, foldover, thickness collapse, lower-lid dominance, or apparent canthus drift.
+- id: eye-blink-result-014
+  target: screenshot evidence crop
+  expected: Every screenshot uses the current view and a verified crop containing both complete eyes and all four canthi at inspection resolution.
+- id: eye-blink-result-015
+  target: exact authored default regression
+  expected: After mutation both Blink parameters return to their exact defaults and open eyelash, Eyewhite, and Iris appearance matches the recorded baseline except for explicitly approved static-order changes.
+- id: eye-blink-result-016
+  target: unrelated and previously accepted state
+  expected: No unrelated parameter, binding, hierarchy, mesh, depth, physics, BoneSource, mask, draw mode, or accepted eye binding/property changed; every Retake is delta-only.
+- id: eye-blink-result-017
+  target: save and acceptance state
+  expected: Exact-key evidence exists, FileCommand_OpenFile was avoided, the full audit is OK, and the user—not Codex—accepted the candidate before final save.
+- id: eye-blink-result-018
+  target: coordinate-frame validity
+  expected: Every height and slope claim reports measurement space, landmark identities, O/T_open/N_open, endpoint u/v values, and face-roll cross-check; raw screen-Y comparisons and unexplained screen-horizontal or slope-reversed candidates are Retake.
+evidence:
+  required:
+  - parameter semantics and complete tested key matrix
+  - eye Part UUIDs, contour classification, and near/far perspective table
+  - per-eye coordinate-frame table with O/T_open/N_open, source landmarks, local u/v endpoint values, and face-roll cross-check
+  - static opacity/zSort readback and Blink binding inventory for Eyelash, Eyewhite, and Iris
+  - proof that Iris has no Blink bindings and every Eyewhite deform X delta is zero
+  - upper/lower movement measurements and painted lash thickness at inner/center/outer thirds
+  - exact canthus coordinates and adjacent segment/tangent evidence for every expression row
+  - baseline and post-mutation exact-default screenshots
+  - all expression-row intermediate and full-close screenshots at one validated crop
+  - unchanged-resource hashes, output path, save status, and FileCommand_OpenFile avoidance

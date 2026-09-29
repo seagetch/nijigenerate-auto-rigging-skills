@@ -1,0 +1,314 @@
+{
+  "purpose": "Historical reading examples, not executable instructions or universal presets",
+  "files": [
+    {
+      "path": "images/ao-rejected-shoulder-armpit-far-chest.png",
+      "source": "codex-clipboard-934e15e4-336e-4b27-a6b4-61cbdbfbcc29.png",
+      "sha256": "73c72390a737f4f5982f2480d32d17f8433cfd89a422d8596c8994d4bb39b1a0",
+      "status": "user-reported-failure-exact-full-pose-unknown"
+    },
+    {
+      "path": "images/ao-rejected-welded-seam.png",
+      "source": "codex-clipboard-dbcdbbe0-e1f5-466c-8122-80aafc93f84c.png",
+      "sha256": "71a2bc81bc248d5fbaa7203c88fe0396e6fb8545cb1271cb2915ca1687efca42",
+      "status": "user-reported-failure-exact-full-pose-unknown"
+    },
+    {
+      "path": "images/ao-rejected-neck-collar-shear.png",
+      "source": "codex-clipboard-3ac00fb1-735b-4530-b234-6184901a2324.png",
+      "sha256": "32b9a2ec6ed6e204fc837840dad3095e04566616e3e642b58d92f33fd57ccbd6",
+      "status": "user-reported-failure-exact-full-pose-unknown"
+    },
+    {
+      "path": "images/ao-face-source-generated-comparison.png",
+      "source": "output/references/all-directions-20260923/pose-comparison.png",
+      "sha256": "23845a0bdb1c55b416f704c04753991343e7eb754d51e46520ede151a6ece823",
+      "status": "historical-source-and-generated-candidates"
+    },
+    {
+      "path": "images/ao-body-yaw-plus1-source.png",
+      "source": "output/references/body-directions-20260924/pose-1_0.png",
+      "sha256": "f9164feb62aac569c9e3a2451d976f19299001e7fb5bb22a185e40e1f823e3c6",
+      "status": "historical-source-not-final"
+    },
+    {
+      "path": "images/ao-body-yaw-plus1-generated.png",
+      "source": "output/references/body-directions-20260924/reference-1_0.png",
+      "sha256": "ca16d7177825c4240367e92131d332211c7af0ab9756aa3ef984aa008ee539f3",
+      "status": "generated-candidate-needs-registration"
+    }
+  ],
+  "directional_reference_manifest": "examples/ao-angle-reference-manifest.json",
+  "directional_files": [
+    {
+      "path": "images/ao-angle-references/face/identity.png",
+      "sha256": "5f008b073e147ef55aeb662b7bb306d96cb5d1ea8e28d2e3eef6a833bf3c9221",
+      "source_identifier": "output/references/angle-matched-20260923/neutral-identity.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/original-torso.png",
+      "sha256": "67a6ab10d46b62f437417ad51de9f9bd9760a77a3792a2a20b5a8c9326150084",
+      "source_identifier": "output/references/body-directions-20260924/original-torso.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose--1_1.png",
+      "sha256": "342bd15bdd9635f04067b96b09d7fae85622726521a10ddc0d275f26ff29e764",
+      "source_identifier": "output/references/all-directions-20260923/pose--1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated--1_1.png",
+      "sha256": "7ddfed8f191d210419224ab91c5a50e44159b0c5d51c7c5bd1c1cdfb7ef10fc1",
+      "source_identifier": "output/references/angle-matched-20260923/Ao-face-minus1-plus1-pose-locked.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison--1_1.png",
+      "sha256": "7f31c2e4375651a6e3a71477debf08349f72198cda869cc398a4860633310846",
+      "source_identifier": "output/references/all-directions-20260923/reference--1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose-0_1.png",
+      "sha256": "e1a02a84a7e526c48fd1ce2e791e438cbbad97878ccef860a640e3bdaf69adde",
+      "source_identifier": "output/references/all-directions-20260923/pose-0_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated-0_1.png",
+      "sha256": "5190881857a8dd2cfda5ec4d94089672d361770b30e6452031d843dfc93556d0",
+      "source_identifier": "exec-45570871-38f7-48c0-999e-4f4d6a1e0f16.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison-0_1.png",
+      "sha256": "f0b57db14df6361fe20b707e119a8bc9f77dbecc8b7c075a5a6a9e974c7e1439",
+      "source_identifier": "output/references/all-directions-20260923/reference-0_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose-1_1.png",
+      "sha256": "7e0b31400f905ed467f8d0fe0efeed120fb69fa92e8cf901e49e19870acedfed",
+      "source_identifier": "output/references/all-directions-20260923/pose-1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated-1_1.png",
+      "sha256": "f9b6785fffb7661ca38e47c4d7868b00aa653592e1496f97fdb140f8c6f2333b",
+      "source_identifier": "exec-5278721e-3ecc-4edc-b258-06133fd8caf1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison-1_1.png",
+      "sha256": "c52aa571902b072bed48ec9efe9a6049b8c11312288f74f23e58f61d14399798",
+      "source_identifier": "output/references/all-directions-20260923/reference-1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose--1_0.png",
+      "sha256": "966190da3bb8eedf7f3a15e237013d3677af294d66b06e19cb370a01e9553f83",
+      "source_identifier": "output/references/all-directions-20260923/pose--1_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated--1_0.png",
+      "sha256": "d2522c9fb2d5517c43e81a6966c8e3c2eae4e4081e8f72681c77f9f961dcdf77",
+      "source_identifier": "exec-555b9331-7a40-4691-9f51-99255587fab3.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison--1_0.png",
+      "sha256": "3405cd8f25bb5f96a769c3254b62e8edf1edcb6593b1478bfba25d8722e1edf2",
+      "source_identifier": "output/references/all-directions-20260923/reference--1_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose-0_0.png",
+      "sha256": "124627601b029aaef9a2fe87b49aaf8513364c24f8e910d2db6ea4d40afca231",
+      "source_identifier": "output/references/all-directions-20260923/pose-0_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose-1_0.png",
+      "sha256": "9aac39e873114df9afa8469fb67a7688f2a854b52c0581ba8206bcfa389d898f",
+      "source_identifier": "output/references/all-directions-20260923/pose-1_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated-1_0.png",
+      "sha256": "96b82f119b04df2e58cef1d9d78f6c014cde2670179ce10dd49516283a966395",
+      "source_identifier": "exec-f50a04a2-fad5-4446-8659-d0fc15495c99.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison-1_0.png",
+      "sha256": "7cef398cf2a9a06a5b7a7ed09b072848cac5c8d3b3df199a98d330759f39eb54",
+      "source_identifier": "output/references/all-directions-20260923/reference-1_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose--1_-1.png",
+      "sha256": "823dffb7a24e3d58d9e853cdc27b80bde43a667cb119a50d959f0d0b22c91d0c",
+      "source_identifier": "output/references/all-directions-20260923/pose--1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated--1_-1.png",
+      "sha256": "e0c43abbb2c2f56fa2da6e36312c253f433d85026ccc80ab22f5c609b010febe",
+      "source_identifier": "exec-a8a6ca3d-1749-4271-817d-12435f738853.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison--1_-1.png",
+      "sha256": "b74d4ea7cb2efd81041fd27b4bf2aebeedee8cde334d8857ba8a694c4f0f7ef4",
+      "source_identifier": "output/references/all-directions-20260923/reference--1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose-0_-1.png",
+      "sha256": "f575b796e69693e7dc2873919e4c4b7ca30ec9af1d5b1243d01987a49f7060a6",
+      "source_identifier": "output/references/all-directions-20260923/pose-0_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated-0_-1.png",
+      "sha256": "533d595c87fd93acad43c91f12734158c9f08752c1800a777c8907df084da474",
+      "source_identifier": "output/references/all-directions-20260923/generated/reference-0_-1-v2.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison-0_-1.png",
+      "sha256": "9611c568cfcbc049567fde43c1ae57e6eb5ccd1299834f23111d6c78eee30c6c",
+      "source_identifier": "output/references/all-directions-20260923/reference-0_-1-v2.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/pose-1_-1.png",
+      "sha256": "83fadee6d26335e550d246bf759996b2cb26eb401f2662edca777e75731a517c",
+      "source_identifier": "output/references/all-directions-20260923/pose-1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/generated-1_-1.png",
+      "sha256": "bca505532b353b5bb207258083bb4c6a37159d6ef7695e4d37a9649cb00698f7",
+      "source_identifier": "exec-40c5fedf-1658-4f23-9bcb-a2f5e5940435.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/comparison-1_-1.png",
+      "sha256": "917f70866375bfb31019d5d2cd7ceb6d435d6ef7501a06ffe13230ceebe2c0c8",
+      "source_identifier": "output/references/all-directions-20260923/reference-1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose--1_1.png",
+      "sha256": "74c0b2cedccc8e057ccb49f7ad682f4a5ae7b2b3c67c7e7d985b07d1aa4ce660",
+      "source_identifier": "output/references/body-directions-20260924/pose--1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated--1_1.png",
+      "sha256": "86e0ac0f3fb87a91ea0ac0c45fc8986c43db25cdaeda1d47b62d090a0bc2247b",
+      "source_identifier": "exec-df7a2181-eec0-4302-8b5e-d9a47f837d64.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated--1_1.png",
+      "sha256": "86e0ac0f3fb87a91ea0ac0c45fc8986c43db25cdaeda1d47b62d090a0bc2247b",
+      "source_identifier": "output/references/body-directions-20260924/reference--1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose-0_1.png",
+      "sha256": "6067d1b4c4ad19e7f4f921e98248204bad541f65b7f791961d7c29d043e9e938",
+      "source_identifier": "output/references/body-directions-20260924/pose-0_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-0_1.png",
+      "sha256": "e1d469ed0bbcc271fc05ebd2c946447e0221360f75387be53e219b08b78e6d0c",
+      "source_identifier": "exec-7178c543-c6d9-411d-9085-ec4d246011cf.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-0_1.png",
+      "sha256": "e1d469ed0bbcc271fc05ebd2c946447e0221360f75387be53e219b08b78e6d0c",
+      "source_identifier": "output/references/body-directions-20260924/reference-0_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose-1_1.png",
+      "sha256": "d534400439c54b6092c8db691f4833e79d1c315ea958542b410f1a127bfda18f",
+      "source_identifier": "output/references/body-directions-20260924/pose-1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-1_1.png",
+      "sha256": "621f38ef7a8ff0443e92171d9e7b524c39f75de9d387bf71886125f0ba471ec7",
+      "source_identifier": "exec-92358f00-8369-4047-abec-93f70649f1a9.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-1_1.png",
+      "sha256": "621f38ef7a8ff0443e92171d9e7b524c39f75de9d387bf71886125f0ba471ec7",
+      "source_identifier": "output/references/body-directions-20260924/reference-1_1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose--1_0.png",
+      "sha256": "880e0fb509c22ccef2a9cfb91cee412249e2bcebde4c08baad811d7ce3ee655b",
+      "source_identifier": "output/references/body-directions-20260924/pose--1_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated--1_0.png",
+      "sha256": "6e55aa4683d3f56bd14f35f72dd4f760b2b6489144e71be01bb4e194bdbb3848",
+      "source_identifier": "exec-3309766f-a1da-4f9b-b9a0-3ce319672af1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated--1_0.png",
+      "sha256": "6e55aa4683d3f56bd14f35f72dd4f760b2b6489144e71be01bb4e194bdbb3848",
+      "source_identifier": "output/references/body-directions-20260924/reference--1_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose-0_0.png",
+      "sha256": "e38bbfc1a87522aec40a6d79f7207e0a64ef3c55343e555f75d72907fc8a9d2a",
+      "source_identifier": "output/references/body-directions-20260924/pose-0_0.png"
+    },
+    {
+      "path": "images/ao-body-yaw-plus1-source.png",
+      "sha256": "f9164feb62aac569c9e3a2451d976f19299001e7fb5bb22a185e40e1f823e3c6",
+      "source_identifier": "output/references/body-directions-20260924/pose-1_0.png"
+    },
+    {
+      "path": "images/ao-body-yaw-plus1-generated.png",
+      "sha256": "ca16d7177825c4240367e92131d332211c7af0ab9756aa3ef984aa008ee539f3",
+      "source_identifier": "exec-8aaf6821-70c3-4cf4-a37c-2825fa1fcf1c.png"
+    },
+    {
+      "path": "images/ao-body-yaw-plus1-generated.png",
+      "sha256": "ca16d7177825c4240367e92131d332211c7af0ab9756aa3ef984aa008ee539f3",
+      "source_identifier": "output/references/body-directions-20260924/reference-1_0.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose--1_-1.png",
+      "sha256": "3806142d4986b5c69eb66627843e45ab07be758ca0658f2dffeb9cec72f79e1c",
+      "source_identifier": "output/references/body-directions-20260924/pose--1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated--1_-1.png",
+      "sha256": "8a3595074bf0a57600f39a63e76eac624f9a32f310c89fd438d4d505c3f6d4e1",
+      "source_identifier": "exec-f4439a42-4dfa-4ff4-9be6-1456839e1012.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated--1_-1.png",
+      "sha256": "8a3595074bf0a57600f39a63e76eac624f9a32f310c89fd438d4d505c3f6d4e1",
+      "source_identifier": "output/references/body-directions-20260924/reference--1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose-0_-1.png",
+      "sha256": "93c0d59f4754a567edce4006fee4d07140cb23024d15028d3a33323657818f6f",
+      "source_identifier": "output/references/body-directions-20260924/pose-0_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-0_-1.png",
+      "sha256": "8e12771a1c3d531f5df7b634faa6d302e448c6072dd36e378e067abae067fe34",
+      "source_identifier": "exec-3ca4f7df-6153-4b42-95ff-ffe0ac09df53.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-0_-1.png",
+      "sha256": "8e12771a1c3d531f5df7b634faa6d302e448c6072dd36e378e067abae067fe34",
+      "source_identifier": "output/references/body-directions-20260924/reference-0_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/pose-1_-1.png",
+      "sha256": "97aeb259320572340d3becbcbbebc3150a50133fd05545f838519a3d1e3fdc1d",
+      "source_identifier": "output/references/body-directions-20260924/pose-1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-1_-1.png",
+      "sha256": "c6f8e77dab60accedde5b3ecc340c1d29ff47edbb3f7cedca50b405d619e6483",
+      "source_identifier": "exec-eba5988d-2dd8-45a5-8fb7-6d9b6ce8c7d1.png"
+    },
+    {
+      "path": "images/ao-angle-references/body/generated-1_-1.png",
+      "sha256": "c6f8e77dab60accedde5b3ecc340c1d29ff47edbb3f7cedca50b405d619e6483",
+      "source_identifier": "output/references/body-directions-20260924/reference-1_-1.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/rejected-generated-0_-1-v1.png",
+      "sha256": "edcd3bf9199c76d997de57982eec99f824f7dcc996cfdeb048f7e83b691b65c3",
+      "source_identifier": "exec-d0b0f1eb-d937-452f-b768-780608752504.png"
+    },
+    {
+      "path": "images/ao-angle-references/face/rejected-comparison-0_-1-v1.png",
+      "sha256": "540cc9f34a1e4a45194cbc995b95fb69aebbd3b26b6dc060e672ef18b696ee42",
+      "source_identifier": "output/references/all-directions-20260923/reference-0_-1.png"
+    }
+  ]
+}

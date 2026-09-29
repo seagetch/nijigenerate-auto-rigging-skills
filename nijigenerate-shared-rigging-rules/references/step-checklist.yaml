@@ -1,0 +1,142 @@
+schema: nijigenerate-step-checklist-v1
+title: Shared Rigging Step Checklist
+sections:
+- name: 1. Task Intake
+  checklist:
+  - id: shared-rules-001
+    target: current user request and newest thread instruction
+    check: Identify the active user request and the newest instruction in the thread.
+  - id: shared-rules-002
+    target: set of nijigenerate skills required by the current task
+    check: Identify all active nijigenerate skills for the task.
+  - id: shared-rules-003
+    target: each active skill and referenced checklist/method file
+    check: Read each active skill's `SKILL.md` and any referenced method/checklist file needed for the step.
+  - id: shared-rules-004
+    target: current pass classification
+    check: State whether the task is structure, mesh, root, depth, direct residual, mask, physics, review, or verification
+      work.
+  - id: shared-rules-005
+    target: active-task file-open authorization
+    check: Confirm `FileCommand_OpenFile` is not allowed unless explicitly authorized for the active task and not revoked.
+  - id: shared-rules-006
+    target: each model mutation command in the pass
+    check: Resolve `njc` from an explicit path, `NJC_PATH`, or `PATH`, and mutate the current model state only through that executable.
+  - id: shared-rules-007
+    target: pass audit artifact for edited targets and parameters
+    check: Record expected output paths and audit paths. Treat a reviewer/SPA loop as required only when the user explicitly requests it.
+- name: 2. Current State Audit
+  checklist:
+  - id: shared-rules-008
+    target: each edited parameter binding on each explicit target node
+    check: Read current target nodes, parameters, bindings, hierarchy, flip pairs, mesh/grid resources, and relevant settings
+      before mutation.
+  - id: shared-rules-009
+    target: current live model view for the relevant pose
+    check: Capture or reuse only current screenshots. Do not use stale screenshots after model, mesh, binding, or hierarchy
+      changes.
+  - id: shared-rules-010
+    target: current live model view for the relevant pose
+    check: Set exact parameter keypoints before screenshots.
+  - id: shared-rules-011
+    target: side-specific parameter convention for the current model
+    check: Record character-side versus screen-side conventions before side-specific edits; anatomical names such as `::R`, right hand, and right cheek mean the character's right side, which usually appears on screen-left in a front-facing view.
+  - id: shared-rules-012
+    target: current One Operation review latest-review.json for this pass
+    check: Preserve accepted user coordinates, vertex/cell sets, contours, depth maps, and review JSON as authoritative state.
+  - id: shared-rules-032
+    target: every Face::Yaw-Pitch and Body::Yaw-Pitch parameter key referenced by the pass
+    check: Verify and record pitch sign semantics before planning or applying keys; Body::Yaw-Pitch `Pitch=-1` is forward pitch / 前傾 and `Pitch=+1` is backward pitch / 後傾, while Face::Yaw-Pitch `Pitch=+1` is looking up / 上向き and `Pitch=-1` is looking down / 下向き.
+  - id: shared-rules-033
+    target: review manifests, screenshot labels, tag labels, audit text, and checklist reasons produced by the pass
+    check: Reject or correct ambiguous or legacy direction labels, especially any Body label that treats `Pitch=+1` as forward pitch; labels must distinguish character-left/right from screen-left/right and use the fixed Body/Face pitch conventions.
+  - id: shared-rules-036
+    target: every rotated or parent-deformed feature measured by the pass
+    check: Declare measurement space, origin O, local tangent T, positive anatomical normal N, and rendered homologous landmarks before comparing height, slope, endpoint order, or movement.
+  - id: shared-rules-037
+    target: every anatomical height, slope, and direction claim
+    check: Require local projections u=dot(P-O,T) and v=dot(P-O,N); reject raw screen-X/Y comparisons whenever the face, body, parent Grid, or parent Bone is rotated.
+  - id: shared-rules-038
+    target: every contour or endpoint-slope pre-apply overlay
+    check: Show O, T, N, landmark identities, and ordered contour points; a point-only overlay or unexplained screen-horizontal chord is UNVERIFIABLE.
+- name: 3. Plan Closure Before Apply
+  checklist:
+  - id: shared-rules-013
+    target: current implementation plan and every active skill checklist
+    check: Compare the plan against every active skill checklist.
+  - id: shared-rules-014
+    target: current One Operation review latest-review.json for this pass
+    check: Compare the plan against the latest accepted or pending One Operation review JSON.
+  - id: shared-rules-015
+    target: current live model view for the relevant pose
+    check: Check for omitted targets, missing keys, stale screenshots, unreviewed depth maps, side-convention conflicts, neutral-key
+      risks, and skipped post-apply review requirements.
+  - id: shared-rules-016
+    target: ambiguous contour, feature, or small residual target
+    check: If a contour, feature, or small residual is ambiguous, resolve it on an overlay before mutation.
+  - id: shared-rules-017
+    target: current One Operation review latest-review.json for this pass
+    check: 'If the One Operation review tool is required, stop before mutation until a newer `latest-review.json` has `reviewResult.decision:
+      "ok"`.'
+  - id: shared-rules-039
+    target: coordinate-frame evidence for the current plan
+    check: Block apply when any planned height or slope target lacks a declared local frame, uses raw screen Y, or contradicts rendered parent roll without an explicit reviewed model-specific reference.
+- name: 4. Mutation
+  checklist:
+  - id: shared-rules-018
+    target: explicit UUID set approved for mutation
+    check: Apply only to explicit target UUIDs.
+  - id: shared-rules-019
+    target: each edited parameter binding on each explicit target node
+    check: Preserve unrelated parameters, bindings, meshes, masks, and hierarchy.
+  - id: shared-rules-020
+    target: neutral/start key for each edited parameter or binding
+    check: Do not delete or reset neutral/start keys unless the user explicitly asks.
+  - id: shared-rules-021
+    target: each edited parameter binding on each explicit target node
+    check: For additive residuals, set only frames that need deformation; avoid zero placeholder Binding keys.
+  - id: shared-rules-022
+    target: each model mutation command in the pass
+    check: If `njc` returns an error-looking response, re-read affected state before retrying because the command may
+      have partially mutated state.
+- name: 5. Post-Apply Verification
+  checklist:
+  - id: shared-rules-023
+    target: each edited parameter binding on each explicit target node
+    check: Re-read edited resources and bindings after mutation.
+  - id: shared-rules-024
+    target: neutral/start key for each edited parameter or binding
+    check: Verify neutral/start key status.
+  - id: shared-rules-025
+    target: current live model view for the relevant pose
+    check: Capture required keypoints and compare against the intended behavior.
+  - id: shared-rules-026
+    target: actual edited state versus active skill checklists
+    check: Re-run the active skill checklist against actual edited state.
+  - id: shared-rules-040
+    target: actual edited contours and endpoint trajectories
+    check: Recompute local u/v projections in the same declared O/T/N frame and reject any result that passes only in raw screen coordinates.
+  - id: shared-rules-027
+    target: current retake review JSON and refreshed review assets
+    check: If post-apply review is required, regenerate review assets and continue OK/Retake monitoring.
+  - id: shared-rules-028
+    target: active-task file-open authorization
+    check: Save audit JSON with targets, parameters, binding names, keyed frames, moved counts, max/min values, output path,
+      source review `createdAt`, and whether `FileCommand_OpenFile` was avoided.
+  - id: shared-rules-034
+    target: every automatic DepthBone/Grid refresh operation
+    check: Verify the intended armed Depth parameter, reject Physics parameters, snapshot every parameter target set and isSet state, and globally diff them after the operation.
+  - id: shared-rules-035
+    target: serialized model and output file
+    check: Compare serialized/file size before and after; stop before saving on an unexplained increase or unrelated binding change.
+- name: 6. Completion
+  checklist:
+  - id: shared-rules-029
+    target: final pass report checklist/review evidence summary
+    check: Report which skill checklists and review artifacts were checked.
+  - id: shared-rules-030
+    target: unverified checklist items in the current pass
+    check: Call out any item that could not be verified.
+  - id: shared-rules-031
+    target: pass audit artifact for edited targets and parameters
+    check: Provide output model path, audit path, screenshots/review manifest path, and remaining risks.

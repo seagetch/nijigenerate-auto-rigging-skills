@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Depth Skeleton Setup"
+  short_description: "DepthRigRoot and BoneSource setup via njc"
+  default_prompt: "Use $nijigenerate-depth-skeleton-setup to create and align a standard DepthBone rig and assign BoneSources through njc."

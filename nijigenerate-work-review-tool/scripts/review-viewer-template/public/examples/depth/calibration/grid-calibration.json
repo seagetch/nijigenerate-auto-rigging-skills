@@ -1,0 +1,15 @@
+{
+  "targets": {
+    "body": {
+      "cols": 7,
+      "rows": 5,
+      "origin": { "x": 1500, "y": 2450 },
+      "xAxis": { "x": 333.3333, "y": 0 },
+      "yAxis": { "x": 50, "y": 462.5 },
+      "labels": {
+        "columns": ["left edge", "left side", "left chest", "center", "right chest", "right side", "right edge"],
+        "rows": ["shoulder", "chest", "waist", "pelvis", "hem"]
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "review-viewer-manifest-v1",
+  "mode": "depth",
+  "model": {
+    "id": "depth-review-example",
+    "name": "Depth Review Example",
+    "createdAt": "2026-05-04"
+  },
+  "review": {
+    "schema": "depth-review-v1",
+    "mode": "depth",
+    "resultsDir": "reviews",
+    "latestReview": "reviews/latest-review.json"
+  },
+  "assets": {
+    "original": "images/original.svg"
+  },
+  "targets": [
+    {
+      "key": "body",
+      "label": "Body::G depth map",
+      "image": "images/body-overlay.svg",
+      "grid": {
+        "calibration": "calibration/grid-calibration.json#/targets/body"
+      },
+      "depth": {
+        "file": "depth/body-depth.json",
+        "path": "z"
+      },
+      "color": "#54d5ff"
+    }
+  ],
+  "initialTags": "tags/initial-tags.json",
+  "notes": {
+    "rule": "This is a generic NOT APPLIED depth-map review example. Deformation keys must wait until the generated review JSON is OK.",
+    "projection": {
+      "yawDeg": 30,
+      "upperPitchDeg": 20,
+      "lowerPitch": "attenuated by reviewed row/region weights",
+      "pitchOrder": "local normal tilt first, then yaw",
+      "pivot": "reviewed Body pivot for Body/Chest; Head::Root for head-attached surfaces",
+      "pitch0Lean": "disabled"
+    }
+  }
+}

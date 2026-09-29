@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate One Operation Review Tool"
+  short_description: "Run manifest-driven SPA reviews for one nijigenerate operation."
+  default_prompt: "Use the nijigenerate One Operation review tool to prepare a manifest, launch the SPA, monitor OK/Retake JSON, and apply retakes until accepted."

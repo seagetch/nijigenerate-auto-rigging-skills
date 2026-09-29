@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Mouth Open Rigging"
+  short_description: "Rig perspective-aware mouth closure and expressions"
+  default_prompt: "Use $nijigenerate-mouth-open-rigging to rig perspective-aware mouth closure, neutral, displeased, and smile expressions."

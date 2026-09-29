@@ -1,0 +1,18 @@
+{
+  "schema": "checklist-reviewer-manifest-v1",
+  "model": {
+    "id": "checklist-review-example",
+    "name": "Checklist Review Example",
+    "createdAt": "2026-05-04"
+  },
+  "review": {
+    "schema": "checklist-review-result-v1",
+    "resultsDir": "reviews",
+    "latestReview": "reviews/latest-review.json"
+  },
+  "checklist": "examples/checklist.yaml",
+  "selfReview": "examples/self-review.yaml",
+  "notes": {
+    "usage": "Review each checklist item, override OK/Retake where needed, edit reasons, then submit."
+  }
+}

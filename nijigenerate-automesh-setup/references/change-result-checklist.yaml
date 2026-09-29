@@ -1,0 +1,15 @@
+schema: nijigenerate-result-audit-v1
+title: "automesh-setup change result audit"
+items:
+  - id: automesh-setup-change-001
+    target: "single-field request"
+    expected: "Only the requested setting changed; its baseline and final value are recorded independently of Grid density."
+  - id: automesh-setup-change-002
+    target: "rigged topology"
+    expected: "Every affected depth/key/UV/Welding dependency has a verified correspondence before topology application; no arrays are silently reset."
+  - id: automesh-setup-change-003
+    target: "rendered coverage"
+    expected: "Actual triangulation/axes preserve silhouette, holes and thin parts at required poses without explosive density."
+  - id: automesh-setup-change-004
+    target: "moved child bounds"
+    expected: "When membership changes, new bounds cover that group’s full pose envelope and divisions suit its artwork."

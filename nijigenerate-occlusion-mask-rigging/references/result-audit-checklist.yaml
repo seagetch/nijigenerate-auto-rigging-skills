@@ -1,0 +1,30 @@
+schema: nijigenerate-result-audit-v1
+title: Occlusion Mask Result Audit
+items:
+  - id: mask-result-001
+    target: reported penetration
+    expected: Current exact-key evidence proves a true penetration remains after correct hierarchy, depth, draw order, broad motion, and Part residual checks.
+  - id: mask-result-002
+    target: occluder and hidden target set
+    expected: The visible occluder and every Part that must be hidden are explicitly identified by UUID.
+  - id: mask-result-003
+    target: Mask object
+    expected: A separate Mask object exists under the same deforming parent as the occluder; the visible artwork Part is not used as the mask source.
+  - id: mask-result-004
+    target: mask mesh and contour
+    expected: The contour follows the occluder's outer silhouette and extends only into the region that must hide the target.
+  - id: mask-result-005
+    target: DodgeMask registrations
+    expected: Every intended target has exactly the correct Mask source and no stale or unrelated source.
+  - id: mask-result-006
+    target: neutral, failing key, neighboring keys, and opposite side
+    expected: The penetration is hidden at the failing pose without cutting foreground artwork or hiding valid regions elsewhere.
+  - id: mask-result-007
+    target: unrelated masks, bindings, hierarchy, and model state
+    expected: Unrelated state and neutral rendering are unchanged.
+evidence:
+  required:
+    - pre-mask exact-key penetration screenshot
+    - mask node, parent, mesh, and DodgeMask readback
+    - post-mask neutral, failing, neighboring, and opposite-side screenshots
+    - unrelated-state diff

@@ -1,0 +1,17 @@
+schema: nijigenerate-step-checklist-v1
+title: Tracking transfer steps
+sections:
+  - name: Mapping and save
+    checklist:
+      - id: tracking-step-001
+        target: Input files
+        check: Resolve explicit target/reference files and parse supported bounded INP sections without changing the live rig.
+      - id: tracking-step-002
+        target: Semantic map
+        check: Read actual target UUIDs, axes, directions, sides and linked/Physics roles before copying reference inputs.
+      - id: tracking-step-003
+        target: Validation
+        check: Verify supported binding semantics, neutral/extreme inputs and independent sides before writing a candidate.
+      - id: tracking-step-004
+        target: Preservation
+        check: Reparse the candidate, compare protected bytes, detect concurrent changes, replace atomically and verify the saved target.

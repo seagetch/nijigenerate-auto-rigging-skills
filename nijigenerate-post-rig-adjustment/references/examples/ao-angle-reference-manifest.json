@@ -1,0 +1,478 @@
+{
+  "purpose": "Historical generated references and supplied model captures; not a universal shape/angle preset or evidence of final rig acceptance",
+  "face": {
+    "parameter": "Face::Yaw-Pitch",
+    "identity": {
+      "file": "images/ao-angle-references/face/identity.png",
+      "sha256": "5f008b073e147ef55aeb662b7bb306d96cb5d1ea8e28d2e3eef6a833bf3c9221"
+    },
+    "directions": [
+      {
+        "key": "-1_1",
+        "parameter_values": [
+          -1,
+          1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose--1_1.png",
+          "sha256": "342bd15bdd9635f04067b96b09d7fae85622726521a10ddc0d275f26ff29e764"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated--1_1.png",
+          "sha256": "7ddfed8f191d210419224ab91c5a50e44159b0c5d51c7c5bd1c1cdfb7ef10fc1"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison--1_1.png",
+          "sha256": "7f31c2e4375651a6e3a71477debf08349f72198cda869cc398a4860633310846"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nEDIT IMAGE 1 as a single pose reference for a 2.5D rig. Image 1 is the current rendered pose, Face::Yaw-Pitch (-1,+1). Image 2 is the same character's neutral appearance, supplied ONLY to preserve identity. Output ONE portrait, same composition, aspect ratio, view, subject scale and framing as Image 1, no sheet, no labels.\n\nCritical pose lock: preserve Image 1's camera exactly, and preserve the actual silhouette, positions and tilt of the top of the skull, all hair masses, rabbit ears, navy head bow, white flowers, clock, cross hair ornament, side braid, collar and shoulders. Do not turn the whole head farther sideways, tip the skull farther up, change head roll, zoom, recenter, or substitute a generic three-quarter view. The rotation stored in the rig is yaw 30 degrees toward screen-left and pitch 20 degrees chin-up, but the supplied Image 1's skull/hair/accessory orientation and camera are the controlling visual pose guide. The previous generation incorrectly changed the head pose: avoiding that drift is essential.\n\nWithin that locked head pose, redraw the FACIAL SKIN, cheek contour, jaw contour and facial-feature perspective so they represent an anatomically continuous head at exactly that pose. The current facial rendering looks like a flat triangular mask and its ears/jaw are poorly attached; do not preserve these defects. Use a coherent skull/cheek side plane, appropriate near/far facial widths, a natural jaw angle and chin underside, and attached human ears. Keep her eye identity and small smiling mouth. Retain natural upper-jaw length; do not squash the region between eyes, nose and mouth. Do not enlarge the whole face or shove the eye/mouth group sideways. The resulting facial front must face the same direction as the already-posed skull. Preserve all hair over the face as foreground occlusion in its existing positions.\n\nUse the neutral identity only for facial appearance and line quality, not to reset pose. Maintain the existing detailed silver-lavender-haired blue-eyed character, clean anime illustration and white background. No new accessories, no extra earring, no changes to clothing or hairstyle, no text. High-detail contours suitable for tracing.\n\n",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/generation-input--1_1.png",
+          "sha256": "8094bbccf905e8428c130704459ee8475ba1456c1b31d33333dac0093c9ea2d0"
+        }
+      },
+      {
+        "key": "0_1",
+        "parameter_values": [
+          0,
+          1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose-0_1.png",
+          "sha256": "e1a02a84a7e526c48fd1ce2e791e438cbbad97878ccef860a640e3bdaf69adde"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated-0_1.png",
+          "sha256": "5190881857a8dd2cfda5ec4d94089672d361770b30e6452031d843dfc93556d0"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison-0_1.png",
+          "sha256": "f0b57db14df6361fe20b707e119a8bc9f77dbecc8b7c075a5a6a9e974c7e1439"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nCreate ONE pose-locked facial anatomy reference by editing image 1, the current 2.5D character pose at Face::Yaw-Pitch (0,1). Image 2 is only the character's neutral identity. Output one portrait with image 1's exact aspect ratio, framing and subject scale. White background, no text or sheet.\n\nPOSE LOCK: keep the entire skull orientation and camera in image 1, including the exact rabbit-ear tips, head bow, clock, crosses, flowers, all hair, collar and shoulders. Do not recenter, zoom, rotate, or substitute a generic angle. Positive pitch means chin-up, negative pitch means chin-down. The visible skull/accessory pose is authoritative.\n\nRefine the facial SKIN silhouette, cheek-to-jaw transition, chin and human-ear attachment to read as a continuous natural anime head at this exact pose. The current face may look like a triangular mask: correct that defect. Give the lower cheeks smooth continuity and the chin a gently rounded transition, not a sharp V, not a square flat ledge. Smooth facial outline takes priority over holding existing faulty ear-attachment points. Preserve her facial identity, natural upper-jaw length, eye shapes and centers, mouth shape and center. Correct the small nose's projected position on the facial midline if necessary, while preserving the vertical length of the upper jaw. Do not merely copy the current distorted cheek/ear outline, and do not inflate the whole face. Preserve hair occlusion exactly. Detailed clean anime linework, no extra accessories, no new earring. This is a pose reference only, not a replacement texture.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/pose-0_1.png",
+          "sha256": "e1a02a84a7e526c48fd1ce2e791e438cbbad97878ccef860a640e3bdaf69adde"
+        }
+      },
+      {
+        "key": "1_1",
+        "parameter_values": [
+          1,
+          1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose-1_1.png",
+          "sha256": "7e0b31400f905ed467f8d0fe0efeed120fb69fa92e8cf901e49e19870acedfed"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated-1_1.png",
+          "sha256": "f9b6785fffb7661ca38e47c4d7868b00aa653592e1496f97fdb140f8c6f2333b"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison-1_1.png",
+          "sha256": "c52aa571902b072bed48ec9efe9a6049b8c11312288f74f23e58f61d14399798"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nCreate ONE pose-locked facial anatomy reference by editing image 1, the current 2.5D character pose at Face::Yaw-Pitch (1,1). Image 2 is only the character's neutral identity. Output one portrait with image 1's exact aspect ratio, framing and subject scale. White background, no text or sheet.\n\nPOSE LOCK: keep the entire skull orientation and camera in image 1, including the exact rabbit-ear tips, head bow, clock, crosses, flowers, all hair, collar and shoulders. Do not recenter, zoom, rotate, or substitute a generic angle. Positive pitch means chin-up, negative pitch means chin-down. The visible skull/accessory pose is authoritative.\n\nRefine the facial SKIN silhouette, cheek-to-jaw transition, chin and human-ear attachment to read as a continuous natural anime head at this exact pose. The current face may look like a triangular mask: correct that defect. Give the lower cheeks smooth continuity and the chin a gently rounded transition, not a sharp V, not a square flat ledge. Smooth facial outline takes priority over holding existing faulty ear-attachment points. Preserve her facial identity, natural upper-jaw length, eye shapes and centers, mouth shape and center. Correct the small nose's projected position on the facial midline if necessary, while preserving the vertical length of the upper jaw. Do not merely copy the current distorted cheek/ear outline, and do not inflate the whole face. Preserve hair occlusion exactly. Detailed clean anime linework, no extra accessories, no new earring. This is a pose reference only, not a replacement texture.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/pose-1_1.png",
+          "sha256": "7e0b31400f905ed467f8d0fe0efeed120fb69fa92e8cf901e49e19870acedfed"
+        }
+      },
+      {
+        "key": "-1_0",
+        "parameter_values": [
+          -1,
+          0
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose--1_0.png",
+          "sha256": "966190da3bb8eedf7f3a15e237013d3677af294d66b06e19cb370a01e9553f83"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated--1_0.png",
+          "sha256": "d2522c9fb2d5517c43e81a6966c8e3c2eae4e4081e8f72681c77f9f961dcdf77"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison--1_0.png",
+          "sha256": "3405cd8f25bb5f96a769c3254b62e8edf1edcb6593b1478bfba25d8722e1edf2"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nCreate ONE pose-locked facial anatomy reference by editing image 1, the current 2.5D character pose at Face::Yaw-Pitch (-1,0). Image 2 is only the character's neutral identity. Output one portrait with image 1's exact aspect ratio, framing and subject scale. White background, no text or sheet.\n\nPOSE LOCK: keep the entire skull orientation and camera in image 1, including the exact rabbit-ear tips, head bow, clock, crosses, flowers, all hair, collar and shoulders. Do not recenter, zoom, rotate, or substitute a generic angle. Positive pitch means chin-up, negative pitch means chin-down. The visible skull/accessory pose is authoritative.\n\nRefine the facial SKIN silhouette, cheek-to-jaw transition, chin and human-ear attachment to read as a continuous natural anime head at this exact pose. The current face may look like a triangular mask: correct that defect. Give the lower cheeks smooth continuity and the chin a gently rounded transition, not a sharp V, not a square flat ledge. Smooth facial outline takes priority over holding existing faulty ear-attachment points. Preserve her facial identity, natural upper-jaw length, eye shapes and centers, mouth shape and center. Correct the small nose's projected position on the facial midline if necessary, while preserving the vertical length of the upper jaw. Do not merely copy the current distorted cheek/ear outline, and do not inflate the whole face. Preserve hair occlusion exactly. Detailed clean anime linework, no extra accessories, no new earring. This is a pose reference only, not a replacement texture.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/pose--1_0.png",
+          "sha256": "966190da3bb8eedf7f3a15e237013d3677af294d66b06e19cb370a01e9553f83"
+        }
+      },
+      {
+        "key": "0_0",
+        "parameter_values": [
+          0,
+          0
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose-0_0.png",
+          "sha256": "124627601b029aaef9a2fe87b49aaf8513364c24f8e910d2db6ea4d40afca231"
+        },
+        "status": "neutral model/identity source, not a generated direction",
+        "generated_original": null
+      },
+      {
+        "key": "1_0",
+        "parameter_values": [
+          1,
+          0
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose-1_0.png",
+          "sha256": "9aac39e873114df9afa8469fb67a7688f2a854b52c0581ba8206bcfa389d898f"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated-1_0.png",
+          "sha256": "96b82f119b04df2e58cef1d9d78f6c014cde2670179ce10dd49516283a966395"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison-1_0.png",
+          "sha256": "7cef398cf2a9a06a5b7a7ed09b072848cac5c8d3b3df199a98d330759f39eb54"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nCreate ONE pose-locked facial anatomy reference by editing image 1, the current 2.5D character pose at Face::Yaw-Pitch (1,0). Image 2 is only the character's neutral identity. Output one portrait with image 1's exact aspect ratio, framing and subject scale. White background, no text or sheet.\n\nPOSE LOCK: keep the entire skull orientation and camera in image 1, including the exact rabbit-ear tips, head bow, clock, crosses, flowers, all hair, collar and shoulders. Do not recenter, zoom, rotate, or substitute a generic angle. Positive pitch means chin-up, negative pitch means chin-down. The visible skull/accessory pose is authoritative.\n\nRefine the facial SKIN silhouette, cheek-to-jaw transition, chin and human-ear attachment to read as a continuous natural anime head at this exact pose. The current face may look like a triangular mask: correct that defect. Give the lower cheeks smooth continuity and the chin a gently rounded transition, not a sharp V, not a square flat ledge. Smooth facial outline takes priority over holding existing faulty ear-attachment points. Preserve her facial identity, natural upper-jaw length, eye shapes and centers, mouth shape and center. Correct the small nose's projected position on the facial midline if necessary, while preserving the vertical length of the upper jaw. Do not merely copy the current distorted cheek/ear outline, and do not inflate the whole face. Preserve hair occlusion exactly. Detailed clean anime linework, no extra accessories, no new earring. This is a pose reference only, not a replacement texture.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/pose-1_0.png",
+          "sha256": "9aac39e873114df9afa8469fb67a7688f2a854b52c0581ba8206bcfa389d898f"
+        }
+      },
+      {
+        "key": "-1_-1",
+        "parameter_values": [
+          -1,
+          -1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose--1_-1.png",
+          "sha256": "823dffb7a24e3d58d9e853cdc27b80bde43a667cb119a50d959f0d0b22c91d0c"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated--1_-1.png",
+          "sha256": "e0c43abbb2c2f56fa2da6e36312c253f433d85026ccc80ab22f5c609b010febe"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison--1_-1.png",
+          "sha256": "b74d4ea7cb2efd81041fd27b4bf2aebeedee8cde334d8857ba8a694c4f0f7ef4"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nCreate ONE pose-locked facial anatomy reference by editing image 1, the current 2.5D character pose at Face::Yaw-Pitch (-1,-1). Image 2 is only the character's neutral identity. Output one portrait with image 1's exact aspect ratio, framing and subject scale. White background, no text or sheet.\n\nPOSE LOCK: keep the entire skull orientation and camera in image 1, including the exact rabbit-ear tips, head bow, clock, crosses, flowers, all hair, collar and shoulders. Do not recenter, zoom, rotate, or substitute a generic angle. Positive pitch means chin-up, negative pitch means chin-down. The visible skull/accessory pose is authoritative.\n\nRefine the facial SKIN silhouette, cheek-to-jaw transition, chin and human-ear attachment to read as a continuous natural anime head at this exact pose. The current face may look like a triangular mask: correct that defect. Give the lower cheeks smooth continuity and the chin a gently rounded transition, not a sharp V, not a square flat ledge. Smooth facial outline takes priority over holding existing faulty ear-attachment points. Preserve her facial identity, natural upper-jaw length, eye shapes and centers, mouth shape and center. Correct the small nose's projected position on the facial midline if necessary, while preserving the vertical length of the upper jaw. Do not merely copy the current distorted cheek/ear outline, and do not inflate the whole face. Preserve hair occlusion exactly. Detailed clean anime linework, no extra accessories, no new earring. This is a pose reference only, not a replacement texture.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/pose--1_-1.png",
+          "sha256": "823dffb7a24e3d58d9e853cdc27b80bde43a667cb119a50d959f0d0b22c91d0c"
+        }
+      },
+      {
+        "key": "0_-1",
+        "parameter_values": [
+          0,
+          -1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose-0_-1.png",
+          "sha256": "f575b796e69693e7dc2873919e4c4b7ca30ec9af1d5b1243d01987a49f7060a6"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated-0_-1.png",
+          "sha256": "533d595c87fd93acad43c91f12734158c9f08752c1800a777c8907df084da474"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison-0_-1.png",
+          "sha256": "9611c568cfcbc049567fde43c1ae57e6eb5ccd1299834f23111d6c78eee30c6c"
+        },
+        "prompt": "Use case: precise-object-edit. Edit ONLY the facial skin silhouette in the supplied single image. Do not change its camera, framing, head pose, expression, hair, headwear, shoulders, eyes or mouth.\nThis image is a head pitched DOWN, Face::Yaw-Pitch (0,-1), approximately 20 degrees chin down. Preserve this exact downward pose; do NOT replace it with a neutral front view.\nAfter normalizing your output to 430x650, the following positions MUST remain: rabbit-ear tips around (18,90) and (340,90); head-bow flower around (181,264); forehead cross around (183,369); eyes around y=453; nose around y=487; mouth around y=514. Preserve the visible top of the skull and ALL hair/headwear contours exactly. Maintain same image size/aspect ratio/subject scale as the input; no zoom or recentering.\nWithin this fixed downward head, refine the cheek-to-jaw and chin outline to make a coherent natural anime face, with gently rounded chin transition and smooth lower cheeks. Avoid the current triangular mask and sharp V chin. Smooth facial contour has priority over fixed ear attachment points, but preserve character identity. Do not shorten the upper jaw or shift the eye/mouth centers. The existing style, small nose and mouth remain. Only facial skin contour/anatomical local relief may change. White background, one portrait, no labels.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/pose-0_-1.png",
+          "sha256": "f575b796e69693e7dc2873919e4c4b7ca30ec9af1d5b1243d01987a49f7060a6"
+        }
+      },
+      {
+        "key": "1_-1",
+        "parameter_values": [
+          1,
+          -1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/face/pose-1_-1.png",
+          "sha256": "83fadee6d26335e550d246bf759996b2cb26eb401f2662edca777e75731a517c"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/generated-1_-1.png",
+          "sha256": "bca505532b353b5bb207258083bb4c6a37159d6ef7695e4d37a9649cb00698f7"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/comparison-1_-1.png",
+          "sha256": "917f70866375bfb31019d5d2cd7ceb6d435d6ef7501a06ffe13230ceebe2c0c8"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nCreate ONE pose-locked facial anatomy reference by editing image 1, the current 2.5D character pose at Face::Yaw-Pitch (1,-1). Image 2 is only the character's neutral identity. Output one portrait with image 1's exact aspect ratio, framing and subject scale. White background, no text or sheet.\n\nPOSE LOCK: keep the entire skull orientation and camera in image 1, including the exact rabbit-ear tips, head bow, clock, crosses, flowers, all hair, collar and shoulders. Do not recenter, zoom, rotate, or substitute a generic angle. Positive pitch means chin-up, negative pitch means chin-down. The visible skull/accessory pose is authoritative.\n\nRefine the facial SKIN silhouette, cheek-to-jaw transition, chin and human-ear attachment to read as a continuous natural anime head at this exact pose. The current face may look like a triangular mask: correct that defect. Give the lower cheeks smooth continuity and the chin a gently rounded transition, not a sharp V, not a square flat ledge. Smooth facial outline takes priority over holding existing faulty ear-attachment points. Preserve her facial identity, natural upper-jaw length, eye shapes and centers, mouth shape and center. Correct the small nose's projected position on the facial midline if necessary, while preserving the vertical length of the upper jaw. Do not merely copy the current distorted cheek/ear outline, and do not inflate the whole face. Preserve hair occlusion exactly. Detailed clean anime linework, no extra accessories, no new earring. This is a pose reference only, not a replacement texture.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/face/pose-1_-1.png",
+          "sha256": "83fadee6d26335e550d246bf759996b2cb26eb401f2662edca777e75731a517c"
+        }
+      }
+    ],
+    "rejected_variants": [
+      {
+        "key": "0_-1",
+        "status": "rejected in original retry manifest: neutral pose drift",
+        "generated_original": {
+          "file": "images/ao-angle-references/face/rejected-generated-0_-1-v1.png",
+          "sha256": "edcd3bf9199c76d997de57982eec99f824f7dcc996cfdeb048f7e83b691b65c3"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/face/rejected-comparison-0_-1-v1.png",
+          "sha256": "540cc9f34a1e4a45194cbc995b95fb69aebbd3b26b6dc060e672ef18b696ee42"
+        },
+        "prompt": "Use case: identity-preserve / precise-object-edit.\nCreate ONE pose-locked facial anatomy reference by editing image 1, the current 2.5D character pose at Face::Yaw-Pitch (0,-1). Image 2 is only the character's neutral identity. Output one portrait with image 1's exact aspect ratio, framing and subject scale. White background, no text or sheet.\n\nPOSE LOCK: keep the entire skull orientation and camera in image 1, including the exact rabbit-ear tips, head bow, clock, crosses, flowers, all hair, collar and shoulders. Do not recenter, zoom, rotate, or substitute a generic angle. Positive pitch means chin-up, negative pitch means chin-down. The visible skull/accessory pose is authoritative.\n\nRefine the facial SKIN silhouette, cheek-to-jaw transition, chin and human-ear attachment to read as a continuous natural anime head at this exact pose. The current face may look like a triangular mask: correct that defect. Give the lower cheeks smooth continuity and the chin a gently rounded transition, not a sharp V, not a square flat ledge. Smooth facial outline takes priority over holding existing faulty ear-attachment points. Preserve her facial identity, natural upper-jaw length, eye shapes and centers, mouth shape and center. Correct the small nose's projected position on the facial midline if necessary, while preserving the vertical length of the upper jaw. Do not merely copy the current distorted cheek/ear outline, and do not inflate the whole face. Preserve hair occlusion exactly. Detailed clean anime linework, no extra accessories, no new earring. This is a pose reference only, not a replacement texture."
+      }
+    ]
+  },
+  "body": {
+    "parameter": "Body::Yaw-Pitch",
+    "identity": {
+      "file": "images/ao-angle-references/body/original-torso.png",
+      "sha256": "67a6ab10d46b62f437417ad51de9f9bd9760a77a3792a2a20b5a8c9326150084"
+    },
+    "directions": [
+      {
+        "key": "-1_1",
+        "parameter_values": [
+          -1,
+          1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose--1_1.png",
+          "sha256": "74c0b2cedccc8e057ccb49f7ad682f4a5ae7b2b3c67c7e7d985b07d1aa4ce660"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/body/generated--1_1.png",
+          "sha256": "86e0ac0f3fb87a91ea0ac0c45fc8986c43db25cdaeda1d47b62d090a0bc2247b"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/body/generated--1_1.png",
+          "sha256": "86e0ac0f3fb87a91ea0ac0c45fc8986c43db25cdaeda1d47b62d090a0bc2247b"
+        },
+        "prompt": "Use case: identity-preserve. Generate one angle-specific anime torso reference, neck/chin to skirt hem on white. Input 1: original design. Input 2: exact pose and framing to KEEP. Redraw only to correct natural torso volume and foreshortening. Preserve shoulder/neck/waist centers and pose, original body proportions, clothing coverage and asymmetric ornaments (watch screen-left, plush screen-right). White gathered bodice over black corset with gold fasteners must hug convex ribcage, with smooth rounded near/far chest contours and natural waist taper, continuously joined at waist to skirt. Pelvis/skirt stay below waist, not leaning rigidly with chest. Do not enlarge chest or add exposure. Do not preserve flat paper-like clothing distortions. Keep original outfit, no extra accessories, no text, no sheet.\nExact pose Body(-1,1): torso yaw 30 degrees toward viewer LEFT. Front-center bow/buttons/lacing must lie to viewer LEFT of torso silhouette midpoint. Viewer RIGHT shoulder/side nearer and broader, opposite far side narrower. Backward lean: spine10 degrees away, upper chest additional20 degrees away/net30 backward. Pitch rotates in this yawed torso's sagittal plane. Preserve image2 shoulder and waist anchors and tilt, moderately correct chest surface convexity and foreshortened far contour, smooth chest-underbust-corset joins. Do not amplify lean or turn into a profile.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/body/pose--1_1.png",
+          "sha256": "74c0b2cedccc8e057ccb49f7ad682f4a5ae7b2b3c67c7e7d985b07d1aa4ce660"
+        }
+      },
+      {
+        "key": "0_1",
+        "parameter_values": [
+          0,
+          1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose-0_1.png",
+          "sha256": "6067d1b4c4ad19e7f4f921e98248204bad541f65b7f791961d7c29d043e9e938"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/body/generated-0_1.png",
+          "sha256": "e1d469ed0bbcc271fc05ebd2c946447e0221360f75387be53e219b08b78e6d0c"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/body/generated-0_1.png",
+          "sha256": "e1d469ed0bbcc271fc05ebd2c946447e0221360f75387be53e219b08b78e6d0c"
+        },
+        "prompt": "Use case: identity-preserve. Generate one angle-specific anime torso reference, neck/chin to skirt hem on white. Input 1: original design. Input 2: exact pose and framing to KEEP. Redraw only to correct natural torso volume and foreshortening. Preserve shoulder/neck/waist centers and pose, original body proportions, clothing coverage and asymmetric ornaments (watch screen-left, plush screen-right). White gathered bodice over black corset with gold fasteners must hug convex ribcage, with smooth rounded near/far chest contours and natural waist taper, continuously joined at waist to skirt. Pelvis/skirt stay below waist, not leaning rigidly with chest. Do not enlarge chest or add exposure. Do not preserve flat paper-like clothing distortions. Keep original outfit, no extra accessories, no text, no sheet.\nYaw ZERO. Backward torso lean: lower spine10 degrees away and upper chest additional20 degrees away, net30 backward. Match image2 anchors and backward pose. See more underside of bodice, upper chest foreshortens, abdominal front lengthens smoothly; no side turn.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/body/pose-0_1.png",
+          "sha256": "6067d1b4c4ad19e7f4f921e98248204bad541f65b7f791961d7c29d043e9e938"
+        }
+      },
+      {
+        "key": "1_1",
+        "parameter_values": [
+          1,
+          1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose-1_1.png",
+          "sha256": "d534400439c54b6092c8db691f4833e79d1c315ea958542b410f1a127bfda18f"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/body/generated-1_1.png",
+          "sha256": "621f38ef7a8ff0443e92171d9e7b524c39f75de9d387bf71886125f0ba471ec7"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/body/generated-1_1.png",
+          "sha256": "621f38ef7a8ff0443e92171d9e7b524c39f75de9d387bf71886125f0ba471ec7"
+        },
+        "prompt": "Use case: identity-preserve. Generate one angle-specific anime torso reference, neck/chin to skirt hem on white. Input 1: original design. Input 2: exact pose and framing to KEEP. Redraw only to correct natural torso volume and foreshortening. Preserve shoulder/neck/waist centers and pose, original body proportions, clothing coverage and asymmetric ornaments (watch screen-left, plush screen-right). White gathered bodice over black corset with gold fasteners must hug convex ribcage, with smooth rounded near/far chest contours and natural waist taper, continuously joined at waist to skirt. Pelvis/skirt stay below waist, not leaning rigidly with chest. Do not enlarge chest or add exposure. Do not preserve flat paper-like clothing distortions. Keep original outfit, no extra accessories, no text, no sheet.\nExact pose Body(1,1): torso yaw 30 degrees toward viewer RIGHT. Front-center bow/buttons/lacing must lie to viewer RIGHT of torso silhouette midpoint. Viewer LEFT shoulder/side nearer and broader, opposite far side narrower. Backward lean: spine10 degrees away, upper chest additional20 degrees away/net30 backward. Pitch rotates in this yawed torso's sagittal plane. Preserve image2 shoulder and waist anchors and tilt, moderately correct chest surface convexity and foreshortened far contour, smooth chest-underbust-corset joins. Do not amplify lean or turn into a profile.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/body/pose-1_1.png",
+          "sha256": "d534400439c54b6092c8db691f4833e79d1c315ea958542b410f1a127bfda18f"
+        }
+      },
+      {
+        "key": "-1_0",
+        "parameter_values": [
+          -1,
+          0
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose--1_0.png",
+          "sha256": "880e0fb509c22ccef2a9cfb91cee412249e2bcebde4c08baad811d7ce3ee655b"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/body/generated--1_0.png",
+          "sha256": "6e55aa4683d3f56bd14f35f72dd4f760b2b6489144e71be01bb4e194bdbb3848"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/body/generated--1_0.png",
+          "sha256": "6e55aa4683d3f56bd14f35f72dd4f760b2b6489144e71be01bb4e194bdbb3848"
+        },
+        "prompt": "Use case: identity-preserve. Generate one angle-specific anime torso reference, neck/chin to skirt hem on white. Input 1: original design. Input 2: exact pose and framing to KEEP. Redraw only to correct natural torso volume and foreshortening. Preserve shoulder/neck/waist centers and pose, original body proportions, clothing coverage and asymmetric ornaments (watch screen-left, plush screen-right). White gathered bodice over black corset with gold fasteners must hug convex ribcage, with smooth rounded near/far chest contours and natural waist taper, continuously joined at waist to skirt. Pelvis/skirt stay below waist, not leaning rigidly with chest. Do not enlarge chest or add exposure. Do not preserve flat paper-like clothing distortions. Keep original outfit, no extra accessories, no text, no sheet.\nUpright torso, yaw30 degrees toward viewer LEFT. CRITICAL front-center bow, button line and corset lacing must lie to viewer LEFT of torso silhouette midpoint, not right. Viewer-RIGHT shoulder and side are NEAR/broader; viewer-LEFT chest and side are FAR/narrower. Preserve image2 exact orientation.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/body/pose--1_0.png",
+          "sha256": "880e0fb509c22ccef2a9cfb91cee412249e2bcebde4c08baad811d7ce3ee655b"
+        }
+      },
+      {
+        "key": "0_0",
+        "parameter_values": [
+          0,
+          0
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose-0_0.png",
+          "sha256": "e38bbfc1a87522aec40a6d79f7207e0a64ef3c55343e555f75d72907fc8a9d2a"
+        },
+        "status": "neutral model/identity source, not a generated direction",
+        "generated_original": null
+      },
+      {
+        "key": "1_0",
+        "parameter_values": [
+          1,
+          0
+        ],
+        "model_pose": {
+          "file": "images/ao-body-yaw-plus1-source.png",
+          "sha256": "f9164feb62aac569c9e3a2451d976f19299001e7fb5bb22a185e40e1f823e3c6"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-body-yaw-plus1-generated.png",
+          "sha256": "ca16d7177825c4240367e92131d332211c7af0ab9756aa3ef984aa008ee539f3"
+        },
+        "comparison_reference": {
+          "file": "images/ao-body-yaw-plus1-generated.png",
+          "sha256": "ca16d7177825c4240367e92131d332211c7af0ab9756aa3ef984aa008ee539f3"
+        },
+        "prompt": "Use case: identity-preserve. Asset type: single angle-specific torso rigging reference illustration. Image 1 is original design/identity reference. Image 2 is a 3x3 CURRENT MODEL pose guide: columns yaw -1,0,+1; rows backward pitch +1, upright 0, forward bend -1. Produce ONLY ONE image matching the requested cell, NOT a grid. Preserve original character anatomy/proportions, white gathered bodice, black gold-fastened corset, black high collar with cross, blue waist ornaments, hanging white apron and skirt. Framing neck/chin through skirt hem, same frontal orthographic camera as pose guide, white background. Correct natural ribcage/chest/waist volume and perspective: fabric follows convex torso; near/far visible widths change with rotation, smooth side contours, continuous chest-to-corset and waist-to-skirt joins. Do not mechanically preserve the current model's flat frontal chest/corset distortion. Keep shoulder and waist attachment locations and overall pose from requested guide cell. Keep pelvis/skirt under waist, never lean skirt rigidly with upper torso. Do not enlarge chest, sexualize, change clothing coverage, invent accessories, mirror asymmetric watch/plush, or change arm poses. No text, arrows or labels. Render one polished same-style anime torso reference.\nRequested pose: middle-left cell Body(-1,0). Torso yaw 30 degrees toward screen-left (character's right), upright pitch. Character-left/screen-right chest is nearer; character-right/screen-left chest is foreshortened. Match the moderate rotation and pose anchors from that cell, not a full profile.\n\nReview: Generated image turned toward screen-right. It was retained as reference-1_0.png after inspecting near/far sides, and a replacement reference--1_0.png was generated with explicit screen-side landmarks.\n",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-body-yaw-plus1-source.png",
+          "sha256": "f9164feb62aac569c9e3a2451d976f19299001e7fb5bb22a185e40e1f823e3c6"
+        }
+      },
+      {
+        "key": "-1_-1",
+        "parameter_values": [
+          -1,
+          -1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose--1_-1.png",
+          "sha256": "3806142d4986b5c69eb66627843e45ab07be758ca0658f2dffeb9cec72f79e1c"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/body/generated--1_-1.png",
+          "sha256": "8a3595074bf0a57600f39a63e76eac624f9a32f310c89fd438d4d505c3f6d4e1"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/body/generated--1_-1.png",
+          "sha256": "8a3595074bf0a57600f39a63e76eac624f9a32f310c89fd438d4d505c3f6d4e1"
+        },
+        "prompt": "Use case: identity-preserve. Generate one angle-specific anime torso reference, neck/chin to skirt hem on white. Input 1: original design. Input 2: exact pose and framing to KEEP. Redraw only to correct natural torso volume and foreshortening. Preserve shoulder/neck/waist centers and pose, original body proportions, clothing coverage and asymmetric ornaments (watch screen-left, plush screen-right). White gathered bodice over black corset with gold fasteners must hug convex ribcage, with smooth rounded near/far chest contours and natural waist taper, continuously joined at waist to skirt. Pelvis/skirt stay below waist, not leaning rigidly with chest. Do not enlarge chest or add exposure. Do not preserve flat paper-like clothing distortions. Keep original outfit, no extra accessories, no text, no sheet.\nExact pose Body(-1,-1): torso yaw 30 degrees toward viewer LEFT. Front-center bow/buttons/lacing must lie to viewer LEFT of torso silhouette midpoint. Viewer RIGHT shoulder/side nearer and broader, opposite far side narrower. Forward bend: spine30 degrees toward viewer, upper ribcage net15 forward. Pitch rotates in this yawed torso's sagittal plane. Preserve image2 shoulder and waist anchors and tilt, moderately correct chest surface convexity and foreshortened far contour, smooth chest-underbust-corset joins. Do not amplify lean or turn into a profile.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/body/pose--1_-1.png",
+          "sha256": "3806142d4986b5c69eb66627843e45ab07be758ca0658f2dffeb9cec72f79e1c"
+        }
+      },
+      {
+        "key": "0_-1",
+        "parameter_values": [
+          0,
+          -1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose-0_-1.png",
+          "sha256": "93c0d59f4754a567edce4006fee4d07140cb23024d15028d3a33323657818f6f"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/body/generated-0_-1.png",
+          "sha256": "8e12771a1c3d531f5df7b634faa6d302e448c6072dd36e378e067abae067fe34"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/body/generated-0_-1.png",
+          "sha256": "8e12771a1c3d531f5df7b634faa6d302e448c6072dd36e378e067abae067fe34"
+        },
+        "prompt": "Use case: identity-preserve. Generate one angle-specific anime torso reference, neck/chin to skirt hem on white. Input 1: original design. Input 2: exact pose and framing to KEEP. Redraw only to correct natural torso volume and foreshortening. Preserve shoulder/neck/waist centers and pose, original body proportions, clothing coverage and asymmetric ornaments (watch screen-left, plush screen-right). White gathered bodice over black corset with gold fasteners must hug convex ribcage, with smooth rounded near/far chest contours and natural waist taper, continuously joined at waist to skirt. Pelvis/skirt stay below waist, not leaning rigidly with chest. Do not enlarge chest or add exposure. Do not preserve flat paper-like clothing distortions. Keep original outfit, no extra accessories, no text, no sheet.\nYaw ZERO. Forward torso bend: waist/spine 30 degrees toward viewer, upper ribcage net15 degrees forward. Match image2 anchors and forward leaning pose, see more upper shoulder/chest planes, chest foreshortens smoothly, waist shortens without collapsing corset. No side turn.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/body/pose-0_-1.png",
+          "sha256": "93c0d59f4754a567edce4006fee4d07140cb23024d15028d3a33323657818f6f"
+        }
+      },
+      {
+        "key": "1_-1",
+        "parameter_values": [
+          1,
+          -1
+        ],
+        "model_pose": {
+          "file": "images/ao-angle-references/body/pose-1_-1.png",
+          "sha256": "97aeb259320572340d3becbcbbebc3150a50133fd05545f838519a3d1e3fdc1d"
+        },
+        "status": "historical reference candidate; evaluate region and pose before reuse",
+        "generated_original": {
+          "file": "images/ao-angle-references/body/generated-1_-1.png",
+          "sha256": "c6f8e77dab60accedde5b3ecc340c1d29ff47edbb3f7cedca50b405d619e6483"
+        },
+        "comparison_reference": {
+          "file": "images/ao-angle-references/body/generated-1_-1.png",
+          "sha256": "c6f8e77dab60accedde5b3ecc340c1d29ff47edbb3f7cedca50b405d619e6483"
+        },
+        "prompt": "Use case: identity-preserve. Generate one angle-specific anime torso reference, neck/chin to skirt hem on white. Input 1: original design. Input 2: exact pose and framing to KEEP. Redraw only to correct natural torso volume and foreshortening. Preserve shoulder/neck/waist centers and pose, original body proportions, clothing coverage and asymmetric ornaments (watch screen-left, plush screen-right). White gathered bodice over black corset with gold fasteners must hug convex ribcage, with smooth rounded near/far chest contours and natural waist taper, continuously joined at waist to skirt. Pelvis/skirt stay below waist, not leaning rigidly with chest. Do not enlarge chest or add exposure. Do not preserve flat paper-like clothing distortions. Keep original outfit, no extra accessories, no text, no sheet.\nExact pose Body(1,-1): torso yaw 30 degrees toward viewer RIGHT. Front-center bow/buttons/lacing must lie to viewer RIGHT of torso silhouette midpoint. Viewer LEFT shoulder/side nearer and broader, opposite far side narrower. Forward bend: spine30 degrees toward viewer, upper ribcage net15 forward. Pitch rotates in this yawed torso's sagittal plane. Preserve image2 shoulder and waist anchors and tilt, moderately correct chest surface convexity and foreshortened far contour, smooth chest-underbust-corset joins. Do not amplify lean or turn into a profile.",
+        "input_note": "Historical prompt identifies identity/design and exact-pose input roles; model-pose and identity files are bundled. Full runtime state was not necessarily recorded; do not infer omitted parameters.",
+        "generation_pose_input": {
+          "file": "images/ao-angle-references/body/pose-1_-1.png",
+          "sha256": "97aeb259320572340d3becbcbbebc3150a50133fd05545f838519a3d1e3fdc1d"
+        }
+      }
+    ]
+  }
+}

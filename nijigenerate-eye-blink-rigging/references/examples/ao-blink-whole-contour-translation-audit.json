@@ -1,0 +1,9 @@
+{
+  "reference": "shared-canthi shape before lift",
+  "wholeContourLift": 1,
+  "unit": "authored eye-local normal",
+  "scaledByClosureX": true,
+  "maxWithinPartNonuniformity": 1.7763568394002505e-15,
+  "allExpressionEndpointsIdentical": true,
+  "source": "explicit uniform Part Y translation converted from each eye-local normal"
+}

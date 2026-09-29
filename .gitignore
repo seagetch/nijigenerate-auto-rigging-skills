@@ -1,0 +1,11 @@
+**/node_modules/
+**/dist/
+**/__pycache__/
+**/*.pyc
+.DS_Store
+*.log
+
+# Runtime review data belongs in each active project workspace, not in the skill source repo.
+**/public/projects/
+**/reviews/
+**/review-results/

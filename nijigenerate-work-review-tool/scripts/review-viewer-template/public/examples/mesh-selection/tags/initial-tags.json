@@ -1,0 +1,28 @@
+[
+  {
+    "target": "faceLayers",
+    "kind": "meshSet",
+    "label": "face cheek direct residual",
+    "color": "#d4e157",
+    "meshIds": ["face-base"],
+    "vertexRefs": [
+      { "meshId": "face-base", "vertexIndex": 2 },
+      { "meshId": "face-base", "vertexIndex": 3 }
+    ],
+    "comment": "Example input for direct face adjustment: move cheek-side transition vertices only; keep jawline and chin fixed."
+  },
+  {
+    "target": "bodyLayers",
+    "kind": "meshSet",
+    "label": "body side-wrap direct residual",
+    "color": "#54d5ff",
+    "meshIds": ["torso", "bottomwear-front"],
+    "vertexRefs": [
+      { "meshId": "torso", "vertexIndex": 2 },
+      { "meshId": "torso", "vertexIndex": 3 },
+      { "meshId": "bottomwear-front", "vertexIndex": 2 },
+      { "meshId": "bottomwear-front", "vertexIndex": 3 }
+    ],
+    "comment": "Example input for direct body adjustment: move outer contour/side-wrap vertices; keep center/front detail unchanged."
+  }
+]

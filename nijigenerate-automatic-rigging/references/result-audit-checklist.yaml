@@ -1,0 +1,55 @@
+schema: nijigenerate-result-audit-v1
+title: Automatic Rigging Final Result Audit
+items:
+  - id: auto-result-001
+    target: model setup result
+    expected: Model setup checklist is fully OK with hierarchy, composition, clipping, mesh-envelope, parameters, and handoff evidence.
+  - id: auto-result-002
+    target: front/back clothing result
+    expected: Clothing result audit is fully OK or explicitly not applicable with evidence.
+  - id: auto-result-003
+    target: Depth skeleton result
+    expected: DepthRigRoot, all 19 bones, artwork alignment, LockToRoot feet, and every BoneSource pass the specialist result audit.
+  - id: auto-result-004
+    target: depth import result
+    expected: Every grid passes source mapping, gap repair, anatomical depth, effective Z, Fit Z, standard-parameter chronology, and preservation checks.
+  - id: auto-result-005
+    target: post-rig result
+    expected: Broad-before-Part correction, both yaw directions, cardinal/corner/intermediate poses, 25-cell integrity, and parent residuals pass.
+  - id: auto-result-006
+    target: DepthBone pose result
+    expected: Pelvis/Spine distribution, knees, and LockToRoot ankle targets remain plausible at all required Body keys.
+  - id: auto-result-012
+    target: Face-oriented mouth-cavity result
+    expected: Tongue and upper/lower teeth preserve the artwork's tilted local mouth axis, show coherent yaw recession and pitch-specific tooth reveal, compose with Mouth::Open, and pass cropped visual review of all 25 Face cells.
+  - id: auto-result-013
+    target: eye-blink specialist result
+    expected: Both eyes pass the dedicated eye-blink result audit at every required exact key with perspective-aware upper/lower contour motion, no visible white/iris leak at closure, and preserved eyelid/eyelash width, thickness, continuity, and taper.
+  - id: auto-result-014
+    target: mouth-open specialist result
+    expected: Mouth opening, closure, expression, tilted local axis, near/far behavior, clipping, and intermediate keys pass the dedicated mouth-open result audit without replacing the accepted mouth assets or Face mouth-cavity motion.
+  - id: auto-result-007
+    target: occlusion result
+    expected: Every used mask passes its specialist result audit; unused masking is explicitly recorded as not applicable.
+  - id: auto-result-008
+    target: Physics result
+    expected: All intended moving regions, authored keys, assignments, Gravity, measured Length, anchors, playback/reset, and preservation pass.
+  - id: auto-result-009
+    target: complete parameter set
+    expected: Every parameter has only intended target UUIDs, neutral keys remain valid, and every edited 5x5 binding has an intentional 25-cell isSet matrix.
+  - id: auto-result-010
+    target: complete model state
+    expected: Hierarchy, meshes, masks, DepthBones, BoneSources, Physics, and serialized/file size contain no unexplained change.
+  - id: auto-result-011
+    target: final neutral model
+    expected: Parameters are neutral, Physics is reset, visual output is coherent, and one verified final output is saved through FileCommand_SaveFile.
+evidence:
+  required:
+    - ordered OK/RETAKE/UNVERIFIABLE result from every specialist checklist
+    - paths to numeric audits and exact-key screenshots
+    - cropped 5x5 Face::Yaw-Pitch mouth matrix and Mouth::Open composition screenshots
+    - same-scale exact-key eye-blink screenshots and eye specialist audit
+    - exact-key and intermediate Mouth::Open screenshots and mouth specialist audit
+    - full parameter-target and 5x5 isSet report
+    - baseline-to-final structural and serialized-size diff
+    - final output path and save command readback

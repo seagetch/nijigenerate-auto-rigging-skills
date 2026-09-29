@@ -1,0 +1,196 @@
+schema: nijigenerate-step-checklist-v1
+title: Model Setup Step Checklist
+sections:
+- name: 1. Read Inputs
+  checklist:
+  - id: model-setup-058
+    target: shared nijigenerate workflow router
+    check: Read the shared workflow router and record that model setup owns only structure, meshes, initial parameter definitions, and neutral/start keys.
+  - id: model-setup-059
+    target: specialist operations discovered during setup
+    check: Route AutoMesh, mouth assets, limb-root movement, depth skeleton, depth import, post-rig, eye blink, mouth open, masks, and physics to their owning skills; stop before specialist mutation if the required skill is unavailable or unreadable.
+  - id: model-setup-001
+    target: each affected GridDeformer grid and its reviewed feature cells
+    check: Read the active model hierarchy, resources, node transforms, meshes, grid axes, and parameter list.
+  - id: model-setup-033
+    target: every visible node and helper/control resource in the active model tree
+    check: Read draw modes, clipping modes, mesh status, existing keypoints, and Composite/DynamicComposite resources as part of the initial inventory.
+  - id: model-setup-002
+    target: each left/right paired target affected by the pass
+    check: Read relevant copied `references/user-doc/` files for model structuring, grid deformers, AutoMesh, symmetry pairs, and parameter definition.
+  - id: model-setup-003
+    target: current model hierarchy around each affected target node
+    check: Identify PSD/layer naming conventions and any user-provided target hierarchy.
+  - id: model-setup-004
+    target: current live model view for the relevant pose
+    check: Confirm side conventions for model-left/right and screen-left/right.
+- name: 2. Node Classification
+  checklist:
+  - id: model-setup-005
+    target: each source artwork layer or imported Part candidate
+    check: Classify each artwork layer as Part, Node, GridDeformer, PathDeformer, Mask, or helper/control node.
+  - id: model-setup-034
+    target: each Composite or DynamicComposite candidate and every Node that may need conversion to a composite type
+    check: Classify Composite and DynamicComposite needs explicitly; verify required eye/mouth/expression composites exist and ordinary helper Nodes are not left where a composite is required.
+  - id: model-setup-006
+    target: broad deformable surfaces requiring depth or surface motion
+    check: Use GridDeformer for broad surfaces that need depth, facial motion, torso motion, hair mass, or cloth panel deformation.
+  - id: model-setup-007
+    target: bendable limb, strand, ribbon, tail, or chain layers
+    check: Use PathDeformer for limbs, strands, ribbons, tails, and bendable chains.
+  - id: model-setup-008
+    target: rigid detail layers and surfaces covered by parent deformers
+    check: Keep direct Part only for local details, rigid pieces, or surfaces covered by a parent deformer.
+  - id: model-setup-009
+    target: left/right paired source layers
+    check: Check paired layers and split left/right nodes where needed.
+- name: 3. Hierarchy
+  checklist:
+  - id: model-setup-010
+    target: copied `references/user-doc/` pages relevant to the setup phase
+    check: Place Face under Head controls and Body under Body controls according to the copied user-doc references.
+  - id: model-setup-035
+    target: Body, Neck, Face, and facial-feature visual Part relationships
+    check: Verify the visual Part relationship remains Body Part -> Neck Part -> Face Part -> face feature Parts, and that helper Nodes/GridDeformers do not obscure or replace that Part-based relationship.
+  - id: model-setup-011
+    target: current model hierarchy around each affected target node
+    check: Keep head-attached hair/headwear in a hierarchy that can share Head::Root pivot.
+  - id: model-setup-036
+    target: Head::Root or Face::Root helper Node when present or required
+    check: Verify the head/root pivot is placed at the anatomical neck top/skull-base hinge from current overlay or mesh evidence, not at the face center, mouth/chin, or artwork bounds center.
+  - id: model-setup-037
+    target: BackHair::G and rear-head hair/clothing surfaces
+    check: Verify rear head volume surfaces such as BackHair::G are not accidentally nested under Face::G when they need independent rear-head volume under Head::Root.
+  - id: model-setup-012
+    target: clothing hierarchy relative to Body controls
+    check: Keep clothing that should inherit Body motion under the correct Body/Clothing control.
+  - id: model-setup-038
+    target: tail, wings, ribbons, sleeve/skirt roots, and similar appendages
+    check: Verify appendages belong under the appropriate body, clothing, or root block and are not placed under Face unless there is an explicit model-specific reason.
+  - id: model-setup-013
+    target: helper/control Nodes inserted between deforming parents and children
+    check: Avoid inserting neutral Nodes that block expected Body or Face deformation inheritance.
+  - id: model-setup-039
+    target: helper/root Nodes inserted above existing visible descendants
+    check: When inserting or moving a parent helper/root Node above existing children, verify descendants are protected with LockToRoot or equivalent, the parent is moved to the intended pivot, and prior LockToRoot states are restored.
+  - id: model-setup-014
+    target: limb and appendage root Nodes
+    check: Ensure limbs and appendages have anatomical root Nodes before rigging.
+  - id: model-setup-040
+    target: left and right leg root Nodes
+    check: Verify left and right legs have separate anatomical root Nodes and are not incorrectly grouped under one shared leg node unless explicitly intentional.
+  - id: model-setup-041
+    target: arm, leg, tail, ribbon, wing, sleeve, foot, toe, palm, and finger base-to-tip chains
+    check: Verify bendable chains run base-to-tip and visible child Parts that should bend with the chain are placed under the appropriate PathDeformer rather than beside it.
+  - id: model-setup-031
+    target: Body::Roll centerline Bone::P PathDeformer when broad torso roll, spine-like bending, or Face::Roll neck bend is required
+    check: Verify whether `Bone::P` is required; if required, it must be a PathDeformer inserted as `Body::Root > Bone::P > Body::G`, not below `Body::G` or beside it.
+  - id: model-setup-032
+    target: Bone::P control vertices when Bone::P is present or required
+    check: Verify `Bone::P` control vertices are explicitly defined on the current Body::G centerline with semantic points for neck top, neck base, chest, waist, and crotch/under-crotch; do not use AutoMesh/skeleton generation for this centerline.
+- name: 4. Mesh Preparation
+  checklist:
+  - id: model-setup-015
+    target: all targets prepared for AutoMesh
+    check: Select AutoMesh processor through `nijigenerate-automesh-setup`.
+  - id: model-setup-042
+    target: each GridDeformer and ordinary Part selected for AutoMesh
+    check: Verify GridDeformer targets use Grid AutoMesh and ordinary Part targets use Optimum AutoMesh; do not swap these processors or use skeleton AutoMesh for `Bone::P`.
+  - id: model-setup-043
+    target: each GridDeformer broad surface before initial AutoMesh
+    check: Verify initial GridDeformer density starts from the skill defaults where applicable, such as face/back hair around 8x8 intervals and Body around 10x14 intervals, then adjust only for artwork and controlled-region needs.
+  - id: model-setup-016
+    target: current model hierarchy around each affected target node
+    check: Apply meshes only after child membership and hierarchy are stable.
+  - id: model-setup-044
+    target: every target whose child membership, covered region, or part composition changed after mesh generation
+    check: Rebuild or re-run AutoMesh after part composition or controlled-region changes; do not keep stale meshes from an earlier hierarchy.
+  - id: model-setup-017
+    target: each affected GridDeformer grid and its reviewed feature cells
+    check: Read back actual grid axes and mesh vertices after AutoMesh.
+  - id: model-setup-018
+    target: each affected GridDeformer grid and its reviewed feature cells
+    check: Verify broad grids have enough rows/columns for intended features.
+  - id: model-setup-019
+    target: ordinary Part meshes after AutoMesh
+    check: Verify Parts do not have bridged holes, missing alpha, excessive density, or broken silhouettes.
+  - id: model-setup-045
+    target: symmetric centerline grids, especially Body::G
+    check: Verify the intended centerline is numerically correct, usually x=0 for centered models, and that left/right vertex coordinates mirror around that center unless intentionally asymmetric.
+  - id: model-setup-046
+    target: DynamicComposite resources converted from Node or whose display bounds may be stale
+    check: Verify DynamicComposite bounds/display are current; if the composite was converted from a Node or appears stale, refresh via the documented autoResizedMode toggle workflow.
+- name: 5. Symmetry And Pairing
+  checklist:
+  - id: model-setup-020
+    target: left/right node and layer names
+    check: Verify naming uses machine-pairable left/right suffixes.
+  - id: model-setup-021
+    target: each left/right paired target affected by the pass
+    check: Read existing flip pairs.
+  - id: model-setup-022
+    target: each left/right paired target affected by the pass
+    check: Add or repair flip pairs explicitly where needed.
+  - id: model-setup-023
+    target: each left/right paired target affected by the pass
+    check: Check paired roots, meshes, and control points are symmetric unless artwork intentionally differs.
+  - id: model-setup-047
+    target: all left/right Nodes, PathDeformers, GridDeformers, and Parts created or moved in the setup pass
+    check: Verify flip-pair registration after every creation or movement of paired Nodes, PathDeformers, GridDeformers, or Parts, not only after initial import.
+- name: 6. Initial Parameters
+  checklist:
+  - id: model-setup-024
+    target: initial parameter set for Face, Body, Eye, Eyebrow, Mouth, Roll, and setup controls
+    check: Create Face, Body, Eye, Eyebrow, Mouth, Roll, and setup parameter definitions and neutral/start keys without authoring specialist eye-blink, mouth-open, depth-derived, post-rig, or physics deformation.
+  - id: model-setup-025
+    target: each newly created initial setup parameter axis
+    check: Set parameter ranges and breakpoints exactly.
+  - id: model-setup-026
+    target: created initial parameters and their neutral/start keys
+    check: Verify parameter list and start keys after creation.
+  - id: model-setup-048
+    target: each created setup parameter before endpoint or residual keys
+    check: Register the neutral key first, then define endpoint and intermediate keypoints; do not create endpoint or residual keys before the neutral state is recorded.
+  - id: model-setup-049
+    target: Face::Yaw-Pitch, Body::Yaw-Pitch, Face::Roll, Body::Roll, Blink, Eye X-Y, Eyebrow, Mouth, and physics parameter keypoint sets
+    check: Verify keypoint coverage follows the skill rules, including Face/Body yaw-pitch `[-1,-0.5,0,0.5,1]^2`, roll `[-1,-0.5,0,0.5,1]`, blink X `0,0.25,0.5,0.75,1`, and correct 0..1 or -1..1 axes; record fixed pitch semantics that Body Pitch=-1 is forward / 前傾, Body Pitch=+1 is backward / 後傾, Face Pitch=+1 is up / 上向き, and Face Pitch=-1 is down / 下向き.
+  - id: model-setup-056
+    target: any pre-existing `Eye::{L,R}::Blink` deformation encountered during setup
+    check: Audit but do not replace pre-existing blink deformation. If it changes eyelid/eyelash stroke width, uses whole-eye vertical compression/scaling, or crushes/erases the stroke, mark Retake and hand off to `nijigenerate-eye-blink-rigging`.
+  - id: model-setup-057
+    target: eye-blink specialist handoff when blink deformation exists or is requested
+    check: Require `nijigenerate-eye-blink-rigging` to compare `(0,0)`, `(0.25,0)`, `(0.5,0)`, `(0.75,0)`, `(1,0)`, `(1,-1)`, and `(1,1)` at the same native-resolution crop and magnification; model setup must not declare this deformation complete.
+  - id: model-setup-050
+    target: physics parameters and expression/setup parameters
+    check: Verify physics parameters remain separate from expression and setup parameters, and are named by physical behavior rather than merged into Face/Body/Eye expression controls.
+  - id: model-setup-027
+    target: created initial parameters and their neutral/start keys
+    check: Do not bind depth or residual keys before the required depth/review gates.
+- name: 7. Drawing And Clipping
+  checklist:
+  - id: model-setup-051
+    target: iris, teeth, tongue, mouth contents, eye contents, and any layer that must be clipped by the lower layer
+    check: Verify drawing mode is `ClipToLower` where clipping by the lower layer is required, and record explicit reasons for any unclipped exception.
+  - id: model-setup-052
+    target: shadows, highlights, and dependent detail layers
+    check: Verify shadows and highlights are placed under or with the object they visually shadow/highlight so parent motion and clipping remain coherent.
+- name: 8. Handoff To Rigging
+  checklist:
+  - id: model-setup-028
+    target: pass audit artifact for edited targets and parameters
+    check: Save an audit of hierarchy, meshes, parameters, flip pairs, and unresolved setup risks.
+  - id: model-setup-029
+    target: current live model view for the relevant pose
+    check: Capture current neutral and mesh overlay screenshots for Face and Body.
+  - id: model-setup-053
+    target: nijigenerate-depth-skeleton-setup handoff
+    check: Hand off current hierarchy, target UUIDs, grid axes, meshes, transforms, and neutral screenshots for DepthRigRoot, standard DepthBone alignment, LockToRoot feet, and complete BoneSources without defining depth in model setup.
+  - id: model-setup-054
+    target: canonical depth prerequisites
+    check: Confirm `nijigenerate-depth-skeleton-setup` is the next workflow and is fully OK before `nijigenerate-depth-import-adjustment` or any Face, Body, hair, or clothing depth-derived binding.
+  - id: model-setup-055
+    target: canonical depth audit
+    check: Do not resume Face, Body, hair, or clothing depth-derived rigging until both depth-skeleton and depth-import specialists have produced current fully-OK audits in that order.
+  - id: model-setup-030
+    target: each edited parameter binding on each explicit target node
+    check: Confirm DepthBone/BoneSource setup precedes canonical depth definition, and canonical depth definition precedes Face/Body depth binding.

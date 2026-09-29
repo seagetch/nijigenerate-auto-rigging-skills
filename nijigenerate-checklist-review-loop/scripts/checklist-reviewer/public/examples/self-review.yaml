@@ -1,0 +1,11 @@
+schema: nijigenerate-checklist-self-review-v1
+results:
+  - id: "example-001"
+    result: "ok"
+    reason: "The active task and skills were identified."
+  - id: "example-002"
+    result: "retake"
+    reason: "No accepted latest-review.json was available."
+  - id: "example-003"
+    result: "ok"
+    reason: "Post-apply artifacts were present."

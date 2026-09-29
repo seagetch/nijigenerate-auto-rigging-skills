@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Front Back Clothing Setup"
+  short_description: "Prepare front and back clothing grids and hierarchy"
+  default_prompt: "Use $nijigenerate-front-back-clothing-rigging to prepare front, rear, and side clothing hierarchy and broad grids before depth import."

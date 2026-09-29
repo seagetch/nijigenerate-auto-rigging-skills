@@ -1,0 +1,96 @@
+schema: nijigenerate-step-checklist-v1
+title: AutoMesh Step Checklist
+sections:
+- name: 1. Target Audit
+  checklist:
+  - id: automesh-001
+    target: each node selected for AutoMesh
+    check: Read the target node UUID, name, type, children, resource, existing mesh/grid/path data, and visible artwork coverage.
+  - id: automesh-002
+    target: each node selected for AutoMesh
+    check: Classify the target as GridDeformer, PathDeformer, ordinary Part, or thin/silhouette-critical Part.
+  - id: automesh-003
+    target: current model hierarchy around each affected target node
+    check: Confirm hierarchy and child membership are final enough to mesh.
+  - id: automesh-004
+    target: root and pivot placement for each node selected for AutoMesh
+    check: Confirm no root/pivot problem is being disguised as a mesh-density problem.
+  - id: automesh-005
+    target: each left/right paired target affected by the pass
+    check: For symmetric targets, read or define the intended mirror pair.
+- name: 2. Processor Selection
+  checklist:
+  - id: automesh-006
+    target: each selected GridDeformer target
+    check: GridDeformer uses `grid`.
+  - id: automesh-007
+    target: each selected PathDeformer or non-grid Part target
+    check: PathDeformer uses `skeleton`.
+  - id: automesh-008
+    target: each selected ordinary Part target
+    check: Ordinary Part uses `optimum`.
+  - id: automesh-009
+    target: each selected thin or silhouette-critical Part target
+    check: Thin or outline-critical Part uses `contour` only as fallback when `optimum` fails.
+  - id: automesh-010
+    target: each selected GridDeformer target
+    check: Never use `optimum` on GridDeformer.
+  - id: automesh-011
+    target: each regular Part and PathDeformer target considered for AutoMesh
+    check: Never use `grid` on regular Part or PathDeformer.
+- name: 3. Configuration
+  checklist:
+  - id: automesh-012
+    target: AutoMesh processor configuration for the current target batch
+    check: 'Use typed setup commands for normal work: `AutoMesh_SetSimple_grid`, `AutoMesh_SetSimple_skeleton`, `AutoMesh_SetPreset_optimum`,
+      or `AutoMesh_SetPreset_contour`.'
+  - id: automesh-013
+    target: each selected GridDeformer target
+    check: For GridDeformer, choose x/y segments from intended feature bands, not from texture size alone.
+  - id: automesh-014
+    target: each selected PathDeformer target
+    check: For PathDeformer, choose target point count from intended bend model.
+  - id: automesh-015
+    target: each selected Part target
+    check: For Part, choose preset from silhouette and deformation need.
+  - id: automesh-016
+    target: AutoMesh processor configuration for the current target batch
+    check: Record requested settings before applying.
+- name: 4. Apply
+  checklist:
+  - id: automesh-017
+    target: explicit AutoMesh apply node list
+    check: Apply only to explicit `context.nodes`.
+  - id: automesh-018
+    target: explicit AutoMesh apply node list
+    check: Do not assume descendants are included implicitly.
+  - id: automesh-019
+    target: current model hierarchy around each affected target node
+    check: Re-apply after hierarchy edits, child-set changes, helper-node removal, texture coverage changes, or Node/Grid/Path
+      conversion.
+  - id: automesh-020
+    target: each user-requested AutoMesh target mesh
+    check: Do not manually replace meshes when the user specifically required AutoMesh.
+- name: 5. Read Back
+  checklist:
+  - id: automesh-021
+    target: each affected GridDeformer grid and its reviewed feature cells
+    check: Read actual mesh, grid axes, control point count, vertex count, and triangles after apply.
+  - id: automesh-022
+    target: post-AutoMesh resource readback for each applied target
+    check: Compare requested density to actual output.
+  - id: automesh-023
+    target: current live model view for the relevant pose
+    check: Verify coverage against current screenshot or live capture.
+  - id: automesh-024
+    target: each left/right paired target affected by the pass
+    check: Verify symmetry and centerline placement.
+- name: 6. Handoff
+  checklist:
+  - id: automesh-025
+    target: post-AutoMesh resource readback for each applied target
+    check: Report target UUID/name, processor, command, settings, actual counts, coverage result, and whether manual mesh
+      replacement was avoided.
+  - id: automesh-026
+    target: each affected GridDeformer grid and its reviewed feature cells
+    check: Stop before depth rigging if broad grids do not expose enough rows/columns for required features.

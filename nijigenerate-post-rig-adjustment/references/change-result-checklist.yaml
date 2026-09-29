@@ -1,0 +1,29 @@
+schema: nijigenerate-result-audit-v1
+title: "post-rig-adjustment change result audit"
+items:
+  - id: post-rig-adjustment-change-001
+    target: "owner and permitted layer"
+    expected: "Depth/bone defects are corrected by their owners; valid parent motion remains untouched and no prohibited Grid XY edit is used."
+  - id: post-rig-adjustment-change-002
+    target: "reference match"
+    expected: "Same-pose/scale comparisons show smooth face/jaw contour, correct near/far fullness, torso thickness and neighboring attachments; ear visibility is not bought with silhouette notches."
+  - id: post-rig-adjustment-change-003
+    target: "Welding when used"
+    expected: "Reference side stays unchanged, only the intended seam follows, armpit/free surfaces remain independent, and matched relations have no accidental cycle or duplicate."
+  - id: post-rig-adjustment-change-004
+    target: "neck/collar when edited"
+    expected: "Standing collar and chest lapels follow their own supporting surfaces without shoulder penetration or artificial screen-length preservation."
+  - id: post-rig-adjustment-change-005
+    target: "composed regression"
+    expected: "All user-reported poses and affected intermediate/opposite/mixed keys are rechecked; local OK is not reported as global acceptance."
+
+  - id: post-rig-adjustment-change-006
+    target: "shared references across depth and Part passes"
+    expected: "Before/reference/depth-stage/Part-stage images use the same adopted directional references and comparable pose/projection/scale; all requested directions, intermediate keys and reported mixed poses are checked."
+  - id: post-rig-adjustment-change-007
+    target: "visual agreement and closure"
+    expected: "Smooth silhouettes, internal landmarks, visible side surfaces and neighboring attachments are inspected together; neither numeric preservation nor a generated image proves acceptance, and deferred Part residuals are resolved before overall completion."
+
+# Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
+example_references:
+  - "ao-visual-examples.md"

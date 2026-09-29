@@ -1,0 +1,77 @@
+schema: nijigenerate-step-checklist-v1
+title: DepthRigRoot・標準DepthBone・BoneSource設定
+sections:
+- name: 事前確認
+  checklist:
+  - id: depth-skeleton-setup-031
+    check: 共通workflow routerを読み、この工程のownerがnijigenerate-depth-skeleton-setupであり、model setupの前提監査がOKで、depth import開始前であることを確認した。
+  - id: depth-skeleton-setup-032
+    check: route manifestへowner、前提、保護する受入済み状態、終了ゲートを記録し、実行時Available Skillsから必要スキルを読めない場合は変更前に停止した。
+  - id: depth-skeleton-setup-001
+    check: njc tools listで使用コマンドの現行schemaを確認した。
+  - id: depth-skeleton-setup-002
+    check: 全ツリー、ノード状態、flip pair、DepthRig binding、全Grid BoneSourceを読戻した。
+  - id: depth-skeleton-setup-003
+    check: ニュートラル画像と非変更対象hashを保存した。
+  - id: depth-skeleton-setup-004
+    check: 保存先と上書き可否がユーザー指定どおりで、FileCommand_OpenFileとINX直接編集とComputer Useを使わない。
+- name: DepthRigRootと標準骨格
+  checklist:
+  - id: depth-skeleton-setup-005
+    check: DepthRigRootを意図したBody Rootの子としてnjcで作成した。
+  - id: depth-skeleton-setup-006
+    check: Rootが空であることを確認してから標準DepthBoneテンプレートを生成した。
+  - id: depth-skeleton-setup-007
+    check: 標準19本の名前、boneId、親子関係、有限rest値、非ゼロ長を読戻した。
+  - id: depth-skeleton-setup-008
+    check: Head.allowParentToTargets=falseと両Foot.lockToRoot=trueを読戻した。
+  - id: depth-skeleton-setup-009
+    check: 左右7組のDepthBone flip pairを登録して読戻した。
+- name: 画像基準の座標調整
+  checklist:
+  - id: depth-skeleton-setup-010
+    check: 現在のキャラクター画像から体幹、腕、腰、脚、足のランドマークを読んだ。
+  - id: depth-skeleton-setup-011
+    check: .Lと.Rの画面側規則を適用前資料へ明記した。
+  - id: depth-skeleton-setup-012
+    check: 服に隠れた関節を見えている四肢中心線から推定した。
+  - id: depth-skeleton-setup-013
+    check: 体幹の原画上の傾斜を反映し、直立固定にしていない。
+  - id: depth-skeleton-setup-014
+    check: NOT APPLIEDの座標表とオーバーレイを作成した。
+  - id: depth-skeleton-setup-015
+    check: 全19骨のrestHead、restTail、restRollをnjcで設定して読戻した。
+  - id: depth-skeleton-setup-016
+    check: 全19骨の実表示transformをnjcで設定して読戻した。
+  - id: depth-skeleton-setup-017
+    check: 通常骨は親座標、LockToRoot FootはPuppet Root座標として別々に検証した。
+  - id: depth-skeleton-setup-018
+    check: njc読戻しtransformから作ったオーバーレイが画像ランドマークへ一致した。
+- name: GridDeformer BoneSource
+  checklist:
+  - id: depth-skeleton-setup-019
+    check: 全GridDeformerを漏れなく列挙した。
+  - id: depth-skeleton-setup-020
+    check: 顔・頭部GridはHeadのみを割り当てた。
+  - id: depth-skeleton-setup-021
+    check: 体幹Gridへ覆う中央DepthBone系列を割り当てた。
+  - id: depth-skeleton-setup-022
+    check: 左右腕Gridへ同側のClavicleからHandまでを割り当てた。
+  - id: depth-skeleton-setup-023
+    check: 左右脚Gridへ同側のThighからFootまでを割り当てた。
+  - id: depth-skeleton-setup-024
+    check: 共有下半身衣装GridへPelvisと左右両脚系列を割り当てた。
+  - id: depth-skeleton-setup-025
+    check: 既存sourceが空、完全一致、期待prefixのいずれかであることを全件preflightした。
+  - id: depth-skeleton-setup-026
+    check: 全source UUID列、順序、重複なし、直下のweight/depthOffset/depthScaleを読戻した。
+- name: 非破壊性と保存
+  checklist:
+  - id: depth-skeleton-setup-027
+    check: DepthRigRoot以外のノードhash、階層、flip pair、メッシュ、パラメータを保持した。
+  - id: depth-skeleton-setup-028
+    check: 適用前後のニュートラル画像がピクセル一致した。
+  - id: depth-skeleton-setup-029
+    check: FileCommand_SaveFileでユーザー指定の保存先へ保存した。
+  - id: depth-skeleton-setup-030
+    check: 日本語・項番順のレビューにNOT APPLIEDとAPPLIED VERIFIEDの証拠を掲載した。

@@ -1,0 +1,16 @@
+schema: nijigenerate-step-checklist-v1
+title: "Example Checklist"
+sections:
+  - name: "1. Plan"
+    checklist:
+      - id: "example-001"
+        target: "current task and active skill set"
+        check: "Confirm the active task and required skills before mutation."
+      - id: "example-002"
+        target: "current One Operation review latest-review.json"
+        check: "Confirm the latest review decision before applying changes."
+  - name: "2. Verify"
+    checklist:
+      - id: "example-003"
+        target: "post-apply screenshots and audit"
+        check: "Confirm screenshots and audit exist after applying changes."

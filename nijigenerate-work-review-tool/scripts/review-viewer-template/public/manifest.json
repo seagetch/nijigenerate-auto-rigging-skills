@@ -1,0 +1,37 @@
+{
+  "schema": "review-viewer-manifest-v1",
+  "mode": "mesh-selection",
+  "model": {
+    "id": "mesh-selection-example",
+    "name": "Direct Face and Body Residual Review Example",
+    "createdAt": "2026-05-04"
+  },
+  "review": {
+    "schema": "mesh-selection-review-v1",
+    "mode": "mesh-selection",
+    "resultsDir": "examples/mesh-selection/reviews",
+    "latestReview": "examples/mesh-selection/reviews/latest-review.json"
+  },
+  "assets": {
+    "original": "examples/mesh-selection/images/original.svg"
+  },
+  "targets": [
+    {
+      "key": "faceLayers",
+      "label": "Yaw +1 Face Direct Residual",
+      "image": "examples/mesh-selection/images/overlay.svg",
+      "meshes": "examples/mesh-selection/meshes/layers.json#/targets/faceLayers",
+      "deformations": "examples/mesh-selection/deformations/initial.json#/targets/faceLayers",
+      "color": "#d4e157"
+    },
+    {
+      "key": "bodyLayers",
+      "label": "Yaw +1 Body Direct Residual",
+      "image": "examples/mesh-selection/images/overlay.svg",
+      "meshes": "examples/mesh-selection/meshes/layers.json#/targets/bodyLayers",
+      "deformations": "examples/mesh-selection/deformations/initial.json#/targets/bodyLayers",
+      "color": "#54d5ff"
+    }
+  ],
+  "initialTags": "examples/mesh-selection/tags/initial-tags.json"
+}

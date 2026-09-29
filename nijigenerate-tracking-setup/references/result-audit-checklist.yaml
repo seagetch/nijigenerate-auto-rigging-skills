@@ -1,0 +1,24 @@
+schema: nijigenerate-result-audit-v1
+title: Tracking transfer results
+items:
+  - id: tracking-result-001
+    target: Bindings
+    expected: Every target UUID/axis exists and is unique; intended inputs use the target’s actual axis semantics.
+  - id: tracking-result-002
+    target: Input evaluation
+    expected: Neutral, independent sides, clamped extremes and combined inputs have the intended signs and output ranges with correct normalization.
+  - id: tracking-result-003
+    target: Rig and textures
+    expected: Model JSON, textures and unrelated extension records are byte-identical; only intended Tracking records and section count changed.
+  - id: tracking-result-004
+    target: Saved file
+    expected: Saved INP reparses through EOF and matches the verified candidate; no concurrently changed target was overwritten.
+  - id: tracking-result-005
+    target: Runtime verification
+    expected: Live-input results are recorded when exercised; if unavailable, runtime is explicitly UNVERIFIABLE and configuration completion is not reported as live visual acceptance.
+
+# Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
+example_references:
+  - "tracking-transfer.md"
+  - "examples/ao-tracking-bindings.json"
+  - "examples/ao-tracking-audit.json"

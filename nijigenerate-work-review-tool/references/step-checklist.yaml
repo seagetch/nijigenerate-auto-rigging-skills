@@ -1,0 +1,126 @@
+schema: nijigenerate-step-checklist-v1
+title: One Operation Review Tool Step Checklist
+sections:
+- name: 1. Review Need
+  checklist:
+  - id: work-review-tool-001
+    target: current rigging task and review requirement decision
+    check: Confirm the user explicitly requested a reviewer/SPA loop. If not, do not install, launch, open, or monitor this tool.
+  - id: work-review-tool-002
+    target: depth/grid map review task
+    check: Choose `depth` mode for depth/grid maps.
+  - id: work-review-tool-003
+    target: each mesh-selection review tag and selected vertex deformation
+    check: Choose `mesh-selection` mode for existing mesh vertices and deformation arrows.
+  - id: work-review-tool-004
+    target: review approval mechanism for required review tasks
+    check: While an explicitly requested review loop is active, do not substitute local image display or private judgment for the requested review.
+- name: 2. Install And Launch
+  checklist:
+  - id: work-review-tool-005
+    target: review-viewer installation and runtime project
+    check: Install or reuse `review-viewer`.
+  - id: work-review-tool-006
+    target: review-viewer installation and runtime project
+    check: Run `npm install` if dependencies are missing.
+  - id: work-review-tool-007
+    target: review-viewer installation and runtime project
+    check: Start Vite on an available port.
+  - id: work-review-tool-008
+    target: review-viewer installation and runtime project
+    check: Open URL with `?manifest=/projects/<review-project>/manifest.json`.
+  - id: work-review-tool-009
+    target: review-viewer installation and runtime project
+    check: Keep project files under `review-viewer/public/projects/<review-project>/`.
+- name: 3. Asset Generation
+  checklist:
+  - id: work-review-tool-010
+    target: current live model view for the relevant pose
+    check: Capture current neutral/original image.
+  - id: work-review-tool-011
+    target: current live model view for the relevant pose
+    check: Capture current overlay images after setting exact parameter keypoints.
+  - id: work-review-tool-012
+    target: review data files required by the selected manifest mode
+    check: Export depth JSON, mesh JSON, deformation JSON, calibration JSON, and initial tags as needed.
+  - id: work-review-tool-013
+    target: current live model view for the relevant pose
+    check: For mesh-selection mode, build SPA-visible mesh vertices directly from `ViewCommand_CaptureLiveScreenshot` `overlayMappings[].points[].image` pixels; use `points.source -> points.image` only as conversion metadata for applying reviewed image-space arrows back to model/source-space deformation values.
+  - id: work-review-tool-034
+    target: every mesh-selection mesh JSON, tag vertexRef, and deformation arrow file
+    check: Verify visible mesh positions and deformation arrows are in captured PNG image coordinates (`points.image`, origin top-left, X right, Y down, pixels), not source/model/local/overlay coordinates or obsolete matrix-derived coordinates.
+  - id: work-review-tool-014
+    target: unapplied proposed review artifact
+    check: Mark proposed but unapplied work as `NOT APPLIED`.
+- name: 4. Manifest
+  checklist:
+  - id: work-review-tool-015
+    target: current review manifest JSON
+    check: Use `review-viewer-manifest-v1`.
+  - id: work-review-tool-016
+    target: current review manifest JSON
+    check: Use relative paths from the manifest directory.
+  - id: work-review-tool-017
+    target: current review manifest JSON
+    check: Set mode, review schema, resultsDir, latestReview, assets, targets, initialTags, and notes.
+  - id: work-review-tool-018
+    target: projection configuration for each depth-derived target
+    check: 'Include projection assumptions for depth/deformation reviews: yaw/pitch, pitch order, pivot, and upper/lower attenuation
+      when applicable; for mesh-selection reviews, include an image-coordinate note stating that visible vertices/arrows are `CaptureLiveScreenshot` `points.image` pixels.'
+  - id: work-review-tool-019
+    target: current review manifest JSON
+    check: Validate JSON before launching or refreshing.
+- name: 5. Monitoring
+  checklist:
+  - id: work-review-tool-020
+    target: current One Operation review latest-review.json for this pass
+    check: Process `latest-review.json` only if it exists and `createdAt` is newer than the last processed review.
+  - id: work-review-tool-021
+    target: current One Operation review latest-review.json for this pass
+    check: Always check `reviewResult.decision`.
+  - id: work-review-tool-022
+    target: OK review result and monitor state
+    check: On `ok`, record monitor state and accept the reviewed step.
+  - id: work-review-tool-023
+    target: current retake review JSON and refreshed review assets
+    check: On `retake`, treat tags, vertexRefs, deformations, comments, globalComment, and gridCalibration as primary instructions.
+  - id: work-review-tool-024
+    target: active review monitor or automation for this review loop
+    check: Keep automation/monitor active until `ok`.
+- name: 6. Retake
+  checklist:
+  - id: work-review-tool-025
+    target: each mesh-selection review tag and selected vertex deformation
+    check: Preserve user-edited tags, vertices, arrows, comments, and calibration.
+  - id: work-review-tool-026
+    target: each model mutation command in the pass
+    check: Apply correction through the resolved `njc` executable; never edit `.inx` directly.
+  - id: work-review-tool-027
+    target: refreshed review assets after retake correction
+    check: Regenerate current review assets so the SPA does not show stale state.
+  - id: work-review-tool-028
+    target: current retake review JSON and refreshed review assets
+    check: Continue OK/Retake loop.
+- name: 7. Post-Apply Review
+  checklist:
+  - id: work-review-tool-029
+    target: modified model after applying accepted depth or residual changes
+    check: After applying accepted direct residuals or depth-derived changes, regenerate `APPLIED` assets from the modified
+      model.
+  - id: work-review-tool-030
+    target: post-apply latest-review JSON
+    check: Require a second newer `ok` review when the skill or task requires post-apply confirmation.
+  - id: work-review-tool-031
+    target: current One Operation review latest-review.json for this pass
+    check: Archive review JSON and save audit path/model path.
+- name: 8. Exit
+  checklist:
+  - id: work-review-tool-032
+    target: review loop exit state
+    check: Stop only after a newer `ok` review, recorded state, and deleted/disabled monitor automation.
+  - id: work-review-tool-033
+    target: monitor tick with no new latest-review JSON
+    check: If no new review exists, do nothing.
+  - id: work-review-tool-035
+    target: current review manifest JSON
+    check: Report manifest path, latest review path, accepted `createdAt`, and any unverifiable item.

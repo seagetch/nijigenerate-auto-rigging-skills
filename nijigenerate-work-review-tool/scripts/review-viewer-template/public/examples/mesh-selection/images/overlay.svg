@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="5000" height="5000" viewBox="0 0 5000 5000">
+  <rect width="5000" height="5000" fill="#f7f4ee"/>
+  <ellipse cx="2500" cy="1750" rx="780" ry="920" fill="#f1c7b6"/>
+  <path d="M1450 680 C1850 260 3180 250 3560 690 C3520 1180 3290 1580 2500 1940 C1710 1580 1490 1180 1450 680Z" fill="#263045"/>
+  <path d="M1700 2350 L3300 2350 L3500 3900 L1500 3900Z" fill="#6a78a8"/>
+  <path d="M1550 3750 L3450 3750 L3350 4750 L1650 4750Z" fill="#2d344f"/>
+  <g fill="none" stroke="#54d5ff" stroke-width="18" opacity="0.8">
+    <path d="M1700 2350 L3300 2350 L3500 3900 L1500 3900Z"/>
+    <path d="M1550 3750 L3450 3750 L3350 4750 L1650 4750Z"/>
+  </g>
+  <g fill="none" stroke="#d4e157" stroke-width="18" opacity="0.8">
+    <path d="M1900 1050 L3100 1050 L3250 2450 L1750 2450Z"/>
+    <path d="M1450 650 L3550 650 L3350 1700 L2500 1950 L1650 1700Z"/>
+  </g>
+</svg>

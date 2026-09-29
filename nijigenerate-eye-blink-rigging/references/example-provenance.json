@@ -1,0 +1,59 @@
+{
+  "purpose": "Historical reading examples, not executable instructions or universal presets",
+  "files": [
+    {
+      "path": "images/example-deep-closed.png",
+      "source": "nijigenerate-eye-blink-rigging/assets/example-deep-closed.png",
+      "sha256": "b4ce7e8763c1f750bbf231f99bf7021e3ed951db7aaddc679637ec11758ee4ff",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/example-neutral-closed.png",
+      "source": "nijigenerate-eye-blink-rigging/assets/example-neutral-closed.png",
+      "sha256": "639d37a837ae201fc3a26d19da4413e82cb30284f35a45db1aab37f6145f0a53",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/example-open.png",
+      "source": "nijigenerate-eye-blink-rigging/assets/example-open.png",
+      "sha256": "4897c8169523fdd61434232e34d831e69c8746751d378ccb36d98b01ad4a5ffd",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/example-smile-closed.png",
+      "source": "nijigenerate-eye-blink-rigging/assets/example-smile-closed.png",
+      "sha256": "20d6aabaeb19f69364d6752df6bc18e2a10f8789d25efcce0b3a9d035a662d43",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/ao-blink-final-matrix.png",
+      "source": "work/njc-restart-20260921/audit/expressions-20260926/blink-final-matrix.png",
+      "sha256": "ff8c7ed2093f0b43da7de936cd76c4f6a22b2d75e66a1412663bf2df68ca67d5",
+      "status": "historical-comparison-not-global-approval"
+    },
+    {
+      "path": "images/ao-blink-endpoint-only-superseded-matrix.png",
+      "source": "work/njc-restart-20260921/audit/expressions-20260926/blink-endpoint-only-superseded-matrix.png",
+      "sha256": "abec8c6c97e497327de71bb42ea45ff47780407ef8d5ac8111b7d0061a8876fd",
+      "status": "superseded-negative-example"
+    },
+    {
+      "path": "images/ao-blink-whole-contour-overlay-eyes.png",
+      "source": "work/njc-restart-20260921/audit/expressions-20260926/blink-whole-contour-overlay-eyes.png",
+      "sha256": "95951e9199ed7fe1bd1d1ad289ff4f9ebda3bd1bfa0a13f632d4db83cb5e0c68",
+      "status": "historical-comparison-not-global-approval"
+    },
+    {
+      "path": "examples/ao-blink-whole-contour-translation-audit.json",
+      "source": "work/njc-restart-20260921/audit/expressions-20260926/blink-whole-contour-translation-audit.json",
+      "sha256": "c18de09b8e8d693c9857aabb4826376d40472f743637734004415d7cce55945c",
+      "status": "model-specific-numeric-evidence"
+    },
+    {
+      "path": "examples/ao-blink-whole-contour-endpoint-audit.json",
+      "source": "work/njc-restart-20260921/audit/expressions-20260926/blink-whole-contour-endpoint-audit.json",
+      "sha256": "0438cc9c83bf82c692504e1fdce626db3fc72381dc54954558524b2e386f326e",
+      "status": "model-specific-numeric-evidence"
+    }
+  ]
+}

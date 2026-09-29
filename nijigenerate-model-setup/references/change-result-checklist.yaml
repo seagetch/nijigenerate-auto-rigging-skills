@@ -1,0 +1,16 @@
+schema: nijigenerate-result-audit-v1
+title: "model-setup change result audit"
+items:
+  - id: model-setup-change-001
+    target: "eye/mouth controllers"
+    expected: "Each broad surface deformation has one intended owner; same-region Grid/DynamicComposite doubling is absent where prohibited."
+  - id: model-setup-change-002
+    target: "asset registration when replacing"
+    expected: "The intended current asset version, original canvas registration, scale, alpha and complete connected anatomy are verified before import."
+  - id: model-setup-change-003
+    target: "replacement dependencies"
+    expected: "Texture replacement and any mesh migration preserve unrelated rigging; neighboring chest/neck/shoulder/waist surfaces do not duplicate or detach."
+
+# Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
+example_references:
+  - "../../nijigenerate-post-rig-adjustment/references/ao-visual-examples.md"

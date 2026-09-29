@@ -1,0 +1,82 @@
+schema: nijigenerate-step-checklist-v1
+title: Occlusion Mask Rigging Step Checklist
+sections:
+- name: 1. Problem Audit
+  checklist:
+  - id: occlusion-mask-001
+    target: specific protruding target, occluding target, and failing pose
+    check: Identify the protruding part, occluding part, affected pose/key, and parameter values.
+  - id: occlusion-mask-002
+    target: current live model view for the relevant pose
+    check: Capture current screenshot showing the penetration.
+  - id: occlusion-mask-003
+    target: current model hierarchy around each affected target node
+    check: Confirm whether the correct fix is masking rather than depth, direct residual, hierarchy, root, or drawing order
+      correction.
+  - id: occlusion-mask-004
+    target: each edited parameter binding on each explicit target node
+    check: Read current masks, DodgeMask sources, drawing modes, hierarchy, and bindings.
+- name: 2. Mask Source Planning
+  checklist:
+  - id: occlusion-mask-005
+    target: occluding source Part or surface silhouette
+    check: Choose the occluding part whose silhouette should hide the protruding region.
+  - id: occlusion-mask-006
+    target: planned mask source object relative to visible occluder
+    check: Determine whether the mask must be separate from the visible part.
+  - id: occlusion-mask-007
+    target: mask contour path and accepted side convention
+    check: Define mask contour from the occluder outer silhouette and required hidden region.
+  - id: occlusion-mask-008
+    target: side-specific parameter convention for the current model
+    check: Preserve accepted contour paths and side conventions.
+- name: 3. Review Gate
+  checklist:
+  - id: occlusion-mask-009
+    target: ambiguous mask contour review target
+    check: For ambiguous contours, publish a NOT APPLIED overlay/readout before mutation.
+  - id: occlusion-mask-010
+    target: each mesh-selection review tag and selected vertex deformation
+    check: Use One Operation review mesh-selection mode only when the user explicitly requests it.
+  - id: occlusion-mask-011
+    target: mask contour One Operation review latest-review JSON
+    check: If the user explicitly requested the review loop, wait for newer `ok` JSON before creating or replacing mask geometry; otherwise do not start the reviewer.
+- name: 4. Mask Creation
+  checklist:
+  - id: occlusion-mask-012
+    target: active nijigenerate command environment
+    check: Create or update the mask object through the resolved `njc` executable.
+  - id: occlusion-mask-013
+    target: source artwork files and model file persistence path
+    check: Do not edit source artwork or `.inx` directly.
+  - id: occlusion-mask-014
+    target: DodgeMask source registration for the masked target
+    check: Register the mask as a DodgeMask source for the target.
+  - id: occlusion-mask-015
+    target: explicit masked targets and unrelated masks
+    check: Apply only to explicit target nodes and preserve unrelated masks.
+- name: 5. Pose Binding
+  checklist:
+  - id: occlusion-mask-016
+    target: pose-specific mask bindings and neighboring parameter keys
+    check: If the occlusion must change by pose, bind mask or target behavior only on affected parameter keys.
+  - id: occlusion-mask-017
+    target: neutral/start key for each edited parameter or binding
+    check: Keep neutral unchanged unless the occlusion exists in neutral and is reviewed.
+  - id: occlusion-mask-018
+    target: pose-specific mask bindings and neighboring parameter keys
+    check: Avoid hiding visible regions that should remain present at neighboring keys.
+- name: 6. Verification
+  checklist:
+  - id: occlusion-mask-019
+    target: current live model view for the relevant pose
+    check: Capture the failing pose, neutral, neighboring yaw/pitch keys, and diagonal poses.
+  - id: occlusion-mask-020
+    target: masked protruding part in failing pose
+    check: Verify the protrusion is hidden and the occluder silhouette is not visibly cut.
+  - id: occlusion-mask-021
+    target: all non-target parts affected by mask scope
+    check: Verify masks do not affect unrelated parts.
+  - id: occlusion-mask-022
+    target: current One Operation review latest-review.json for this pass
+    check: Save audit with mask source, masked target, parameter keys, contours, screenshots, and review JSON if used.

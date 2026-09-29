@@ -1,0 +1,294 @@
+[
+  {
+    "name": "Face::Yaw-Pitch (X)",
+    "bindingType": "RatioBinding",
+    "param": 1102394103,
+    "axis": 0,
+    "sourceType": "BoneRotYaw",
+    "sourceName": "Head",
+    "sourceDisplayName": "Head (Yaw)",
+    "inverse": false,
+    "inRange": [
+      -30,
+      30
+    ],
+    "outRange": [
+      -1,
+      1
+    ],
+    "dampenLevel": 5
+  },
+  {
+    "name": "Face::Yaw-Pitch (Y)",
+    "bindingType": "RatioBinding",
+    "param": 1102394103,
+    "axis": 1,
+    "sourceType": "BoneRotPitch",
+    "sourceName": "Head",
+    "sourceDisplayName": "Head (Pitch)",
+    "inverse": true,
+    "inRange": [
+      -20,
+      20
+    ],
+    "outRange": [
+      -1,
+      1
+    ],
+    "dampenLevel": 5
+  },
+  {
+    "name": "Body::Yaw-Pitch (X)",
+    "bindingType": "RatioBinding",
+    "param": 3695798303,
+    "axis": 0,
+    "sourceType": "BoneRotYaw",
+    "sourceName": "Head",
+    "sourceDisplayName": "Head (Yaw)",
+    "inverse": false,
+    "inRange": [
+      -30,
+      30
+    ],
+    "outRange": [
+      -1,
+      1
+    ],
+    "dampenLevel": 5
+  },
+  {
+    "name": "Body::Yaw-Pitch (Y)",
+    "bindingType": "RatioBinding",
+    "param": 3695798303,
+    "axis": 1,
+    "sourceType": "BoneRotPitch",
+    "sourceName": "Head",
+    "sourceDisplayName": "Head (Pitch)",
+    "inverse": true,
+    "inRange": [
+      -15,
+      15
+    ],
+    "outRange": [
+      -1,
+      1
+    ],
+    "dampenLevel": 5
+  },
+  {
+    "name": "Face::Roll",
+    "bindingType": "RatioBinding",
+    "param": 1655607454,
+    "axis": 0,
+    "sourceType": "BoneRotRoll",
+    "sourceName": "Head",
+    "sourceDisplayName": "Head (Roll)",
+    "inverse": true,
+    "inRange": [
+      -30,
+      30
+    ],
+    "outRange": [
+      -1,
+      1
+    ],
+    "dampenLevel": 0
+  },
+  {
+    "name": "Body::Roll",
+    "bindingType": "RatioBinding",
+    "param": 4070183123,
+    "axis": 0,
+    "sourceType": "BoneRotRoll",
+    "sourceName": "Head",
+    "sourceDisplayName": "Head (Roll)",
+    "inverse": true,
+    "inRange": [
+      -30,
+      30
+    ],
+    "outRange": [
+      -1,
+      1
+    ],
+    "dampenLevel": 5
+  },
+  {
+    "name": "Eye::R::Blink (X)",
+    "param": 3558050510,
+    "axis": 0,
+    "bindingType": "RatioBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "eyeBlinkRight",
+    "sourceDisplayName": "eyeBlinkRight",
+    "inverse": false,
+    "inRange": [
+      0,
+      0.6
+    ],
+    "outRange": [
+      0,
+      1
+    ],
+    "dampenLevel": 4
+  },
+  {
+    "name": "Eye::R::Blink (Y)",
+    "param": 3558050510,
+    "axis": 1,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "mouthSmileRight",
+    "sourceDisplayName": "mouthSmileRight",
+    "expression": "0.5+(BLEND(\"mouthSmileRight\")-BLEND(\"mouthFunnel\"))/2",
+    "dampenLevel": 4
+  },
+  {
+    "name": "Eye::R::X-Y (X)",
+    "param": 3073093406,
+    "axis": 0,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "eyeLookInRight",
+    "sourceDisplayName": "eyeLookInRight",
+    "expression": "0.5+(BLEND(\"eyeLookInRight\")-BLEND(\"eyeLookOutRight\"))/2",
+    "dampenLevel": 6
+  },
+  {
+    "name": "Eye::R::X-Y (Y)",
+    "param": 3073093406,
+    "axis": 1,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "eyeLookUpRight",
+    "sourceDisplayName": "eyeLookUpRight",
+    "expression": "0.5+(BLEND(\"eyeLookUpRight\")-BLEND(\"eyeLookDownRight\"))/2",
+    "dampenLevel": 6
+  },
+  {
+    "name": "Eyebrow::R (X)",
+    "param": 3879745471,
+    "axis": 0,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "browOuterUpRight",
+    "sourceDisplayName": "browOuterUpRight",
+    "expression": "0.5+((BLEND(\"browInnerUp\")+BLEND(\"browOuterUpRight\"))/2-BLEND(\"browDownRight\"))/2",
+    "dampenLevel": 5
+  },
+  {
+    "name": "Eyebrow::R (Y)",
+    "param": 3879745471,
+    "axis": 1,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "browInnerUp",
+    "sourceDisplayName": "browInnerUp",
+    "expression": "0.5+(BLEND(\"browInnerUp\")-(BLEND(\"browOuterUpRight\")+BLEND(\"browDownRight\"))/2)/2",
+    "dampenLevel": 5
+  },
+  {
+    "name": "Eye::L::Blink (X)",
+    "param": 886532858,
+    "axis": 0,
+    "bindingType": "RatioBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "eyeBlinkLeft",
+    "sourceDisplayName": "eyeBlinkLeft",
+    "inverse": false,
+    "inRange": [
+      0,
+      0.6
+    ],
+    "outRange": [
+      0,
+      1
+    ],
+    "dampenLevel": 4
+  },
+  {
+    "name": "Eye::L::Blink (Y)",
+    "param": 886532858,
+    "axis": 1,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "mouthSmileLeft",
+    "sourceDisplayName": "mouthSmileLeft",
+    "expression": "0.5+(BLEND(\"mouthSmileLeft\")-BLEND(\"mouthFunnel\"))/2",
+    "dampenLevel": 4
+  },
+  {
+    "name": "Eye::L::X-Y (X)",
+    "param": 1913828741,
+    "axis": 0,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "eyeLookOutLeft",
+    "sourceDisplayName": "eyeLookOutLeft",
+    "expression": "0.5+(BLEND(\"eyeLookOutLeft\")-BLEND(\"eyeLookInLeft\"))/2",
+    "dampenLevel": 6
+  },
+  {
+    "name": "Eye::L::X-Y (Y)",
+    "param": 1913828741,
+    "axis": 1,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "eyeLookUpLeft",
+    "sourceDisplayName": "eyeLookUpLeft",
+    "expression": "0.5+(BLEND(\"eyeLookUpLeft\")-BLEND(\"eyeLookDownLeft\"))/2",
+    "dampenLevel": 6
+  },
+  {
+    "name": "Eyebrow::L (X)",
+    "param": 3456770268,
+    "axis": 0,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "browOuterUpLeft",
+    "sourceDisplayName": "browOuterUpLeft",
+    "expression": "0.5+((BLEND(\"browInnerUp\")+BLEND(\"browOuterUpLeft\"))/2-BLEND(\"browDownLeft\"))/2",
+    "dampenLevel": 5
+  },
+  {
+    "name": "Eyebrow::L (Y)",
+    "param": 3456770268,
+    "axis": 1,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "browInnerUp",
+    "sourceDisplayName": "browInnerUp",
+    "expression": "0.5+(BLEND(\"browInnerUp\")-(BLEND(\"browOuterUpLeft\")+BLEND(\"browDownLeft\"))/2)/2",
+    "dampenLevel": 5
+  },
+  {
+    "name": "Mouth::Open (X)",
+    "param": 1214172981,
+    "axis": 0,
+    "bindingType": "RatioBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "jawOpen",
+    "sourceDisplayName": "jawOpen",
+    "inverse": true,
+    "inRange": [
+      0,
+      0.5
+    ],
+    "outRange": [
+      0,
+      1
+    ],
+    "dampenLevel": 3
+  },
+  {
+    "name": "Mouth::Open (Y)",
+    "param": 1214172981,
+    "axis": 1,
+    "bindingType": "ExpressionBinding",
+    "sourceType": "Blendshape",
+    "sourceName": "mouthSmileRight",
+    "sourceDisplayName": "mouthSmileRight",
+    "expression": "0.5+((BLEND(\"mouthSmileRight\")+BLEND(\"mouthSmileLeft\"))/2-BLEND(\"mouthFunnel\"))/2",
+    "dampenLevel": 4
+  }
+]

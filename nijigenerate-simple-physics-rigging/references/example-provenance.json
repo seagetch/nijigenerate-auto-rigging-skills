@@ -1,0 +1,11 @@
+{
+  "purpose": "Historical reading examples, not executable instructions or universal presets",
+  "files": [
+    {
+      "path": "examples/ao-quarter-length-audit.json",
+      "source": "work/njc-restart-20260921/audit/physics-quarter-length-20260926/audit.json",
+      "sha256": "17eedb82c6bc6950ae4e822575b2220e8857051b5e7829a6cf3f4095bb8e14cb",
+      "status": "numeric-settings-evidence-not-timing-proof"
+    }
+  ]
+}

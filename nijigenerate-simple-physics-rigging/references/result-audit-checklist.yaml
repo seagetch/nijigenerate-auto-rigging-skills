@@ -1,0 +1,47 @@
+schema: nijigenerate-result-audit-v1
+title: Simple Physics Result Audit
+items:
+  - id: physics-result-001
+    target: all visually plausible moving regions
+    expected: Front/side/back hair, skirt and lower clothing, sleeves, ears, ornaments, ribbons, frills, cords, and other candidates have an explicit include/exclude decision.
+  - id: physics-result-002
+    target: each Physics parameter
+    expected: Name, dimensionality, range, axes, neutral, endpoints, and intended target UUIDs are correct.
+  - id: physics-result-003
+    target: each Physics deformation binding
+    expected: Authored deformation keys existed and were visually verified before SimplePhysics assignment.
+  - id: physics-result-004
+    target: each SimplePhysics node
+    expected: The node is under the intended moving target/control and references exactly the intended Physics parameter.
+  - id: physics-result-005
+    target: assignment mutation state
+    expected: Global physics/drivers were disabled while assignments changed and restored/reset afterward.
+  - id: physics-result-006
+    target: Gravity
+    expected: Gravity uses 1.0 as the baseline unless a model-specific verified reason is recorded.
+  - id: physics-result-007
+    target: Length
+    expected: Length is derived from the current model-space fixed-to-free endpoint distance and is not copied as a generic constant.
+  - id: physics-result-008
+    target: fixed attachments
+    expected: Hair roots, skirt waist, sleeve shoulders, ear bases, and accessory attachments remain stable at all authored keys.
+  - id: physics-result-009
+    target: skirts and lower clothing
+    expected: All intended lower-clothing panels move coherently without using Physics to correct deterministic Body yaw/pitch defects.
+  - id: physics-result-010
+    target: playback and reset
+    expected: Motion is visible, plausible, non-explosive, and returns correctly after Physics reset.
+  - id: physics-result-011
+    target: every pre-existing Physics binding
+    expected: Existing targets and non-neutral authored keys remain present, including FrontHair::Physics and BackHair::Physics.
+  - id: physics-result-012
+    target: unrelated model state and serialized size
+    expected: No unrelated parameter, depth, DepthBone, BoneSource, hierarchy, mesh, or unexplained size change occurred.
+evidence:
+  required:
+    - candidate include/exclude inventory
+    - parameter axes, isSet keys, target UUIDs, and SimplePhysics assignment readback
+    - measured fixed-to-free distance and applied Length
+    - settings table including Gravity
+    - authored-key and playback/reset screenshots
+    - all-Physics and unrelated-state diff

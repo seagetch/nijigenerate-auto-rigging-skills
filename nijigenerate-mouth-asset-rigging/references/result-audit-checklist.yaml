@@ -1,0 +1,49 @@
+schema: nijigenerate-result-audit-v1
+title: 口素材・構造リギング結果監査
+instructions:
+  - 項番1から順に全件をOK、RETAKE、UNVERIFIABLEで判定する。
+  - RETAKEだけを修正した後も、項番1から全件を再監査する。
+  - 全件OKになるまで完成、引き渡し、不要な反復保存をしない。
+items:
+  - id: mouth-result-001
+    result: 元口のalpha範囲と未加工の元顔を分析し、位置、寸法、線、色、コントラストが記録されている。
+    evidence: 元口分析値と元顔画像。
+  - id: mouth-result-002
+    result: 元顔を直接参照した一つの開口口masterが、原寸の顔上で大きさ、中心、画風の基準を満たす。
+    evidence: 採用masterと元顔への原寸合成。
+  - id: mouth-result-003
+    result: masterが幾何学的な組立て口ではなく、独立生成した不整合な素材の寄せ集めでもない。
+    evidence: 生成履歴またはmasterの視覚比較。
+  - id: mouth-result-004
+    result: Base、Tongue、Teeth::Lower、Teeth::Upper、Outlineの5素材が同じ採用masterから分離されている。
+    evidence: 5素材の透明画像と由来記録。
+  - id: mouth-result-005
+    result: 5素材の中立合成が採用masterの外形、陰影、色を再現する。
+    evidence: masterと中立合成の比較。
+  - id: mouth-result-006
+    result: 舌と上下の歯がBaseより幅広く、高さにも余裕があり、最大変形で透明端を露出しない。
+    evidence: alpha範囲の数値、bleed可視化、最大変形表示。
+  - id: mouth-result-007
+    result: 5素材が意図した口DynamicCompositeの直下にあり、子UUIDと順序が読戻しで確認されている。
+    evidence: njcによる親子UUIDと順序の読戻し。
+  - id: mouth-result-008
+    result: BaseとOutlineがNormal、舌と上下の歯がBaseを有効なクリップ元とするClipToLowerである。
+    evidence: drawing modeとクリップ元の読戻し、実描画。
+  - id: mouth-result-009
+    result: 実描画の前後関係が前からOutline、上の歯、下の歯、舌、Baseである。
+    evidence: zSort読戻しと重なりが分かる表示。
+  - id: mouth-result-010
+    result: 各メッシュが薄い素材の輪郭を保持し、3頂点1三角形など変形不能な縮退を起こしていない。
+    evidence: 頂点数、三角形数、メッシュオーバーレイ。
+  - id: mouth-result-011
+    result: 口DynamicCompositeがGrid形状で、最大開口、閉口、横長、横狭、非対称の包絡範囲より一回り大きい。
+    evidence: 最大変形包絡とGrid境界のオーバーレイ。
+  - id: mouth-result-012
+    result: 原寸の顔または全身表示で、口の大きさ、中心、線、色、コントラストが自然である。
+    evidence: 原寸の中立表示と元絵比較。
+  - id: mouth-result-013
+    result: 中立と全極値で、隙間、内部素材の消失、前後逆転、Grid境界接触、クリップ破綻がない。
+    evidence: 中立、最大開口、閉口、横長、横狭、非対称の表示。
+  - id: mouth-result-014
+    result: 口以外のモデル構造、パラメータ、メッシュ、物理、描画状態が変更されていない。
+    evidence: 操作前後の対象外差分。

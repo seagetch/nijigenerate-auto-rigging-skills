@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Limb Root Positioning"
+  short_description: "Move limb root pivots safely with LockToRoot."
+  default_prompt: "Move limb roots to anatomical attachment points in this nijigenerate model."

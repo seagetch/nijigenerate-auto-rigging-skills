@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate 自動リグ"
+  short_description: "今回確立した正規手順でnijigenerate自動リグを順番に実行"
+  default_prompt: "Use $nijigenerate-automatic-rigging to rig the loaded model by the canonical session procedure."

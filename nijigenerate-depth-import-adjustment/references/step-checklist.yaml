@@ -1,0 +1,75 @@
+title: Nijigenerate depth import and adjustment audit
+language: ja
+items:
+  - id: 1
+    label: njcの解決
+    pass: 明示パス、NJC_PATH、PATHの順でnjcを解決し、現行ツールスキーマを保存した
+  - id: 2
+    label: 操作経路
+    pass: モデル操作はすべてnjc経由であり、INX直接編集、Computer Use、レビューSPAを使用していない
+  - id: 3
+    label: 入力画像
+    pass: 寸法、ビット深度、向き、キャラクター被覆、極性、有効ダイナミックレンジを確認した
+  - id: 4
+    label: レイヤーマッピング
+    pass: すべての有効レイヤーと対象GridDeformerのUUID対応を確認した
+  - id: 5
+    label: 取込前深度
+    pass: 各対象のサンプル数、有効数、0または欠損数、最小値、最大値、分断を記録した
+  - id: 6
+    label: 欠損補完
+    pass: alpha領域内の0深度または大きな分断がある対象でFill alpha-depth gapsを必要回数実行し、改善を再計測した
+  - id: 7
+    label: 部位別変換
+    pass: 必要なレイヤーだけZスケールとZオフセットを調整し、顔を一律に平坦化していない
+  - id: 8
+    label: インポート実行
+    pass: すべての有効対象が妥当になった後にのみApplyを実行した
+  - id: 9
+    label: 局所補正
+    pass: 現在のオーバーレイから問題部位をグリッドへ対応付け、必要な連続セルだけを滑らかに補正した
+  - id: 10
+    label: Z機構の区別
+    pass: 局所深度、取込スケールとオフセット、node translationZ、zSortを用途通りに使い分けた
+  - id: 11
+    label: 顔と口
+    pass: 顔の立体感を残しつつ、横向きで口だけが大きく突出していない
+  - id: 12
+    label: 髪と装飾
+    pass: FrontHair、Headwear、Earwearを局所確認し、貫通、過剰な凹み、非表示による隠蔽がない
+  - id: 13
+    label: 首
+    pass: 首上部と下部の前後差が連続的で、不自然な突起または窪みがない
+  - id: 14
+    label: 配列保全
+    pass: 深度配列長と未編集インデックスを保持し、SetDepths直後に編集インデックスを再読した
+  - id: 15
+    label: Fit Z to Depth
+    pass: 最終深度補正後に実コマンドまたは明示した同等処理を行い、全DepthBoneのlocal/world Zを数値検証した
+  - id: 16
+    label: デフォルトパラメータ
+    pass: Fit Z検証後にのみ標準Depthパラメータを生成し、重複生成していない
+  - id: 17
+    label: キー別表示
+    pass: ParameditCommand_SetParameterKeypointで正確なキーを設定し、中立と必要な端点・隅を撮影した
+  - id: 18
+    label: 中立状態
+    pass: 保存前に中立キーへ戻し、無関係なノード、階層、パラメータ、バインディングが変化していない
+  - id: 19
+    label: 保存
+    pass: FileCommand_SaveFileのfileプロパティで新しい明示パスへ保存し、出力パスを報告した
+  - id: 20
+    label: 画像とグリッドの対応
+    pass: 現在のオーバーレイから顔、体、衣装の必要部位を実際の行、列、セル、頂点へ対応付け、推測位置を確定値として使用していない
+  - id: 21
+    label: 顔と髪の深度責任
+    pass: Face、FrontHair、SideHair、BackHair、Headwear、Earwear、首の有効深度を部位別に確認し、口突出、顔貫通、局所的な窪みがない
+  - id: 22
+    label: 体と胸の深度責任
+    pass: Bodyが広い体積、Chestが左右二つの局所体積を担当し、腰、骨盤、下半身の側面が平板化していない
+  - id: 23
+    label: 衣装深度
+    pass: Front、Back、Side、Localを分類し、親変形を継承する残差面と独立全面を区別している
+  - id: 24
+    label: 正準深度監査
+    pass: 対象UUID、グリッド寸法、深度配列ハッシュ、変換、有効Z比較を保存し、後続リギングスキルが同じ監査状態を参照できる

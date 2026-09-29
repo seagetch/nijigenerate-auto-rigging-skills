@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Tracking Setup"
+  short_description: "Map reference Tracking settings to exported INP models"
+  default_prompt: "Use $nijigenerate-tracking-setup to add Tracking settings from reference models to an existing exported INP while preserving the rig and textures."

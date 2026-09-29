@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nijigenerate Occlusion Mask Rigging"
+  short_description: "Hide protruding parts with silhouette-based DodgeMask objects."
+  default_prompt: "Create or revise occlusion masks so protruding parts are hidden behind the correct nijigenerate clothing edge."

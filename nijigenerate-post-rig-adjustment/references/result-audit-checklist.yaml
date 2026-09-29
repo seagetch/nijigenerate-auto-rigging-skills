@@ -1,0 +1,46 @@
+schema: nijigenerate-result-audit-v1
+title: Post Rig Adjustment Result Audit
+items:
+  - id: post-result-001
+    target: depth and skeleton prerequisites
+    expected: Canonical depth, Fit Z, standard Depth parameters, DepthBones, and BoneSources remain verified and unchanged unless routed back to their owning skill.
+  - id: post-result-002
+    target: visible broad parent surfaces
+    expected: Face, Front Hair, Body, shoulders, Chest, torso, topwear front/back, bottomwear, skirt, and limb grids were each evaluated rather than only small child Parts.
+  - id: post-result-003
+    target: each corrected defect
+    expected: The defect is classified correctly as depth, skeleton, broad Grid/Path, direct Part, occlusion, or Physics.
+  - id: post-result-004
+    target: broad GridDeformer or intentional PathDeformer bindings
+    expected: Broad motion is verified; only a demonstrated in-scope parent defect is edited. Valid parents and user-prohibited Grid XY remain unchanged before Part residuals.
+  - id: post-result-005
+    target: direct Part bindings
+    expected: Direct deformation is limited to the smallest remaining local contour, seam, attachment, or artwork-specific artifact and tapers through neighbors.
+  - id: post-result-006
+    target: both yaw directions
+    expected: Near/far sides are identified from each resulting image and opposite yaw does not reuse an inappropriate mirrored clothing or cheek correction.
+  - id: post-result-007
+    target: Face cardinal directions and four corners
+    expected: Cheeks, face outline, mouth projection, hair overlap, and all four corners are visually plausible at exact keys.
+  - id: post-result-008
+    target: Body cardinal directions and four corners
+    expected: Both shoulders, chest, torso, hips, skirt, knees, and clothing remain attached and plausible at exact keys.
+  - id: post-result-009
+    target: parent and child bindings
+    expected: Every child residual affected by a parent Grid, Pelvis, Spine, or DepthBone change was recomputed from the current composed parent result.
+  - id: post-result-010
+    target: every edited 5x5 binding
+    expected: All 25 cells have intentional set/unset state and adjacent interpolation follows surrounding authored keys.
+  - id: post-result-011
+    target: neutral and accepted anchors
+    expected: Neutral, roots, seams, attachment points, centerlines, and user-accepted contours remain unchanged unless explicitly targeted.
+  - id: post-result-012
+    target: unrelated parameters and model state
+    expected: No unrelated parameter target, depth, DepthBone, BoneSource, mask, Physics binding, or unexplained size change occurred.
+evidence:
+  required:
+    - defect classification table with owning skill
+    - before/after exact-key screenshots for cardinal directions, corners, and intermediate keys
+    - per-binding 25-cell isSet and value matrix
+    - parent contribution and recalculated child residual table
+    - neutral and unrelated-state diff

@@ -1,0 +1,19 @@
+{
+  "purpose": "Historical reading examples, not executable instructions or universal presets",
+  "files": [
+    {
+      "path": "examples/ao-tracking-bindings.json",
+      "source": "work/tracking-20260928/tracking.json",
+      "sha256": "dc8a2e5bd918ea02b8b81e7c3636ebde41afe7ee4e2c16620f7f5545f32bac32",
+      "status": "historical-model-specific-config"
+    },
+    {
+      "path": "examples/ao-tracking-audit.json",
+      "source": "work/tracking-20260928/audit.json",
+      "source_sha256": "b211846dd64125ec7d1f317b100a686606c537d707d47bb15fbf320a41f7110c",
+      "sha256": "11e155a51159fd6326f9962a0865d303e42f85268cfd8b98d86dcf0bfdb95ded",
+      "status": "numeric-audit-runtime-untested",
+      "transformation": "target/references paths reduced to basenames; all evidence fields preserved"
+    }
+  ]
+}

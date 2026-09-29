@@ -1,0 +1,41 @@
+{
+  "purpose": "Historical reading examples, not executable instructions or universal presets",
+  "files": [
+    {
+      "path": "images/example-closed-displeased.png",
+      "source": "nijigenerate-mouth-open-rigging/assets/example-closed-displeased.png",
+      "sha256": "f7a513b4e54ba67d7bf81297e4b6f1f7d9f6855dffc6c41ea90b1be167c906d5",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/example-closed-neutral.png",
+      "source": "nijigenerate-mouth-open-rigging/assets/example-closed-neutral.png",
+      "sha256": "fa6f6d1012cc94d19c30319db395ee8dec3be017cc5ea2d66df5584923003a8a",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/example-closed-smile.png",
+      "source": "nijigenerate-mouth-open-rigging/assets/example-closed-smile.png",
+      "sha256": "d078a8961d0d8e35b8424b2c955240b2a5c6bd5ddb401f78663cf43574ca9c37",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/example-half-neutral.png",
+      "source": "nijigenerate-mouth-open-rigging/assets/example-half-neutral.png",
+      "sha256": "162a78deeb647ab64558f96ca2c4630ce6b0cd120fbe3842aa919f125adc6073",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/example-open-neutral.png",
+      "source": "nijigenerate-mouth-open-rigging/assets/example-open-neutral.png",
+      "sha256": "b034c872d9f1257e4591b6a432e42e8c94b354c07b78f2516afbfab1e32d398b",
+      "status": "existing-illustration-not-a-preset"
+    },
+    {
+      "path": "images/ao-mouth-matrix.png",
+      "source": "work/njc-restart-20260921/audit/expressions-20260926/mouth-matrix.png",
+      "sha256": "ef4dbb54a9f01f11a6effd2b86ddc48faa6ec31e968167315877038ef92207c8",
+      "status": "historical-matrix-not-global-approval"
+    }
+  ]
+}

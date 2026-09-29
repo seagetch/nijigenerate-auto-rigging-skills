@@ -1,0 +1,15 @@
+schema: nijigenerate-result-audit-v1
+title: "depth-skeleton-setup change result audit"
+items:
+  - id: depth-skeleton-setup-change-001
+    target: "independent following when requested"
+    expected: "World pitch axis follows the intended yaw frame; head/torso source weights transition continuously without a threshold seam."
+  - id: depth-skeleton-setup-change-002
+    target: "parameter links"
+    expected: "Explicit source/destination axes and signs match the requested behavior with no duplicate driver, cycle or unintended Roll inheritance."
+  - id: depth-skeleton-setup-change-003
+    target: "skirt when edited"
+    expected: "Front/back bones occupy their own accepted surfaces; pelvis yaw and vertical movement reach the waistband without unwanted upper-chest pitch."
+  - id: depth-skeleton-setup-change-004
+    target: "knee lowering when edited"
+    expected: "Both thigh/shin chains reach locked ankles, knees remain separated at intermediate and extreme bend, and lowering is not replaced by extra convergence."

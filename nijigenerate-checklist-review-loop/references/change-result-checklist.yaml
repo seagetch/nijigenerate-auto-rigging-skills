@@ -1,0 +1,9 @@
+schema: nijigenerate-result-audit-v1
+title: "checklist-review-loop change result audit"
+items:
+  - id: checklist-review-loop-change-001
+    target: "phase-local evidence"
+    expected: "All current-stage prerequisites pass; future work has an explicit owner/revisit record, not a fake OK."
+  - id: checklist-review-loop-change-002
+    target: "completion record"
+    expected: "User visual rejection reopens the affected result; a current-state save does not constitute visual acceptance."

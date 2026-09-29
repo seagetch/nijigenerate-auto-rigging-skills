@@ -1,0 +1,96 @@
+schema: nijigenerate-step-checklist-v1
+title: Mouth Open Rigging Step Checklist
+sections:
+- name: 1. Scope And Inputs
+  checklist:
+  - id: mouth-open-001
+    target: active loaded model
+    check: Resolve njc explicitly, avoid FileCommand_OpenFile, and record the current model state before mutation.
+  - id: mouth-open-002
+    target: current user request
+    check: Confirm that parameter rigging is explicitly requested; do not add bindings during an asset or structure-only request.
+  - id: mouth-open-003
+    target: Mouth::Open
+    check: Read UUID, dimensions, axis ranges, defaults, key values, and X/Y semantics before editing.
+  - id: mouth-open-004
+    target: current authored mouth pose
+    check: Capture the exact default value at original face scale and at a crop suitable for lip inspection.
+- name: 2. Mouth Inventory
+  checklist:
+  - id: mouth-open-005
+    target: Mouth::Base, Tongue, Teeth::Lower, Teeth::Upper, Outline
+    check: Read UUIDs, meshes, transforms, draw modes, hierarchy, and existing Mouth::Open bindings.
+  - id: mouth-open-006
+    target: mouth DynamicComposite
+    check: Confirm all five expected targets exist in a rig-ready structure; route missing assets or structure to nijigenerate-mouth-asset-rigging.
+  - id: mouth-open-007
+    target: Outline and Base artwork
+    check: Identify upper, center, lower, and corner regions from actual topology and rendered evidence, not mesh-row or UV Y alone.
+- name: 3. Visual Frame And Motion Plan
+  checklist:
+  - id: mouth-open-008
+    target: rendered face and mouth
+    check: Record face roll, mouth-corner slope, screen sides, near/far side, open width, and aperture.
+  - id: mouth-open-009
+    target: mouth local coordinates
+    check: Verify which local direction renders screen-up and screen-down; do not infer the Y sign.
+  - id: mouth-open-010
+    target: neutral closure axis
+    check: Define a model-specific oblique axis through the authored corners and center; do not default to screen horizontal or local Y=0.
+  - id: mouth-open-011
+    target: near and far corners
+    check: Plan independent expression strengths from current perspective evidence rather than mirroring a fixed ratio.
+  - id: mouth-open-012
+    target: upper and lower lip boundaries
+    check: Plan separate closure travel so upper motion dominates by default and full closure retains a non-zero painted band.
+- name: 4. Apply Keys
+  checklist:
+  - id: mouth-open-013
+    target: neutral full closure
+    check: Close Outline toward the oblique axis, make Base follow, and conceal all internal artwork without horizontalizing the mouth.
+  - id: mouth-open-014
+    target: Y=0 displeased keys
+    check: Lower both corners relative to the oblique axis and retain a readable downward-corner shape at full closure.
+  - id: mouth-open-015
+    target: Y=1 smile keys
+    check: Raise both corners relative to the same oblique axis without lifting the entire mouth or reversing the coordinate sign.
+  - id: mouth-open-016
+    target: five mouth Parts
+    check: Set every required X/Y deform key separately; for a 5x3 grid require 15 keys per target.
+  - id: mouth-open-017
+    target: Teeth::Upper, Teeth::Lower, and Tongue
+    check: Keep internal artwork contained by Base at every key with no transparent edge or color leak.
+- name: 5. Intermediate And Visual Verification
+  checklist:
+  - id: mouth-open-018
+    target: X=0, 0.25, 0.5, 0.75, 1 sequence
+    check: Verify monotonic closure, stable oblique axis, stable width, registered Outline/Base, and progressive internal concealment.
+  - id: mouth-open-019
+    target: X=0, 0.5, 1 by Y=0, 0.5, 1
+    check: Capture the exact-key 3x3 state grid under identical view conditions.
+  - id: mouth-open-020
+    target: original-scale face views
+    check: Verify placement, proportion, face-roll consistency, and expression readability in context.
+  - id: mouth-open-021
+    target: equal-scale close crops
+    check: Verify corner direction, lip thickness, continuous pixels, no widening, no cavity gap, and no teeth or tongue leak.
+  - id: mouth-open-022
+    target: near and far mouth sides
+    check: Compare perspective strength independently; reject a mechanically mirrored result.
+- name: 6. Audit And Save Gate
+  checklist:
+  - id: mouth-open-023
+    target: Mouth::Open bindings
+    check: Read back target UUIDs, exact axes, setCount, isSet matrices, moved counts, and deformation extrema.
+  - id: mouth-open-024
+    target: unrelated model state
+    check: Compare non-mouth bindings, target vertex counts, and static hierarchy signatures before and after.
+  - id: mouth-open-025
+    target: visual evidence
+    check: Use rendered images as primary evidence; never upgrade a numeric or JSON-only result to visually accepted.
+  - id: mouth-open-026
+    target: active model and output file
+    check: Do not save or declare completion until the user accepts the rendered candidate; save with FileCommand_SaveFile without opening another model.
+  - id: mouth-open-027
+    target: final handoff
+    check: Report semantics, target UUIDs, key grid, axis/perspective mapping, images, audit, unresolved defects, save status, and FileCommand_OpenFile avoidance.

@@ -1,0 +1,17 @@
+schema: nijigenerate-result-audit-v1
+title: "simple-physics-rigging change result audit"
+items:
+  - id: simple-physics-rigging-change-001
+    target: "numerical scope"
+    expected: "Requested Length factors are applied once to all scoped targets; other settings are preserved unless separately needed/authorized."
+  - id: simple-physics-rigging-change-002
+    target: "timing request"
+    expected: "Before/after playback uses the same drive/reset sequence and shows the intended speed/settling; still images alone do not pass timing."
+  - id: simple-physics-rigging-change-003
+    target: "shape and attachments"
+    expected: "Requested amplitude is visible while attachments and authored Body/Face motion remain stable, including chest or cloth targets in scope."
+
+# Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
+example_references:
+  - "time-based-tuning.md"
+  - "examples/ao-quarter-length-audit.json"
