@@ -1,0 +1,750 @@
+{
+  "purpose": "Historical read-only examples, not executable model commands, universal settings or present-day quality approval",
+  "scope": "Ao head continuity, upper interior hair and long-hair motion revisions; records describe different stages",
+  "bald_case": "No empirical bald-model example is bundled. Use the separate procedure and obtain evidence on the target model.",
+  "ear_back_separation": {
+    "scope": "Ear-back hair separated from long rear hair, followed by bounds and mesh-density review",
+    "cropped_pose_max_error": 0,
+    "refined_pose_max_error": 13.47906494140625,
+    "draw_order_intent": "Ear-back hair in front of braids; braids behind face where requested. Verify effective order in the current renderer, not a numeric preset.",
+    "depth_intent": "The short hair immediately behind the ear is not the deepest posterior or long-hair surface.",
+    "limitation": "These pose errors do not independently establish visual acceptance or final draw-order correctness."
+  },
+  "shared_crown": {
+    "owner": "depth then EarBack Part residual",
+    "changed_depth_sample_count": 54,
+    "neutral_zero": true,
+    "tree_unchanged": true,
+    "recorded_errors": [],
+    "recorded_flips": [],
+    "face_pose_count": 25,
+    "max_lower_hair_error": 0,
+    "max_remaining_landmark_separation": 3.0176138354113338,
+    "limitation": "Residual separation includes neutral overlap and interpolation; this is not exact pixel identity."
+  },
+  "posterior_rim": {
+    "owner": "BackHair upper depth samples",
+    "changed_depth_sample_count": 15,
+    "binding_count": 168,
+    "tree_unchanged": true,
+    "recorded_errors": [],
+    "recorded_flips": [],
+    "reference_policy": "Generated posterior-hair shapes rejected as acceptance targets after user feedback; evaluate a continuous crown, mildly rear rim, stronger occipital center and stable ear/nape/lower-hair attachments.",
+    "rejected": "Broad forward shifts that flattened the rear dome; generated posterior-hair shape was rejected as ground truth."
+  },
+  "inner_hair": {
+    "owner": "Upper hair-back Part interior; accepted outline, depth and bones protected",
+    "mesh_vertices": [
+      207,
+      485
+    ],
+    "mesh_triangles": [
+      400,
+      952
+    ],
+    "original_vertex_error": 0,
+    "uv_error": 7.499999998827889e-08,
+    "neutral_zero": true,
+    "tree_unchanged": true,
+    "binding_count": 169,
+    "is_set": [
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "recorded_errors": [],
+    "recorded_flips": [],
+    "face_pose_count": 25,
+    "supported_interior_vertex_count": 153,
+    "max_outline_displacement_model_units": 0.00017538526083171746,
+    "rejected_trial": "Eight surviving interior vertices concentrated motion and made angular strands.",
+    "inheritance": "New vertices inherited UVs and per-key rendered positions barycentrically from the accepted old triangles before local interior correction.",
+    "limitation": "Constrained 2.5D appearance; not a newly reconstructed 3D hair surface."
+  },
+  "lower_hair_links": {
+    "historical_initial_driver": "Face X plus Body Y",
+    "revised_driver": "Body X plus Body Y; upper sources still follow Head Face Yaw/Pitch",
+    "stale_destination_name": "Hair::HeadYaw-BodyPitch",
+    "old_face_x_removed": true,
+    "bindings": [
+      {
+        "source_parameter": "Body::Yaw-Pitch",
+        "destination_parameter": "Hair::HeadYaw-BodyPitch",
+        "destination_axis": "X",
+        "axis_values": [
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ],
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ]
+        ],
+        "values": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -0.5,
+            -0.5,
+            -0.5,
+            -0.5,
+            -0.5
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "is_set": [
+          [
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            false,
+            false
+          ]
+        ]
+      },
+      {
+        "source_parameter": "Body::Yaw-Pitch",
+        "destination_parameter": "Hair::HeadYaw-BodyPitch",
+        "destination_axis": "Y",
+        "axis_values": [
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ],
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ]
+        ],
+        "values": [
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ],
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ],
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ],
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ],
+          [
+            -1,
+            -0.5,
+            0,
+            0.5,
+            1
+          ]
+        ],
+        "is_set": [
+          [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            true,
+            false,
+            true,
+            false,
+            true
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        ]
+      }
+    ],
+    "limitation": "The historical name does not describe the later X driver. Resolve current UUIDs and axis semantics."
+  },
+  "head_body_blend": {
+    "historical_status": "RETAKE_UNRELATED_CACHES",
+    "saved": false,
+    "method": "Two native Gaussian sources over an anatomical transition band; no hard height switch",
+    "table_evidence_kind": "Historical audit estimates of normalized source influence, not direct image displacement measurements",
+    "profiles": [
+      {
+        "name": "BackHair::G",
+        "radius": 131.9111946,
+        "table": [
+          {
+            "rootY": -580,
+            "head": 0.9401221951789799,
+            "body": 0.059877804821020245
+          },
+          {
+            "rootY": -550,
+            "head": 0.8884143200229584,
+            "body": 0.11158567997704162
+          },
+          {
+            "rootY": -500,
+            "head": 0.7551739790026817,
+            "body": 0.24482602099731832
+          },
+          {
+            "rootY": -470,
+            "head": 0.6555797353158311,
+            "body": 0.3444202646841688
+          },
+          {
+            "rootY": -442,
+            "head": 0.5481248581397737,
+            "body": 0.4518751418602262
+          },
+          {
+            "rootY": -410,
+            "head": 0.4202301535613698,
+            "body": 0.5797698464386302
+          },
+          {
+            "rootY": -380,
+            "head": 0.30904844758734346,
+            "body": 0.6909515524126565
+          },
+          {
+            "rootY": -350,
+            "head": 0.2153350557427063,
+            "body": 0.7846649442572936
+          },
+          {
+            "rootY": -300,
+            "head": 0.09122436961973197,
+            "body": 0.9087756303802681
+          },
+          {
+            "rootY": -250,
+            "head": 0.028010059605198666,
+            "body": 0.9719899403948014
+          },
+          {
+            "rootY": -200,
+            "head": 0.007981602028210716,
+            "body": 0.9920183979717893
+          },
+          {
+            "rootY": -100,
+            "head": 0.0006268075208660238,
+            "body": 0.9993731924791339
+          },
+          {
+            "rootY": 0,
+            "head": 4.889015680965289e-05,
+            "body": 0.9999511098431902
+          }
+        ]
+      },
+      {
+        "name": "SideHair::G::L",
+        "radius": 102.67201080000001,
+        "table": [
+          {
+            "rootY": -580,
+            "head": 0.9894960577791378,
+            "body": 0.010503942220862142
+          },
+          {
+            "rootY": -550,
+            "head": 0.9684629289351204,
+            "body": 0.03153707106487953
+          },
+          {
+            "rootY": -500,
+            "head": 0.8652165680674081,
+            "body": 0.134783431932592
+          },
+          {
+            "rootY": -470,
+            "head": 0.7431609802930084,
+            "body": 0.2568390197069916
+          },
+          {
+            "rootY": -442,
+            "head": 0.5790168946987244,
+            "body": 0.4209831053012755
+          },
+          {
+            "rootY": -410,
+            "head": 0.37022968532852063,
+            "body": 0.6297703146714794
+          },
+          {
+            "rootY": -380,
+            "head": 0.20947730329626219,
+            "body": 0.7905226967037379
+          },
+          {
+            "rootY": -350,
+            "head": 0.10579681282029642,
+            "body": 0.8942031871797036
+          },
+          {
+            "rootY": -300,
+            "head": 0.021999050474196917,
+            "body": 0.9780009495258031
+          },
+          {
+            "rootY": -250,
+            "head": 0.002858625742028593,
+            "body": 0.9971413742579714
+          },
+          {
+            "rootY": -200,
+            "head": 0.0003488549722595183,
+            "body": 0.9996511450277406
+          },
+          {
+            "rootY": -100,
+            "head": 5.171136194167392e-06,
+            "body": 0.9999948288638059
+          },
+          {
+            "rootY": 0,
+            "head": 7.66266714598596e-08,
+            "body": 0.9999999233733285
+          }
+        ]
+      },
+      {
+        "name": "SideHair::G::R",
+        "radius": 102.4487946,
+        "table": [
+          {
+            "rootY": -580,
+            "head": 0.9897001636203261,
+            "body": 0.01029983637967385
+          },
+          {
+            "rootY": -550,
+            "head": 0.9689160271304975,
+            "body": 0.031083972869502527
+          },
+          {
+            "rootY": -500,
+            "head": 0.8661596469565703,
+            "body": 0.1338403530434296
+          },
+          {
+            "rootY": -470,
+            "head": 0.7440446491522827,
+            "body": 0.25595535084771737
+          },
+          {
+            "rootY": -442,
+            "head": 0.5793557895571966,
+            "body": 0.4206442104428033
+          },
+          {
+            "rootY": -410,
+            "head": 0.36968951807603373,
+            "body": 0.6303104819239662
+          },
+          {
+            "rootY": -380,
+            "head": 0.2085195242088472,
+            "body": 0.7914804757911528
+          },
+          {
+            "rootY": -350,
+            "head": 0.10491917641231223,
+            "body": 0.8950808235876877
+          },
+          {
+            "rootY": -300,
+            "head": 0.021645714241177477,
+            "body": 0.9783542857588226
+          },
+          {
+            "rootY": -250,
+            "head": 0.0027867426698258836,
+            "body": 0.9972132573301741
+          },
+          {
+            "rootY": -200,
+            "head": 0.00033695236927127784,
+            "body": 0.9996630476307288
+          },
+          {
+            "rootY": -100,
+            "head": 4.903710801164326e-06,
+            "body": 0.9999950962891989
+          },
+          {
+            "rootY": 0,
+            "head": 7.134097685432257e-08,
+            "body": 0.9999999286590232
+          }
+        ]
+      }
+    ],
+    "unresolved": "Native refresh left unrelated Body caches different; literal restorations were overwritten by later ancestor notifications."
+  },
+  "side_back_hanging": {
+    "historical_status": "SCOPED_OK_WITH_PRIOR_UNRESOLVED_ISSUE",
+    "separate_controls": "Upper Head influence and distinct lower SideHair/BackHair pitch controls",
+    "comparison": [
+      {
+        "target": "BackHair::G",
+        "pitch": 0.5,
+        "bottomRowLocalDownMin": 5.68792724609375,
+        "bottomRowLocalDownMax": 8.404571533203125,
+        "mean": 6.922765558416203
+      },
+      {
+        "target": "SideHair::G::L",
+        "pitch": 0.5,
+        "bottomRowLocalDownMin": 13.824462890625,
+        "bottomRowLocalDownMax": 18.711822509765625,
+        "mean": 17.242184725674733
+      },
+      {
+        "target": "SideHair::G::R",
+        "pitch": 0.5,
+        "bottomRowLocalDownMin": 13.048797607421875,
+        "bottomRowLocalDownMax": 18.124114990234318,
+        "mean": 16.36399702592329
+      },
+      {
+        "target": "BackHair::G",
+        "pitch": 1,
+        "bottomRowLocalDownMin": 39.350555419921875,
+        "bottomRowLocalDownMax": 44.5374755859375,
+        "mean": 41.708240855823874
+      },
+      {
+        "target": "SideHair::G::L",
+        "pitch": 1,
+        "bottomRowLocalDownMin": 52.874053955078125,
+        "bottomRowLocalDownMax": 62.16546630859375,
+        "mean": 59.371555675159804
+      },
+      {
+        "target": "SideHair::G::R",
+        "pitch": 1,
+        "bottomRowLocalDownMin": 50.971099853515625,
+        "bottomRowLocalDownMax": 60.619903564453125,
+        "mean": 57.27367609197443
+      },
+      {
+        "target": "BackHair::G",
+        "pitch": -1,
+        "bottomRowLocalDownMin": 0,
+        "bottomRowLocalDownMax": 0,
+        "mean": 0
+      },
+      {
+        "target": "SideHair::G::L",
+        "pitch": -1,
+        "bottomRowLocalDownMin": 30.72998046875,
+        "bottomRowLocalDownMax": 36.167388916015625,
+        "mean": 32.365001331676154
+      },
+      {
+        "target": "SideHair::G::R",
+        "pitch": -1,
+        "bottomRowLocalDownMin": 30.553466796875,
+        "bottomRowLocalDownMax": 36.20001220703119,
+        "mean": 32.51168823242187
+      }
+    ],
+    "back_forward_key_preservation": [
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "pitch": -1,
+        "max": 0
+      },
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "pitch": -0.5,
+        "max": 0
+      },
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "pitch": 0,
+        "max": 0
+      },
+      {
+        "parameter": "Body::Yaw-Pitch",
+        "pitch": -1,
+        "max": 0
+      },
+      {
+        "parameter": "Body::Yaw-Pitch",
+        "pitch": -0.5,
+        "max": 0
+      },
+      {
+        "parameter": "Body::Yaw-Pitch",
+        "pitch": 0,
+        "max": 0
+      },
+      {
+        "parameter": "Face::Roll",
+        "pitch": -1,
+        "max": 0
+      },
+      {
+        "parameter": "Face::Roll",
+        "max": 0
+      },
+      {
+        "parameter": "Face::Roll",
+        "max": 0
+      },
+      {
+        "parameter": "Body::Roll",
+        "pitch": -1,
+        "max": 0
+      },
+      {
+        "parameter": "Body::Roll",
+        "max": 0
+      },
+      {
+        "parameter": "Body::Roll",
+        "max": 0
+      },
+      {
+        "parameter": "Hair::HeadYaw-BodyPitch",
+        "pitch": -1,
+        "max": 0
+      },
+      {
+        "parameter": "Hair::HeadYaw-BodyPitch",
+        "pitch": -0.5,
+        "max": 0
+      },
+      {
+        "parameter": "Hair::HeadYaw-BodyPitch",
+        "pitch": 0,
+        "max": 0
+      }
+    ],
+    "prior_unresolved": "Seventeen nonhair Body cache differences remained from earlier work; this scoped pass did not resolve them."
+  },
+  "roll": {
+    "owner": "Hair.Posture Body::Roll bone binding",
+    "keys": [
+      -1,
+      -0.5,
+      0,
+      0.5,
+      1
+    ],
+    "rotation_degrees": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "reported_checks": {
+      "bone_rotation_readback": "OK",
+      "native_hair_roll_refresh": "OK",
+      "yaw_pitch_and_source_weights_preserved": "OK",
+      "all_node_definitions_unchanged": "OK",
+      "unrelated_bindings_unchanged_within_0_0003": "OK",
+      "binding_count_before_after": [
+        169,
+        169
+      ],
+      "neutral_pixel_byte_differences": 0,
+      "exact_roll_5_pose_and_6_combination_captures": "OK",
+      "source_code_access": "none",
+      "reload": "none"
+    },
+    "limitation": "Hair Roll correction only; torso depth work and visible sleeve/bodice folds were not certified."
+  },
+  "braids_body_backward": {
+    "scope": "三つ編み横髪のBody::Yaw-Pitch後傾追従",
+    "historical_status": "APPLIED / VERIFIED for following adjustment; not whole-model completion",
+    "reported_checks": [
+      {
+        "item": "既存の横髪専用ボーンの後傾10キー",
+        "result": "OK",
+        "degreesByYaw": {
+          "0": [
+            -13,
+            -26
+          ],
+          "1": [
+            -6,
+            -18
+          ],
+          "-1": [
+            -6,
+            -18
+          ],
+          "-.5": [
+            -10,
+            -23
+          ],
+          ".5": [
+            -10,
+            -23
+          ]
+        }
+      },
+      {
+        "item": "Body X/YリンクとBoneSourceの頭→体グラデーション",
+        "result": "OK: unchanged"
+      },
+      {
+        "item": "中立・前傾",
+        "result": "OK: binding keys exact; 6 captured poses exact vertex positions"
+      },
+      {
+        "item": "深度・メッシュ・表示順・階層",
+        "result": "OK: all node resources unchanged"
+      },
+      {
+        "item": "対象外バインディング",
+        "result": "OK within 0.0001 floating recalculation tolerance; max 0.00009339"
+      },
+      {
+        "item": "後傾10キーと顔との組合せ4姿勢",
+        "result": "OK: captures inspected; no newly inverted triangles in compared poses"
+      }
+    ],
+    "limitations": [
+      "最終左右後傾では変更前から各側1つずつある細い三角形の投影反転が残る。今回新規に増やした反転はゼロ。",
+      "以前の胴体深度操作による別件の副作用訂正は未解決。本保存は現在状態の作業保存であり全体完成版ではない。"
+    ]
+  },
+  "physics": "See the existing Ao quarter-length example in the SimplePhysics skill; settings evidence is not timing evidence and the requested factor is not a long-hair default."
+}

@@ -42,7 +42,7 @@ applicable current-stage result item is `OK` and its evidence has been recorded.
 8. Refine generated Body motion: correct Pelvis/Spine/leg DepthBones and
    BoneSources as needed, then individual Part residuals. Change parent Grid XY only when permitted and diagnosed as the owning defect.
    Respect LockToRoot feet and audit all directions and intermediate keys.
-9. Inspect generated Face parent motion and preserve it when correct; refine only the permitted owning layer. Then run the
+9. Inspect generated Face parent motion and preserve it when correct; refine only the permitted owning layer. Posterior-head continuity is mandatory: follow the [ordinary/long-hair/hairless cases](../nijigenerate-depth-import-adjustment/references/head-volume-and-hair-cases.md). For long hair, review every linked Ao case and record applicability; do not reduce this to Face-only checks. Then run the
    dedicated eye-blink and mouth-open specialists. During the Face pass, rig
    tongue and teeth to `Face::Yaw-Pitch` for mouth-cavity depth while preserving
    `Mouth::Open`.

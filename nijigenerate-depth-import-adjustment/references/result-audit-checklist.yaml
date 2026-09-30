@@ -40,6 +40,9 @@ items:
   - id: depth-result-013
     target: unrelated model state and serialized size
     expected: No unrelated binding, hierarchy, mesh, mask, Physics, or unexplained size change occurred.
+  - id: depth-result-014
+    target: mandatory posterior head, scalp and nape
+    expected: One continuous head volume joins crown, side head, ear roots and nape at yaw/pitch keys; duplicate scalp artwork has coherent effective depth. Hair thickness is distinguished from skull volume and hanging hair. Hairless heads retain the same anatomy checks without invented hair geometry.
 evidence:
   required:
     - source-image and artwork-to-grid mapping audit

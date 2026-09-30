@@ -4,6 +4,7 @@
 
 | 判断したいこと | 所有文書・資料 | 読み取ること／限界 |
 |---|---|---|
+| 後頭部・頭皮の継ぎ目・内部模様・長髪全般 | [必読のAo参照表と画像](../../nijigenerate-post-rig-adjustment/references/ao-head-long-hair-examples.md) | 頭の外周と模様を分離。長髪では全項目の適用を判断。髪なしでも頭部検査は必須。途中の未解決事項を保存。 |
 | 顔輪郭・奥側の頬・鼻・耳 | [2.5Dの画像例](../../nijigenerate-post-rig-adjustment/references/ao-visual-examples.md) | 元状態と生成候補を区別。耳の露出より滑らかな輪郭。生成した髪などは別評価。 |
 | 胴体厚み・肩・脇・胸奥側 | [同じ画像例](../../nijigenerate-post-rig-adjustment/references/ao-visual-examples.md) | 三箇所を同時に評価。深度、欠けた素材、Part残差、誤Weldingを区別。 |
 | 首と頭の接続 | [既存の頭位置資料](../../nijigenerate-post-rig-adjustment/references/head-position-correction.md#image-references) | 既存4画像はreferences/images内。姿勢ラベルと適用範囲を確認。 |

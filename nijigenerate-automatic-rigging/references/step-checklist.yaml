@@ -9,6 +9,10 @@ sections:
         check: Record tree, meshes, parameters, bindings, Physics, DepthRig, BoneSources, flip pairs, masks, and serialized/file size.
       - id: auto-rig-003
         check: Record the accepted screen-side and pitch conventions before side-specific work.
+      - id: auto-rig-head-001
+        check: Classify ordinary hair, long hair or no hair; inspect posterior head in depth and Part phases. Absence of hair does not remove the head-volume check.
+      - id: auto-rig-head-002
+        check: For long hair, review the full Ao case table and assign each applicable item to its stage; carry only genuinely later-stage items and close them before completion.
       - id: auto-rig-004
         check: Confirm no reviewer/browser/SPA or FileCommand_OpenFile will be used unless explicitly requested.
       - id: auto-rig-047

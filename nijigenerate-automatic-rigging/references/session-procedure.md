@@ -139,7 +139,10 @@ Use `nijigenerate-depth-import-adjustment`.
    - preserve front/back clothing ordering without flattening all relief.
 5. Apply only after every enabled target passes.
 6. Inspect imported depth on every GridDeformer and correct local arrays so the
-   whole character forms a coherent human volume.
+   whole character forms a coherent human volume. For every headed character,
+   complete the [posterior-head case procedure](../../nijigenerate-depth-import-adjustment/references/head-volume-and-hair-cases.md).
+   No hair does not exempt skull/scalp continuity; long hair requires all linked Ao cases,
+   with Part/physics work deferred only to its explicit later owner.
 7. Verify effective Z at neutral and exact yaw/pitch keys. Do not judge raw depth
    arrays alone.
 
@@ -230,6 +233,11 @@ Complete the Body pass, including Pelvis/Spine/leg correction and its full
 result audit, before beginning the Face pass.
 
 ## 9. Face post-rig and expression specialists
+
+Close the mandatory posterior-head inspection and any carried scalp-seam/internal-detail
+items using [head/hair Part correction](../../nijigenerate-post-rig-adjustment/references/head-hair-surface-correction.md).
+For long hair, close the head/pose-owned items in the complete Ao case review;
+carry physics-only items explicitly to phase 10. Face-only appearance cannot establish head completion.
 
 Use `nijigenerate-post-rig-adjustment` for broad Face orientation first. After
 that result is stable, use `nijigenerate-eye-blink-rigging` for eyelid closure

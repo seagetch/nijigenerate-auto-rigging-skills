@@ -37,6 +37,9 @@ items:
   - id: physics-result-012
     target: unrelated model state and serialized size
     expected: No unrelated parameter, depth, DepthBone, BoneSource, hierarchy, mesh, or unexplained size change occurred.
+  - id: physics-result-long-hair
+    target: long hair when present
+    expected: Head-attached roots, braids, side/back lengths and ornaments have explicit physics decisions after deterministic pose correction. The Ao length factor is not a default; amplitude, period and settling are tested over time with yaw/pitch/Roll poses and reset.
 evidence:
   required:
     - candidate include/exclude inventory

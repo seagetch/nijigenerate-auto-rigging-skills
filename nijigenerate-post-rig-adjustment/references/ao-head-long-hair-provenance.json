@@ -1,0 +1,113 @@
+{
+  "purpose": "Historical reading examples; symbolic source labels and hashes only",
+  "data_sources": [
+    {
+      "source_record": "head-cranium-continuity-20260924",
+      "source_artifact": "verification.json",
+      "sha256": "0f81a93101ffd707aa2c8a76ac5d62d8f2241ad69b97fa8241864e4a08193b07"
+    },
+    {
+      "source_record": "head-cranium-continuity-20260924",
+      "source_artifact": "posterior-verification.json",
+      "sha256": "cf1add59443e435387cdfc0211d1ff219939030397dfa453840d1d6e5fc00e3e"
+    },
+    {
+      "source_record": "head-hair-inner-volume-20260924",
+      "source_artifact": "verification.json",
+      "sha256": "1ff38811b8479c996d2ffa9455cf912d08d02426f759d7800eebf057e7b956ed"
+    },
+    {
+      "source_record": "hair-head-body-gradient-20260922",
+      "source_artifact": "weight-profile.json",
+      "sha256": "f2f801e30ab8e1e4a55187cb289624172bdfb2f965a9b5119e966f78f6952e34"
+    },
+    {
+      "source_record": "hair-head-body-gradient-20260922",
+      "source_artifact": "body-links-readback.json",
+      "sha256": "39458985d101a00b8019b2dd959af3d5adea6fb227b9be8259946aef1512929b"
+    },
+    {
+      "source_record": "hair-side-back-hang-20260922",
+      "source_artifact": "hanging-comparison.json",
+      "sha256": "7b9209a24919d19c6c5adb2576c8374457fe13d34a2371d09c6932b32a5d372b"
+    },
+    {
+      "source_record": "hair-side-back-hang-20260922",
+      "source_artifact": "back-forward-preservation.json",
+      "sha256": "d2346920efa453d075d53e1b5981bd0a8421fd3e8be2860ba0d43f2c5224a1d2"
+    },
+    {
+      "source_record": "torso-depth-reference-20260925",
+      "source_artifact": "hair-roll-audit.yaml",
+      "sha256": "8eb57c41999b0f7f90a70f0b5eeb81f989fd78f119d7b7f2e5d2507832f55f01"
+    },
+    {
+      "source_record": "body-whole-correction-20260925",
+      "source_artifact": "braids-body-review.json",
+      "sha256": "9a30230889b05f3fa6db5c2b510a61c604d243fecf403b2464e13b9e045346be"
+    },
+    {
+      "source_record": "hair-head-body-gradient-20260922",
+      "source_artifact": "result-review.yaml",
+      "sha256": "eebf6c73f2447e3e4b5cf4c97972e611a28cf451e45c6411df64e6b5c2e56237"
+    },
+    {
+      "source_record": "hair-side-back-hang-20260922",
+      "source_artifact": "result-review.yaml",
+      "sha256": "f2df696b919991b1ddd9ae0dfbe808a665a955fec8cdaf1a148cb79717b295d5"
+    },
+    {
+      "source_record": "post-rig-individual-20260923",
+      "source_artifact": "hair-grid-crop-position-audit.json",
+      "sha256": "f7dd7ab97574ddb781544a2eae97139ec2a44ca099a8f94bc47a6d4cf8d60a8e"
+    },
+    {
+      "source_record": "post-rig-individual-20260923",
+      "source_artifact": "hair-grid-refine-position-audit.json",
+      "sha256": "ca73a64c3a89df58cfadac0c13793a523dac8d3aa46555c219897cb077d6d531"
+    }
+  ],
+  "files": [
+    {
+      "path": "images/ao-head-crown-rim-comparison.png",
+      "source_record": "head-cranium-continuity-20260924",
+      "source_artifact": "anatomy-reference-head.png",
+      "source_sha256": "a8b69a4f335c93cda849d0a2d2113378b19a6bbbcae9c7aec29f4dea419c6ffb",
+      "sha256": "a8b69a4f335c93cda849d0a2d2113378b19a6bbbcae9c7aec29f4dea419c6ffb",
+      "metadata_chunks_removed": [],
+      "status": "Historical scoped comparison; not full-model approval"
+    },
+    {
+      "path": "images/ao-head-inner-before-after.png",
+      "source_record": "head-hair-inner-volume-20260924",
+      "source_artifact": "final-comparison.png",
+      "source_sha256": "e3dacc4e57203369e379429e2e6b362ccab47d5ca2d91e47edee88b9c76892ff",
+      "sha256": "e3dacc4e57203369e379429e2e6b362ccab47d5ca2d91e47edee88b9c76892ff",
+      "metadata_chunks_removed": [],
+      "status": "Historical scoped comparison; not full-model approval"
+    },
+    {
+      "path": "images/ao-head-inner-directional.png",
+      "source_record": "head-hair-inner-volume-20260924",
+      "source_artifact": "directional-audit.png",
+      "source_sha256": "ebab5f3934c6480c47363886a8fce26c8de358a1f16cdc82603a00be71b797ae",
+      "sha256": "ebab5f3934c6480c47363886a8fce26c8de358a1f16cdc82603a00be71b797ae",
+      "metadata_chunks_removed": [],
+      "status": "Historical scoped comparison; not full-model approval"
+    },
+    {
+      "path": "images/ao-braids-body-before-after.png",
+      "source_record": "body-whole-correction-20260925",
+      "source_artifact": "braids-body-before-after.png",
+      "source_sha256": "aa120ad4c19af46e2be4b3da38760f4a8ef72b63e4c28111413116ef2621472e",
+      "sha256": "aa120ad4c19af46e2be4b3da38760f4a8ef72b63e4c28111413116ef2621472e",
+      "metadata_chunks_removed": [],
+      "status": "Historical scoped comparison; not full-model approval"
+    },
+    {
+      "path": "examples/ao-head-long-hair-records.json",
+      "sha256": "555547834b6310aa880fc3f6fcaba193347b4b67ec4654abf939e7969a3fd243",
+      "status": "Whitelisted extracts and summaries with known limitations retained"
+    }
+  ]
+}

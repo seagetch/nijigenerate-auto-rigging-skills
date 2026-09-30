@@ -64,7 +64,7 @@ Set `NJC_PATH`, place `njc` on `PATH`, or pass `--njc <resolved-path>`. Run with
 
 ## Task-specific procedures
 
-- For existing-rig repairs, inspect and preserve the existing skeleton rather than recreating the initial 19 bones. Read [independent-appendage-follow.md](references/independent-appendage-follow.md) for head/body split hair or asymmetric arm following.
+- For existing-rig repairs, inspect and preserve the existing skeleton rather than recreating the initial 19 bones. Read [independent-appendage-follow.md](references/independent-appendage-follow.md) for head/body split hair or asymmetric arm following. For long hair, also read [long-hair-follow.md](references/long-hair-follow.md) and review every linked Ao case for applicability, including side/back separation, braids and Roll.
 - Read [pelvis-skirt-follow.md](references/pelvis-skirt-follow.md) for front/back skirt bones and pelvis following. Trace actual Body yaw to the skirt origin rather than assuming a Pelvis parent supplies it; the procedure links a recorded Ao binding and comparison example. Use [pose-compensation.md](references/pose-compensation.md) for knee and ankle constraints.
 
 For these operations, also complete [references/change-result-checklist.yaml](references/change-result-checklist.yaml). Apply conditional items only to the requested scope.

@@ -22,3 +22,5 @@ Distinguish compositing, clipping and deformation. A DynamicComposite may itself
 An asset update is not authorization to reload the whole model or regenerate depth.
 
 The [Ao shoulder/armpit and torso examples](../../nijigenerate-post-rig-adjustment/references/ao-visual-examples.md) show the surrounding anatomy that must be inspected together. They illustrate diagnosis and candidate rejection, not an approved replacement texture to import.
+
+When short ear-back hair and long rear hair require separate controls, consult the [Ao head/long-hair case table](../../nijigenerate-post-rig-adjustment/references/ao-head-long-hair-examples.md). Preserve current motion during separation, then verify the moved component's own bounds, density, effective depth and draw order. Do not treat separation as authorization to regenerate depth or remesh unrelated Parts.

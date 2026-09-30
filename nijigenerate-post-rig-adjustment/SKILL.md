@@ -51,7 +51,7 @@ Also follow `nijigenerate-shared-rigging-rules`. Use `nijigenerate-front-back-cl
 
 ## Task-specific procedures
 
-- Read [individual-2p5d-and-reference.md](references/individual-2p5d-and-reference.md) for angle references, jaw/cheek/torso side surfaces and part-level occlusion.
+- Read [individual-2p5d-and-reference.md](references/individual-2p5d-and-reference.md) for angle references, jaw/cheek/torso side surfaces and part-level occlusion. Head passes must also read [head-hair-surface-correction.md](references/head-hair-surface-correction.md) for posterior continuity, shared scalp seams and internal detail with protected outlines; long hair requires every item in [Ao head/long-hair cases](references/ao-head-long-hair-examples.md).
 - Read [one-sided-welding.md](references/one-sided-welding.md) for shoulder/torso seams or unwanted armpit attachment.
 - Read [collar-and-neck-surfaces.md](references/collar-and-neck-surfaces.md) for standing collars versus chest lapels.
 

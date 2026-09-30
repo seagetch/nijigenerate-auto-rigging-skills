@@ -19,6 +19,9 @@ items:
   - id: depth-skeleton-setup-change-006
     target: "rendered skirt regression when edited"
     expected: "Front/apron/back/side/accessory surfaces follow the intended pose at both yaw directions, forward/backward pitch, half-values and relevant Roll combinations; Face-only motion does not drive a pelvis-owned skirt. Rendered residuals and unrelated defects remain explicit rather than inheriting a historical OK label."
+  - id: depth-skeleton-setup-change-007
+    target: long hair when present in the requested rigging scope
+    expected: The complete Ao case table is reviewed. Actual links follow the intended current drivers, Pitch uses the yawed frame, Head-to-Body weights are continuous, side/back controls and forward/backward behavior are distinct where needed, and unintended Roll is corrected at its bone owner. Nonhair refresh differences remain explicit.
 references:
   - "pelvis-skirt-follow.md"
   - "ao-skirt-follow-example.md"

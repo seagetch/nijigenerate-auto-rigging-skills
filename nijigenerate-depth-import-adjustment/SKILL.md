@@ -11,7 +11,7 @@ Treat this skill as the canonical source for nijigenerate depth information. Oth
 
 - Always read [operation-runbook.md](references/operation-runbook.md) before operating `njc`.
 - For source-image validation and artwork-to-grid correspondence, read [artwork-grid-mapping.md](references/artwork-grid-mapping.md).
-- For Face, mouth, hair, headwear, earwear, and neck depth, read [face-hair-depth.md](references/face-hair-depth.md).
+- For Face, mouth, hair, headwear, earwear, and neck depth, read [face-hair-depth.md](references/face-hair-depth.md). Head rigging also requires [head-volume-and-hair-cases.md](references/head-volume-and-hair-cases.md): posterior head continuity is mandatory with ordinary hair, long hair, or no hair. Long hair requires the complete linked Ao case review.
 - For Body, Chest, waist, pelvis, and lower-body depth, read [body-chest-lower-depth.md](references/body-chest-lower-depth.md).
 - For front/back/side clothing depth, read [clothing-depth.md](references/clothing-depth.md).
 - For mutation safety, effective-Z diagnosis, numeric readback, and screenshots, read [depth-state-verification.md](references/depth-state-verification.md).

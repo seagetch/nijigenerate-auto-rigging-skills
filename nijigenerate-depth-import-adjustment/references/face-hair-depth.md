@@ -22,13 +22,13 @@ Use this reference to define or correct head-related GridDeformer depth. The goa
 
 ## Back hair
 
-Model BackHair as rear skull volume:
+First complete [head-volume-and-hair-cases.md](head-volume-and-hair-cases.md), including the ordinary-head, long-hair, or hairless branch. For the region that actually represents rear skull volume:
 
 - edges and top rim: mildly rear;
 - occipital center and back-lower region: strongest rear depth;
 - lower rim: less rear than the center so it does not shear like a rectangular panel.
 
-BackHair should normally be controlled under the common head root rather than inherit Face surface deformation when it represents independent rear volume.
+The scalp/cranial region should follow the head rather than inherit an unrelated Face surface deformation. This does not assign all long hair to the head: use the linked long-hair procedure for a continuous Head-to-Body transition. A BackHair Part can contain front-visible crown detail; inspect outer volume and interior texture separately before assigning one depth behavior to the entire bitmap.
 
 ## Headwear and earwear
 

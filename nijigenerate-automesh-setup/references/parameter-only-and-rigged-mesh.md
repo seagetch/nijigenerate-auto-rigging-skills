@@ -22,3 +22,5 @@ A processor setting, a Part mesh, and Grid axes are different state. An Optimum 
 7. Record separately settings-only changes, topology changes and dependency migration. Restore only this operation's changes through supported njc commands if its invariants fail.
 
 For moving a component to a new Grid, compute the controlled artwork's full pose envelope rather than keeping its old group's bounds; choose divisions for its own control needs. Large bounds and low divisions are independent defects.
+
+For accepted head outlines with insufficient interior hair topology, read the [local refinement and per-key inheritance procedure](../../nijigenerate-post-rig-adjustment/references/head-hair-surface-correction.md) and its Ao example. Preserve the original rendered triangle surface at every key before adding new Part residuals; extra vertices alone do not fix hair flow.

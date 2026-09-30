@@ -18,7 +18,7 @@ Depth gives broad volume and bones give pose. Part correction describes the resi
 
 - Face: prefer a smooth silhouette over forced ear exposure. Do not notch the cheek to reveal an ear. Treat near and far cheek independently; retain far-cheek fullness, a rounded chin transition, and the reference nose position. A jaw correction does not imply shortening the upper face or moving the neck. Keep user-fixed jaw/upper-face regions fixed.
 - Jaw/neck: determine which painted boundary should be visible at each angle. Correct the face contour if the defect belongs to the jaw; route actual neck artwork defects to asset work only when that is in scope. Do not skew the whole neck to imitate a jawline.
-- Head/hair: inspect both skull silhouette and internal strands. A correct outer dome with interior detail appearing to follow the rear surface is a different defect; preserve the accepted outline while adjusting the owning surface/Part detail.
+- Head/hair: posterior head evaluation is mandatory, including hairless heads. Inspect skull silhouette and internal detail separately, using [head/hair surface correction](head-hair-surface-correction.md). Preserve an accepted outer dome while correcting internal detail that appears attached to the wrong surface. Long-hair passes must review the complete Ao case table linked there.
 - Torso: preserve ribcage volume while exposing the far side. Avoid pulling the far chest edge to an arm merely to close a gap. Separate chest residual shape from torso articulation and compare nearby clothing.
 - Shoulder/armpit: distinguish the shoulder attachment from the hollow under the arm. A gap, absent paint, wrong depth, wrong occlusion and accidental Welding require different corrections.
 

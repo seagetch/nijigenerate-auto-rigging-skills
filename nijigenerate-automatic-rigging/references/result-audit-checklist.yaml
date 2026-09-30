@@ -43,6 +43,12 @@ items:
   - id: auto-result-011
     target: final neutral model
     expected: Parameters are neutral, Physics is reset, visual output is coherent, and one verified final output is saved through FileCommand_SaveFile.
+  - id: auto-result-015
+    target: posterior head for every headed character
+    expected: Ordinary-hair, long-hair or hairless ownership is explicit; crown, occiput, ears/nape, shared scalp seams and internal surface appearance pass same-pose checks. No-hair is not a posterior-head exemption. Deferred head items are closed before overall completion.
+  - id: auto-result-016
+    target: long hair when present
+    expected: Every Ao head/long-hair case has an applicability decision and current evidence or a justified not-applicable result, covering structure, depth, Part detail, links, weighting, side/back hanging, braids, Roll, order and physics. Historical OK labels are not current proof.
 evidence:
   required:
     - ordered OK/RETAKE/UNVERIFIABLE result from every specialist checklist

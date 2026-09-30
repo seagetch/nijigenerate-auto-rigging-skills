@@ -14,3 +14,5 @@ Before creating anything, write one row per moving region: attachment, rest dire
 6. Split side/back bone controls when their requested forward/backward behavior differs. For backward hanging, keep roots attached and let lower joints move toward the reference hanging pose; retain the accepted forward row. For arms retain the forward body-follow pose and adjust backward joint motion toward the hanging direction. Keep bone lengths and elbow/wrist chain consistency.
 7. Read back all links, bone keys and BoneSource entries. Test positive/negative yaw with positive/negative pitch and halfway values; verify the lower region follows body yaw when requested, upper hair follows head yaw/pitch, and unintended Roll inheritance is absent.
 8. Compare all unrelated keys and base transforms. Do not regenerate standard rigging or remesh as part of link-only corrections.
+
+For long-hair rigging, [long-hair-follow.md](long-hair-follow.md) and its complete Ao case table are required. A hairless head skips hanging-hair controls, not posterior-head continuity.

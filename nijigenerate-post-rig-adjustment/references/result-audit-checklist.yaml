@@ -37,6 +37,9 @@ items:
   - id: post-result-012
     target: unrelated parameters and model state
     expected: No unrelated parameter target, depth, DepthBone, BoneSource, mask, Physics binding, or unexplained size change occurred.
+  - id: post-result-013
+    target: head continuity and internal surface detail
+    expected: Shared scalp seams, accepted skull outline and internal hair/skin detail are checked separately at all actual Face keys and relevant Body/Roll combinations. Part-only repairs preserve depth/bones, alpha-boundary triangles and lower hair; any mesh refinement preserves UVs and the old per-key surface before residuals.
 evidence:
   required:
     - defect classification table with owning skill
