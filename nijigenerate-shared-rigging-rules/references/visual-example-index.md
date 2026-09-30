@@ -11,6 +11,7 @@
 | 目頭・目尻・中央の移動と全キー | [目の画像例](../../nijigenerate-eye-blink-rigging/references/reference-images.md) | 既存4画像＋Aoの旧端点のみ／輪郭全体の比較。数値監査だけで合格にしない。 |
 | 口の開閉・表情・中間値 | [口の画像例](../../nijigenerate-mouth-open-rigging/references/reference-images.md) | 既存5画像＋Aoの15セル。顔全体の位置と斜め角度は別確認。 |
 | 物理の長さ倍率 | [時間軸の調整作例](../../nijigenerate-simple-physics-rigging/references/time-based-tuning.md#recorded-settings-example) | 32件の設定差分。速度の証拠は時系列が必要。 |
+| 腕の前傾追従と後傾時の垂れ | [骨の具体手順・Ao設定と画像](../../nijigenerate-depth-skeleton-setup/references/arm-backward-hang.md) | 中立境界、左右の骨軸、肩相対と絶対位置を区別。再計算差分の残る履歴を完全不変としない。 |
 | スカートのBody左右回転と上半身Pitchの分離 | [Aoの駆動設定・比較画像](../../nijigenerate-depth-skeleton-setup/references/ao-skirt-follow-example.md) | 専用起点への直接Binding、非Yawソースによる回転の減衰、重複追従。当時の記録であり完成例ではない。 |
 | Tracking移植 | [設定・監査例](../../nijigenerate-tracking-setup/references/tracking-transfer.md#recorded-configuration-example) | 20軸の実例。実入力未検証を保持。 |
 

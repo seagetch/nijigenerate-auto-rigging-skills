@@ -22,6 +22,16 @@ items:
   - id: depth-skeleton-setup-change-007
     target: long hair when present in the requested rigging scope
     expected: The complete Ao case table is reviewed. Actual links follow the intended current drivers, Pitch uses the yawed frame, Head-to-Body weights are continuous, side/back controls and forward/backward behavior are distinct where needed, and unintended Roll is corrected at its bone owner. Nonhair refresh differences remain explicit.
+  - id: depth-skeleton-setup-change-008
+    target: backward arm hanging when requested
+    expected: The actual bone axes, left/right signs and Body driver are verified. Backward joint correction retains shoulder attachment, chain lengths and elbow/wrist continuity without using broad Part/Grid deformation or physics as the pose driver.
+  - id: depth-skeleton-setup-change-009
+    target: forward and neutral isolation for arm correction
+    expected: The neutral boundary adds no new correction, accepted existing values and set/unset states remain intentional, and backward interpolation does not enter the forward range. Both yaw directions, half-values, neutral and forward/backward renders confirm the result.
+  - id: depth-skeleton-setup-change-010
+    target: arm and sleeve regression
+    expected: Shoulder-relative elbow/wrist motion and same-camera absolute positions are measured separately; arm/sleeve folds, shoulder/armpit contact and relevant Roll combinations are checked. Static equality does not conceal generated cache changes; retained historical differences are not a passing current result.
 references:
+  - "arm-backward-hang.md"
   - "pelvis-skirt-follow.md"
   - "ao-skirt-follow-example.md"

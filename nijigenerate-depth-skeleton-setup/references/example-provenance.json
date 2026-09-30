@@ -48,6 +48,49 @@
       "sha256": "d12c9ea622096d221a8c32a3111b86551b1742e9b0de0c4fc59be3f4432479e0",
       "status": "whitelisted-settings-and-measurements-not-executable",
       "omitted": "Machine paths, resource URIs, model UUIDs, save destinations, unrelated model state and unverified planning payloads"
+    },
+    {
+      "path": "images/ao-arm-backward-before.png",
+      "source_record": "ao-arms-hang-20260923",
+      "source_artifact": "before-0-1.png",
+      "source_sha256": "7272eb42d3b415d6b2131d7a22fd0ba56e4eb1f0f651cf64a50346460ca36262",
+      "sha256": "7272eb42d3b415d6b2131d7a22fd0ba56e4eb1f0f651cf64a50346460ca36262",
+      "metadata_chunks_removed": [],
+      "status": "Historical Body=(0,1) overlay capture; absolute-position and unrelated-cache differences remain"
+    },
+    {
+      "path": "images/ao-arm-backward-after.png",
+      "source_record": "ao-arms-hang-20260923",
+      "source_artifact": "verified-0-1.png",
+      "source_sha256": "aa3d6effd9a4ca3759292d94a2354e7246920be0aba49116a07cbbfa392cf3df",
+      "sha256": "aa3d6effd9a4ca3759292d94a2354e7246920be0aba49116a07cbbfa392cf3df",
+      "metadata_chunks_removed": [],
+      "status": "Historical Body=(0,1) overlay capture; absolute-position and unrelated-cache differences remain"
+    },
+    {
+      "path": "examples/ao-arm-backward-hang.json",
+      "sha256": "8cad1edb265b71c837708661a90b5baadb7246930c100aaefb9fd1163d37bfcf",
+      "source_record": "ao-arms-hang-20260923",
+      "source_artifacts": [
+        {
+          "label": "final-state.json",
+          "sha256": "13cf8bf5ee4bc1950e3f9d2583e7fa00878aae0ee47d7f39ce3735235c55c915"
+        },
+        {
+          "label": "pose-audit.json",
+          "sha256": "6375ab7fa843ce0e2902a87634927ee4869b0e62d21e225cf5b4ccfd98e2c014"
+        },
+        {
+          "label": "result-audit.json",
+          "sha256": "56b06524fa8e576ab6d35a1329f4be4c6576e4a465cf250aff8ea5d288f01628"
+        },
+        {
+          "label": "result-review.yaml",
+          "sha256": "3470260d9f1c7e26154fbbca7cfc0df583619965f3fb65322711154dc150aca8"
+        }
+      ],
+      "status": "Whitelisted applied bindings and measurements; retained side effects are explicit",
+      "omitted": "Machine paths, resource URIs, UUIDs, output destinations and unrelated raw model payloads"
     }
   ]
 }

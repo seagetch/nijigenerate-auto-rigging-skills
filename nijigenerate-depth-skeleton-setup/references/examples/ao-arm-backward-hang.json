@@ -1,0 +1,945 @@
+{
+  "purpose": "Historical arm/backward-hang evidence; not executable instructions, current quality approval, or universal angles",
+  "source_record": "ao-arms-hang-20260923",
+  "axes": {
+    "parameter": "Body::Yaw-Pitch",
+    "X": "Yaw",
+    "Y": "Pitch",
+    "negative_pitch": "forward",
+    "positive_pitch": "backward",
+    "neutral_character_L": "screen-right",
+    "neutral_character_R": "screen-left"
+  },
+  "binding_kind": "Direct Body-to-Clavicle property bindings; no dedicated arm parameter in this recorded result",
+  "bindings": [
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Clavicle.L",
+      "property": "transform.r.y",
+      "unit": "radians",
+      "axes": [
+        [
+          -1,
+          -0.5,
+          0,
+          0.5,
+          1
+        ],
+        [
+          -1,
+          -0.5,
+          0,
+          0.5,
+          1
+        ]
+      ],
+      "matrix_order": "values[yaw_index][pitch_index]",
+      "interpolation": "Linear",
+      "set_count": 15,
+      "is_set": [
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ]
+      ],
+      "values": [
+        [
+          0,
+          0,
+          0,
+          0.19198622,
+          0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          0.19198622,
+          0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          0.19198622,
+          0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          0.19198622,
+          0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          0.19198622,
+          0.38397244
+        ]
+      ]
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Clavicle.R",
+      "property": "transform.r.y",
+      "unit": "radians",
+      "axes": [
+        [
+          -1,
+          -0.5,
+          0,
+          0.5,
+          1
+        ],
+        [
+          -1,
+          -0.5,
+          0,
+          0.5,
+          1
+        ]
+      ],
+      "matrix_order": "values[yaw_index][pitch_index]",
+      "interpolation": "Linear",
+      "set_count": 15,
+      "is_set": [
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true
+        ]
+      ],
+      "values": [
+        [
+          0,
+          0,
+          0,
+          -0.19198622,
+          -0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          -0.19198622,
+          -0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          -0.19198622,
+          -0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          -0.19198622,
+          -0.38397244
+        ],
+        [
+          0,
+          0,
+          0,
+          -0.19198622,
+          -0.38397244
+        ]
+      ]
+    }
+  ],
+  "measurement_frame": "Native rendered shoulder line: T from character-right shoulder to character-left shoulder; N perpendicular downward, O each shoulder. Same neutral landmark sampled bilinearly on native rendered arm grids.",
+  "measurement_units": "Captured image pixels for relative drops, shoulder shifts and forward absolute grid error; generated binding differences below retain serialized property units.",
+  "pose_count": 25,
+  "recorded_arm_sleeve_fold_count": 0,
+  "pose_measurements": [
+    {
+      "key": [
+        -1,
+        -1
+      ],
+      "side": "L",
+      "shoulderShift": 4.908033927789184,
+      "elbowDrop": 0.014617005307869135,
+      "wristDrop": 0.025195027936376846
+    },
+    {
+      "key": [
+        -1,
+        -1
+      ],
+      "side": "R",
+      "shoulderShift": 2.9208915751759186,
+      "elbowDrop": 0.016176793053759297,
+      "wristDrop": 0.01860856789201648
+    },
+    {
+      "key": [
+        -1,
+        -0.5
+      ],
+      "side": "L",
+      "shoulderShift": 4.283998805851563,
+      "elbowDrop": 0.007405754783462726,
+      "wristDrop": 0.01279251745017973
+    },
+    {
+      "key": [
+        -1,
+        -0.5
+      ],
+      "side": "R",
+      "shoulderShift": 2.2615323777499245,
+      "elbowDrop": 0.007535254345413023,
+      "wristDrop": 0.008160589536259977
+    },
+    {
+      "key": [
+        -1,
+        0
+      ],
+      "side": "L",
+      "shoulderShift": 3.6583052880054026,
+      "elbowDrop": 5.36863758071604e-05,
+      "wristDrop": 3.018860300585402e-05
+    },
+    {
+      "key": [
+        -1,
+        0
+      ],
+      "side": "R",
+      "shoulderShift": 1.611200275440709,
+      "elbowDrop": -2.2113596386930112e-05,
+      "wristDrop": 6.324741605112649e-05
+    },
+    {
+      "key": [
+        -1,
+        0.5
+      ],
+      "side": "L",
+      "shoulderShift": 3.3399264443173546,
+      "elbowDrop": 4.599741081045494,
+      "wristDrop": 8.863863395121228
+    },
+    {
+      "key": [
+        -1,
+        0.5
+      ],
+      "side": "R",
+      "shoulderShift": 2.9615322006489055,
+      "elbowDrop": 4.0614854294179,
+      "wristDrop": 7.111097553306706
+    },
+    {
+      "key": [
+        -1,
+        1
+      ],
+      "side": "L",
+      "shoulderShift": 3.276617181631188,
+      "elbowDrop": 16.196353085097968,
+      "wristDrop": 31.244234183595182
+    },
+    {
+      "key": [
+        -1,
+        1
+      ],
+      "side": "R",
+      "shoulderShift": 5.192790796245356,
+      "elbowDrop": 15.213353581031996,
+      "wristDrop": 27.97124883038728
+    },
+    {
+      "key": [
+        -0.5,
+        -1
+      ],
+      "side": "L",
+      "shoulderShift": 5.457781355744373e-06,
+      "elbowDrop": 2.055231530562196e-05,
+      "wristDrop": -4.044918384238372e-05
+    },
+    {
+      "key": [
+        -0.5,
+        -1
+      ],
+      "side": "R",
+      "shoulderShift": 5.8041597056238876e-05,
+      "elbowDrop": 3.899667431994658e-05,
+      "wristDrop": 0.00016343715427069583
+    },
+    {
+      "key": [
+        -0.5,
+        -0.5
+      ],
+      "side": "L",
+      "shoulderShift": 7.828975683108498e-05,
+      "elbowDrop": 9.325788025194015e-05,
+      "wristDrop": 6.513208703040618e-05
+    },
+    {
+      "key": [
+        -0.5,
+        -0.5
+      ],
+      "side": "R",
+      "shoulderShift": 4.354687398272657e-05,
+      "elbowDrop": 5.691620543757381e-06,
+      "wristDrop": 7.873160603821816e-05
+    },
+    {
+      "key": [
+        -0.5,
+        0
+      ],
+      "side": "L",
+      "shoulderShift": 6.414754934808073e-05,
+      "elbowDrop": 9.693362613916179e-05,
+      "wristDrop": 6.306196755190285e-05
+    },
+    {
+      "key": [
+        -0.5,
+        0
+      ],
+      "side": "R",
+      "shoulderShift": 5.699541505607691e-05,
+      "elbowDrop": 2.8019775143661718e-05,
+      "wristDrop": 5.7331138947347426e-05
+    },
+    {
+      "key": [
+        -0.5,
+        0.5
+      ],
+      "side": "L",
+      "shoulderShift": 1.6757020139374565,
+      "elbowDrop": 4.656720351840818,
+      "wristDrop": 8.966115495420524
+    },
+    {
+      "key": [
+        -0.5,
+        0.5
+      ],
+      "side": "R",
+      "shoulderShift": 2.716518713850043,
+      "elbowDrop": 4.145034687292437,
+      "wristDrop": 7.257276937279954
+    },
+    {
+      "key": [
+        -0.5,
+        1
+      ],
+      "side": "L",
+      "shoulderShift": 3.2256169526726874,
+      "elbowDrop": 16.370990248469198,
+      "wristDrop": 31.583764932441085
+    },
+    {
+      "key": [
+        -0.5,
+        1
+      ],
+      "side": "R",
+      "shoulderShift": 5.1778355618370275,
+      "elbowDrop": 15.393143052941042,
+      "wristDrop": 28.30963631510093
+    },
+    {
+      "key": [
+        0,
+        -1
+      ],
+      "side": "L",
+      "shoulderShift": 7.564572459417523e-05,
+      "elbowDrop": 6.314354725134308e-05,
+      "wristDrop": 5.885530896421187e-06
+    },
+    {
+      "key": [
+        0,
+        -1
+      ],
+      "side": "R",
+      "shoulderShift": 7.16908456536015e-05,
+      "elbowDrop": 3.8477379149526314e-05,
+      "wristDrop": 8.37984494239663e-05
+    },
+    {
+      "key": [
+        0,
+        -0.5
+      ],
+      "side": "L",
+      "shoulderShift": 3.636823178937778e-05,
+      "elbowDrop": 6.243367613478767e-05,
+      "wristDrop": 2.7176796351113808e-05
+    },
+    {
+      "key": [
+        0,
+        -0.5
+      ],
+      "side": "R",
+      "shoulderShift": 4.597216646022112e-05,
+      "elbowDrop": 1.9898882499091997e-05,
+      "wristDrop": 0.00010907070515031592
+    },
+    {
+      "key": [
+        0,
+        0
+      ],
+      "side": "L",
+      "shoulderShift": 2.578310579792742e-05,
+      "elbowDrop": 9.285593641550349e-05,
+      "wristDrop": 6.966413963027662e-05
+    },
+    {
+      "key": [
+        0,
+        0
+      ],
+      "side": "R",
+      "shoulderShift": 1.4091789540950605e-05,
+      "elbowDrop": -1.960908517162352e-05,
+      "wristDrop": 4.8731643801147584e-05
+    },
+    {
+      "key": [
+        0,
+        0.5
+      ],
+      "side": "L",
+      "shoulderShift": 1.6674577005794424,
+      "elbowDrop": 4.702237011797365,
+      "wristDrop": 9.053321222552597
+    },
+    {
+      "key": [
+        0,
+        0.5
+      ],
+      "side": "R",
+      "shoulderShift": 2.7269575444325826,
+      "elbowDrop": 4.19371653509539,
+      "wristDrop": 7.345695290408713
+    },
+    {
+      "key": [
+        0,
+        1
+      ],
+      "side": "L",
+      "shoulderShift": 3.185186811520932,
+      "elbowDrop": 16.521809393505237,
+      "wristDrop": 31.876964498692217
+    },
+    {
+      "key": [
+        0,
+        1
+      ],
+      "side": "R",
+      "shoulderShift": 5.207657518378585,
+      "elbowDrop": 15.548433457259975,
+      "wristDrop": 28.601890107773585
+    },
+    {
+      "key": [
+        0.5,
+        -1
+      ],
+      "side": "L",
+      "shoulderShift": 2.08469355698071e-05,
+      "elbowDrop": 5.5627251555279145e-05,
+      "wristDrop": 9.325542777105511e-06
+    },
+    {
+      "key": [
+        0.5,
+        -1
+      ],
+      "side": "R",
+      "shoulderShift": 4.6399046929126276e-05,
+      "elbowDrop": 1.7696134790412543e-05,
+      "wristDrop": 0.00012268259533243508
+    },
+    {
+      "key": [
+        0.5,
+        -0.5
+      ],
+      "side": "L",
+      "shoulderShift": 8.195619044865932e-05,
+      "elbowDrop": 9.224908977500945e-05,
+      "wristDrop": 0.00014145516973940175
+    },
+    {
+      "key": [
+        0.5,
+        -0.5
+      ],
+      "side": "R",
+      "shoulderShift": 4.258441254579217e-05,
+      "elbowDrop": -1.239323263746428e-05,
+      "wristDrop": 9.52013357391479e-06
+    },
+    {
+      "key": [
+        0.5,
+        0
+      ],
+      "side": "L",
+      "shoulderShift": 6.855191655774593e-05,
+      "elbowDrop": 0.00011333577594996314,
+      "wristDrop": 0.00010609587533849663
+    },
+    {
+      "key": [
+        0.5,
+        0
+      ],
+      "side": "R",
+      "shoulderShift": 4.5797050596072906e-05,
+      "elbowDrop": 1.6187129745048878e-05,
+      "wristDrop": 1.224842881697441e-05
+    },
+    {
+      "key": [
+        0.5,
+        0.5
+      ],
+      "side": "L",
+      "shoulderShift": 1.661063004771995,
+      "elbowDrop": 4.747634392793557,
+      "wristDrop": 9.140324818840611
+    },
+    {
+      "key": [
+        0.5,
+        0.5
+      ],
+      "side": "R",
+      "shoulderShift": 2.740292804203917,
+      "elbowDrop": 4.242525027790492,
+      "wristDrop": 7.434249858905616
+    },
+    {
+      "key": [
+        0.5,
+        1
+      ],
+      "side": "L",
+      "shoulderShift": 3.1666188017301393,
+      "elbowDrop": 16.67216654538629,
+      "wristDrop": 32.169232808287006
+    },
+    {
+      "key": [
+        0.5,
+        1
+      ],
+      "side": "R",
+      "shoulderShift": 5.273609865966707,
+      "elbowDrop": 15.703301490668096,
+      "wristDrop": 28.893162197434577
+    },
+    {
+      "key": [
+        1,
+        -1
+      ],
+      "side": "L",
+      "shoulderShift": 2.1095611572104587,
+      "elbowDrop": 0.012228599627064796,
+      "wristDrop": 0.02038391344478896
+    },
+    {
+      "key": [
+        1,
+        -1
+      ],
+      "side": "R",
+      "shoulderShift": 0.44783858337896376,
+      "elbowDrop": 0.013650225146434991,
+      "wristDrop": 0.013237723211148023
+    },
+    {
+      "key": [
+        1,
+        -0.5
+      ],
+      "side": "L",
+      "shoulderShift": 2.676618613890454,
+      "elbowDrop": 0.006836674761331096,
+      "wristDrop": 0.011637696042413381
+    },
+    {
+      "key": [
+        1,
+        -0.5
+      ],
+      "side": "R",
+      "shoulderShift": 0.5990300936120458,
+      "elbowDrop": 0.006967369746419649,
+      "wristDrop": 0.006780289400950323
+    },
+    {
+      "key": [
+        1,
+        0
+      ],
+      "side": "L",
+      "shoulderShift": 2.196215456207229e-05,
+      "elbowDrop": 4.4406475055325245e-05,
+      "wristDrop": 2.4714409335047094e-05
+    },
+    {
+      "key": [
+        1,
+        0
+      ],
+      "side": "R",
+      "shoulderShift": 4.45985632143294e-05,
+      "elbowDrop": 1.1169305011549113e-05,
+      "wristDrop": 0.00011524445193344945
+    },
+    {
+      "key": [
+        1,
+        0.5
+      ],
+      "side": "L",
+      "shoulderShift": 1.6581335023354271,
+      "elbowDrop": 4.800068339621873,
+      "wristDrop": 9.24080578443963
+    },
+    {
+      "key": [
+        1,
+        0.5
+      ],
+      "side": "R",
+      "shoulderShift": 2.753042780216872,
+      "elbowDrop": 4.298761483194298,
+      "wristDrop": 7.536228168531466
+    },
+    {
+      "key": [
+        1,
+        1
+      ],
+      "side": "L",
+      "shoulderShift": 3.175327486677607,
+      "elbowDrop": 16.845291415682894,
+      "wristDrop": 32.50573703129402
+    },
+    {
+      "key": [
+        1,
+        1
+      ],
+      "side": "R",
+      "shoulderShift": 5.357121923545362,
+      "elbowDrop": 15.881595046743158,
+      "wristDrop": 29.228436700360277
+    }
+  ],
+  "forward_relative_wrist_error_px": 0.025195027936376846,
+  "forward_absolute_grid_error_px": 5.094016414824912,
+  "reported_static_nodes_unchanged": true,
+  "reported_depth_mesh_hierarchy_sources_unchanged": true,
+  "generated_differences": [
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Leg::G::L",
+      "max": 0.00517000000000678
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Leg::G::R",
+      "max": 0.005931000000000353
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Leg::G::R",
+      "max": 0.0008320000000026084
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Body::G",
+      "max": 20.8723144
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Body::G",
+      "max": 0.40020729999999993
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Body::G",
+      "max": 7.019425
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Plush::G",
+      "max": 20.437128000000005
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Plush::G",
+      "max": 0.07642220999999999
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Plush::G",
+      "max": 6.636397299999999
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Chest::G",
+      "max": 6.73262695
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Chest::G",
+      "max": 0.35454089999999994
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Chest::G",
+      "max": 1.6836090000000006
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Apron::G",
+      "max": 20.872316000000012
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Apron::G",
+      "max": 0.05533982499999998
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Apron::G",
+      "max": 6.924169
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "SkirtPanel::G::L",
+      "max": 20.437127999999998
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "SkirtPanel::G::L",
+      "max": 0.06436103000000004
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "SkirtPanel::G::L",
+      "max": 6.796669000000001
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "SkirtPanel::G::R",
+      "max": 21.421058000000002
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "SkirtPanel::G::R",
+      "max": 0.08077586
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "SkirtPanel::G::R",
+      "max": 6.800660200000001
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "TrainSide::G::L",
+      "max": 20.43713000000001
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "TrainSide::G::L",
+      "max": 1.5118860000000023
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "TrainSide::G::R",
+      "max": 20.872320000000002
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "TrainSide::G::R",
+      "max": 1.4239510000000024
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Clothing::G::Front",
+      "max": 20.872315000000004
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Clothing::G::Front",
+      "max": 0.06498406999999999
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Clothing::G::Front",
+      "max": 6.944669900000001
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Clothing::G::Back",
+      "max": 20.872320000000016
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Clothing::G::Back",
+      "max": 0.00036128518500000005
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Clothing::G::Back",
+      "max": 4.3177970000000006
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Arm::G::L",
+      "max": 88.31983260000001
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Arm::G::L",
+      "max": 0.05687750000000058
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Arm::G::L",
+      "max": 10.528890000000004
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Sleeve::G::L",
+      "max": 10.115324300000001
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Arm::G::R",
+      "max": 84.55293000000002
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Arm::G::R",
+      "max": 0.05595399999999806
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Arm::G::R",
+      "max": 7.55247
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Sleeve::G::R",
+      "max": 10.46517206
+    },
+    {
+      "parameter": "Body::Yaw-Pitch",
+      "target": "Topwear::G::Front",
+      "max": 20.002676
+    },
+    {
+      "parameter": "Face::Roll",
+      "target": "Topwear::G::Front",
+      "max": 0.3526640000000001
+    },
+    {
+      "parameter": "Body::Roll",
+      "target": "Topwear::G::Front",
+      "max": 6.7758483
+    }
+  ],
+  "audit_limitation": "Generated Body/FaceRoll/BodyRoll cache differences are recorded rather than claimed unchanged.",
+  "historical_disposition": "Retained at the user direction against reloading and further recovery; not a general permission to retain unintended differences.",
+  "not_executed": [
+    "Undo",
+    "reloading file",
+    "temporary hierarchy move",
+    "cache restoration"
+  ],
+  "unproven": "This 25-pose result is not a new full-body or arbitrary mixed-Face/Body/Roll quality certification."
+}

@@ -228,6 +228,10 @@ Use DepthBone bindings and
 - Counter-rotate/transform Thigh and Shin DepthBones so knees do not swing
   sideways, cross, or drop excessively.
 - Do not substitute a Part/Grid correction for a broken DepthBone chain.
+- If arms should retain forward body following and hang when leaning backward,
+  use the [arm backward-hang procedure](../../nijigenerate-depth-skeleton-setup/references/arm-backward-hang.md)
+  in this bone pass. Keep neutral/forward isolation and shoulder-relative versus
+  absolute preservation as separate checks before any local occlusion pass.
 
 Complete the Body pass, including Pelvis/Spine/leg correction and its full
 result audit, before beginning the Face pass.
