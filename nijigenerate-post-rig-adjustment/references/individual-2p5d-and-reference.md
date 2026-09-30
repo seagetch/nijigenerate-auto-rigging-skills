@@ -22,7 +22,7 @@ Depth gives broad volume and bones give pose. Part correction describes the resi
 - Torso: preserve ribcage volume while exposing the far side. Avoid pulling the far chest edge to an arm merely to close a gap. Separate chest residual shape from torso articulation and compare nearby clothing.
 - Shoulder/armpit: distinguish the shoulder attachment from the hollow under the arm. A gap, absent paint, wrong depth, wrong occlusion and accidental Welding require different corrections.
 
-A manual user sample demonstrates direction and intent unless declared definitive. Propagate its principle, not its raw values, to other angles.
+Derive the initial contour targets from artwork and directional references using [face-contour-from-reference.md](face-contour-from-reference.md); do not wait for a user-edited delta as the shaping method. When user-corrected keys already exist, preserve the specified keys exactly and carry their anatomical intent, not raw screen offsets, to other angles.
 
 For face/torso angle comparison and simultaneous neighboring-surface defects, read [Ao visual examples](ao-visual-examples.md). Its failure images and generated candidates are explicitly distinguished from accepted results.
 

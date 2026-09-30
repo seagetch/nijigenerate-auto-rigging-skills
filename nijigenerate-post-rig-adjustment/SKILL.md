@@ -12,6 +12,8 @@ Use this skill only after the standard Depth parameters exist. Preserve the gene
 - Always read [operation-order.md](references/operation-order.md) before changing a model.
 - Read [broad-grid-path-adjustment.md](references/broad-grid-path-adjustment.md) for GridDeformer and intentional PathDeformer correction.
 - Read [direct-part-detail-adjustment.md](references/direct-part-detail-adjustment.md) before binding a Part directly.
+- For cheek/jaw shaping across Face yaw and pitch, read [face-contour-from-reference.md](references/face-contour-from-reference.md) before the first correction plan.
+- Before judging cheek shape, and after changes to overlapping assets/deformation/draw order, read [face visibility and occlusion review](../nijigenerate-shared-rigging-rules/references/face-visibility-review.md). Verify that erroneous occluders are not hiding the defect or the intended cheek. Texture editing is conditional on a demonstrated asset defect.
 - Read [face-body-clothing-corrections.md](references/face-body-clothing-corrections.md) for region-specific diagnosis.
 - Read [state-verification.md](references/state-verification.md) for binding preservation, exact-key captures, and save audit.
 - Read [directional-deformation-audit.md](references/directional-deformation-audit.md) when explaining or validating what a two-axis parameter changes at its four cardinal keys and four corners.

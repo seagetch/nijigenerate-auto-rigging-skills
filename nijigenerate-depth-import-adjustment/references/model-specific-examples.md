@@ -38,3 +38,7 @@ The reusable lesson is to keep visible side columns meaningfully forward and tap
 ## Face/hair global magnitude correction
 
 One prior model improved when Face and hair depth magnitude was reduced to roughly two-thirds. This is only evidence that over-strong source relief can require coordinated scaling. Always measure the current face, mouth projection, hair separation, and effective node Z before choosing a scale.
+
+## Midori：アニメ顔の凹凸と方向別参照
+
+[実データ・断面図・8方向・不採用の横髪例](midori-face-reference-sample.md)を参照。眼窩と頬、鼻梁と鼻先を別々に読むための資料であり、手直し差分や数値の移植用ではない。

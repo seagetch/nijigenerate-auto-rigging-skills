@@ -18,6 +18,10 @@ items:
     target: "depth-first directional comparison"
     expected: "The same direction ledger shows broad depth volume and attachment checks before Part residuals; initial generation is not rerun on an existing rig, and remaining Part-owned contour/occlusion items have an explicit handoff."
 
+  - id: depth-import-adjustment-change-006
+    target: "stylized facial relief when edited"
+    expected: "Orbital recess/rim, outer-eye transition, cheeks, bridge and tip are separately mapped; relative relief survives strength reductions, all directional references are inspected, and Part flattening does not substitute for depth."
+
 # Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
 example_references:
   - "../../nijigenerate-post-rig-adjustment/references/ao-visual-examples.md"

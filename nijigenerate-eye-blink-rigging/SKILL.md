@@ -22,7 +22,7 @@ Start a reviewer SPA only when the user explicitly requests one. Treat human vis
 ## Core Rules
 
 1. Separate closure-line height from expression curvature.
-2. Make upper-lid descent the dominant closing motion. Allow only a small lower-lid rise unless a reviewed reference proves otherwise.
+2. Make upper-lid descent the dominant closing motion. Allow only a small lower-lid rise unless a reviewed reference proves otherwise. Verify closure-line descent separately from final curvature using the reference-motion gate in `references/eyelid-motion-and-bezier.md`; an endpoint-preservation or visibility pass cannot override a failed motion budget.
 3. Classify actual upper and lower contours from topology and rendered evidence; do not use texture-UV Y alone.
 4. Treat each eye independently. Build its authored open canthus tangent in current rendered/deformed parent space; record character side, screen side, near/far status, face roll, width, aperture, and occlusion.
 5. Preserve closed width, the painted upper-lash thickness, the outer wedge, the inner taper, both canthus positions, and their neighboring tangents.

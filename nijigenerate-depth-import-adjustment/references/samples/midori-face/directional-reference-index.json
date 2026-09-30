@@ -1,0 +1,253 @@
+{
+  "sideConvention": "This model: Yaw=-1 character right turn; Yaw=+1 character left turn. Confirm anew on another model. Pitch=-1 down, +1 up.",
+  "entries": [
+    {
+      "id": "xneg-yneg",
+      "parameterValue": [
+        -1,
+        -1
+      ],
+      "file": "angles/xneg-yneg.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    },
+    {
+      "id": "yneg",
+      "parameterValue": [
+        0,
+        -1
+      ],
+      "file": "angles/yneg.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    },
+    {
+      "id": "xpos-yneg",
+      "parameterValue": [
+        1,
+        -1
+      ],
+      "file": "angles/xpos-yneg.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    },
+    {
+      "id": "xneg",
+      "parameterValue": [
+        -1,
+        0
+      ],
+      "file": "angles/xneg.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    },
+    {
+      "id": "xpos",
+      "parameterValue": [
+        1,
+        0
+      ],
+      "file": "angles/xpos.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    },
+    {
+      "id": "xneg-ypos",
+      "parameterValue": [
+        -1,
+        1
+      ],
+      "file": "angles/xneg-ypos.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    },
+    {
+      "id": "ypos",
+      "parameterValue": [
+        0,
+        1
+      ],
+      "file": "angles/ypos.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    },
+    {
+      "id": "xpos-ypos",
+      "parameterValue": [
+        1,
+        1
+      ],
+      "file": "angles/xpos-ypos.png",
+      "evidence": "GENERATED_REFERENCE_NOT_RIG_RESULT",
+      "usableRegions": [
+        "jaw and cheek silhouette, nose position, eye plane relationship"
+      ],
+      "excludedRegions": [
+        "new hair strand detail, changed frills or flower petals, mouth size, tiny highlight details"
+      ],
+      "poseValidation": {
+        "yawPitch": "same quadrant; centers constrained in v2 when first candidate failed",
+        "camera": "single whole-canvas uniform scaling; no local warp",
+        "angleTolerance": "qualitative angle match, no inferred degree precision"
+      },
+      "registration": {
+        "uniformScale": 1.1483253588516746,
+        "translation": [
+          0,
+          0
+        ],
+        "noLocalWarp": true
+      },
+      "camera": "Reference::Face",
+      "physics": "Historical ledger says disabled; no independent runtime-state proof retained here. Do not use these for numeric motion deltas.",
+      "humanAcceptance": "Not asserted"
+    }
+  ]
+}

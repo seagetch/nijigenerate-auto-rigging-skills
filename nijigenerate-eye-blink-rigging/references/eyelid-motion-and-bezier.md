@@ -30,6 +30,16 @@ Use this movement budget as a default guardrail:
 
 Measure movement along the eye-local vertical axis rather than global screen Y.
 
+### Reference-motion gate before choosing a closed curve
+
+Compare open, intermediate, and closed artwork in a registered face frame. Use unchanged facial or hair landmarks for registration; aligning each image by the moving eyelids would erase the motion being measured. Record the upper band, lower band, and visible inner/outer lash ends separately, with eye-local displacement and the image locations used as evidence.
+
+Do not infer closure height from a closed-eye curve alone. Fit the downward travel first, then its neutral/deep/smile curvature. Do not label a reference endpoint shift as generation drift merely because it disagrees with fixed-canthus assumptions. Reject a generated reference only with an observed registration or identity inconsistency; record which relationship is unusable. A generated smile is not automatically a reviewed exception to the motion budget.
+
+Distinguish anatomical canthi from painted lash tips and contour endpoints. Preserving anatomical anchors is not a reason to leave a separate visible lash-tip Part stationary or to converge upper and lower contours onto the open-eye chord. If the current user or a registered model-specific reference requires endpoint descent, record the intentional endpoint trajectory in the existing eye frame and preserve its relationship to face roll. The user's explicit direction supersedes the default fixed-endpoint assumption; do not demand that the user repeat it.
+
+Audit upper descent and lower rise separately for each eye, expression, and intermediate, at homologous inner/central/outer contour regions. Report motion relative to the original aperture. A ratio failure or excessive lower-lid rise is RETAKE unless supported by the recorded model-specific reference or explicit user direction. Zero Iris bindings, zero white-X deltas, fixed endpoints, a full isSet matrix, or complete occlusion cannot make a failing motion result pass. Re-read saved numeric audits: recording a violation without acting on it is not verification.
+
 ## 2. Perspective-Aware Eye Frame
 
 For each eye, identify reviewed authored open inner canthus `A_open` and outer canthus `B_open` in the same current rendered/deformed parent space.

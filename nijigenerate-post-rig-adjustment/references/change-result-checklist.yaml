@@ -24,6 +24,19 @@ items:
     target: "visual agreement and closure"
     expected: "Smooth silhouettes, internal landmarks, visible side surfaces and neighboring attachments are inspected together; neither numeric preservation nor a generated image proves acceptance, and deferred Part residuals are resolved before overall completion."
 
+  - id: post-rig-adjustment-change-008
+    target: "reference-derived near/far face correction"
+    expected: "Targets were derived before mutation from landmarks and visibility; near-side eye-to-cheek-to-chin curvature is continuous across pitch, far-side depth/occlusion is preserved, and no user-delta-only or fixed-height shortcut defines the shape."
+  - id: post-rig-adjustment-change-009
+    target: "triangle validity and protected cells"
+    expected: "Existing inversions are distinguished from new ones using a valid reference; a global attenuation guard does not retain a rejected contour; protected cells inside edited bindings and forbidden Part corrections are checked explicitly."
+  - id: post-rig-adjustment-change-010
+    target: "cheek visibility and occluder validity"
+    expected: "Normal and diagnostic isolated views distinguish cheek geometry from occlusion. Generated or existing asset/depth/deformation/draw-order errors do not hide defects or suppress the intended visible cheek; intentional overlap remains. Asset editing occurs only for a demonstrated defect, followed by a restored normal-view check."
+  - id: post-rig-adjustment-change-011
+    target: "Face neck attachment when edited"
+    expected: "Neck connects behind the jaw with reference width and fixed collar/shoulder anchors; chin motion is not copied onto the neck; up/down corners expose neither a rounded cap nor a frontward neck."
+
 # Supporting examples are reading aids; record fresh target evidence, not these files as a passing result.
 example_references:
   - "ao-visual-examples.md"

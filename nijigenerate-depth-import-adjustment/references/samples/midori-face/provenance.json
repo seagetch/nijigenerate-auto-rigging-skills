@@ -1,0 +1,102 @@
+{
+  "scope": "Only original artwork and clean task-produced snapshots/references; no task history or unrelated sources.",
+  "files": [
+    {
+      "file": "face-grid-snapshot.json",
+      "source": "Midori-20260929/output/Midori-auto-rig/structural-retake/user-pitch-transfer-before-grid.json",
+      "sha256": "d590c4bbdaae0cc1c09c53232e214690fe3586137f3ec706659bb5df2d6dd005",
+      "evidence": "recorded user-edited depth state; not a universal preset or complete rig approval"
+    },
+    {
+      "file": "face-original.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/assets/face.png",
+      "sha256": "1770af870cdb27eca98653c37f8b3ba52824ee448065b5eb54d1e3a3830252bf",
+      "evidence": "original artwork for landmark mapping"
+    },
+    {
+      "file": "face-context.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/assets/source-composite.png",
+      "sourceSha256": "bfd5188bf6e9f2747f935c848c9d8d137b4f8926fc82b64f880f3a456d317e8e",
+      "sha256": "7634d0f4abd4fc5fbd69b3d3551beb32a71ed9b406f0a5ff9bfda3585b252b41",
+      "crop": [
+        410,
+        60,
+        610,
+        275
+      ],
+      "evidence": "unaltered crop of original composite; eye/nose/mouth context in source coordinates"
+    },
+    {
+      "file": "angles/xneg-yneg.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-xneg-yneg.png",
+      "sha256": "b733995bc3b9ba17987e2ced65b47807bc8320cc474db631dddddabae0d08aad",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "angles/yneg.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-yneg.png",
+      "sha256": "348d6431f58d00457598a054ee1af2983ccceee0b9dec8d9cc05c4da07499eeb",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "angles/xpos-yneg.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-xpos-yneg.png",
+      "sha256": "28cda891320eb8a3969faa01dd0397056664ae2f52fc5709c85b9533c3b7bd8c",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "angles/xneg.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-xneg.png",
+      "sha256": "81d5c83a7e034b04be4f4e81d2b382f8dc17175116856a8e961d263108bc4096",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "angles/xpos.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-xpos.png",
+      "sha256": "a471dcb6eae5b480a4c319ab5067b52a83b0e1a16dceff4a2a9f51d30a2c94e6",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "angles/xneg-ypos.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-xneg-ypos.png",
+      "sha256": "277fb2cd96d09a52b85a2fc1e3133b7b6c3164302777e1c1c3b123b9e0e6251e",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "angles/ypos.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-ypos.png",
+      "sha256": "860d2dc1f23caf24b001ad08399e553adfb88e8bcdac9763ac592d7ffbcff999",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "angles/xpos-ypos.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/angle-reference-pass/face-reference-adopted-xpos-ypos.png",
+      "sha256": "7d394aca22c8708e760e7dc1c69725d50d9e74d7396f03c5bb13da423efb50c9",
+      "evidence": "generated directional reference, usable only with listed exclusions; not model acceptance"
+    },
+    {
+      "file": "hair-original-R.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/assets/hair_side_R.png",
+      "sha256": "366936f2523a150fdc61de03c32be2575dfe1c4ec8c6d67bcd226cbeb4705421",
+      "evidence": "original foreground silhouette; contains rear contamination"
+    },
+    {
+      "file": "hair-rejected-narrow-R.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/structural-retake/hair_side_R-normalized-v2.png",
+      "sha256": "acede50bc15a870d766f8cd7d7bc2c00e91db38b271a03a8916e69ba36ab23c1",
+      "evidence": "USER_REJECTED: whole lock narrowed instead of local rear-contamination removal"
+    },
+    {
+      "file": "hair-original-L.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/assets/hair_side_L.png",
+      "sha256": "2c2384e729357824a106531a8706a9d3d99b053ec95a5df2dafd2611cf737da0",
+      "evidence": "original foreground silhouette; contains rear contamination"
+    },
+    {
+      "file": "hair-rejected-narrow-L.png",
+      "source": "Midori-20260929/output/Midori-auto-rig/structural-retake/hair_side_L-normalized-v2.png",
+      "sha256": "262a3a72c69711d9339d8a806775c7b4240da514fb48ecdcde7d6154c56d52bc",
+      "evidence": "USER_REJECTED: whole lock narrowed instead of local rear-contamination removal"
+    }
+  ]
+}

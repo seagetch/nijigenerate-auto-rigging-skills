@@ -22,3 +22,11 @@ AutoMesh、BoneSourceのブレンド、独立した髪やスカートの追従�
 各向きの画像を新たに用意し、モデルへ合わせる具体的な順序は[参照生成→深度→個別Partの横断手順](angle-reference-depth-part-workflow.md)を読む。画像集だけでは生成・角度確認・二段階補正の操作手順にならない。
 
 顔・体それぞれの全方向の実画像は[各方向の生成原本・比較用画像一覧](../../nijigenerate-post-rig-adjustment/references/ao-directional-reference-gallery.md)へ。
+
+## 初回の顔・横髪判断に使う資料
+
+[Midoriの実データ付き参照](../../nijigenerate-depth-import-adjustment/references/midori-face-reference-sample.md)：顔の深度断面、元の顔、8方向の生成参照、横髪を細くしすぎた不採用例。数値は非プリセット、生成参照は完成リグの承認ではない。ファイルはスキル内に実体を保持し、出自とhashを同梱する。
+
+## 顔評価の前提となる遮蔽確認
+
+顔を補正・判定する際は[頬の造形と遮蔽の検証](face-visibility-review.md)を優先する。Midoriの横髪資料はアシスタントによる素材生成失敗の補助例であり、汎用の横髪編集手順ではない。誤った素材が頬を覆い、造形の欠陥を隠したり正しい輪郭の表示を妨げたりしていないかを確認する。

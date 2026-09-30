@@ -107,3 +107,15 @@ Read [references/change-result-checklist.yaml](references/change-result-checklis
 When a procedure needs visual interpretation or a concrete recorded example, use the [reference image/example index](references/visual-example-index.md) to open only the relevant examples. Historical failures, generated candidates and numerical audits are distinguished there; do not treat them as current-model approval.
 
 For generated multi-angle references used to correct depth and individual Parts, read the complete [reference-to-rig procedure](references/angle-reference-depth-part-workflow.md).
+
+## First-pass correction planning
+
+- Before mutation, record an explicit allowlist of node × property/binding × parameter key × vertex/region, and the protected complement. A Grid XY prohibition does not forbid an authorized depth edit; a Part-specific prohibition does not become permission to compensate on a neighbor. If a user prohibits non-neutral bangs Part correction, exclude those keys from every later hair helper and audit their values separately. Do not make that example a universal ban for other users/models.
+- Before evaluating face contours, and after changing overlapping content, read [face-visibility-review.md](references/face-visibility-review.md). Inspect the normal composite and, where needed, an isolated face view; do not let generated asset errors conceal cheek defects or suppress the correct visible contour. Do not prescribe hair editing unless an asset defect is demonstrated.
+- Derive targets from the original artwork, anatomy and adopted directional references. User edits, when present, are protected evidence; a later manual delta is not a prerequisite for constructing a correct first proposal. An initial candidate still requires validation and retakes when necessary.
+
+## Stable capture before comparison
+
+- Physics reset is not physics pause. Record the actual enabled/paused state; do not infer it from a successful reset command. If state is not readable, verify repeated captures at an unchanged pose are stable and resolve the source of drift before using pixel differences.
+- Finish mutation and readback before starting dependent captures. After setting a key, force evaluation, discard stale frames, and capture again; confirm the pose has settled rather than treating a fixed number of captures as proof.
+- Convert overlay image coordinates using that capture's own worldCapture AABB and dimensions. Never reuse an affine from a different viewport pan/zoom. Use a common fixed export camera for visual comparisons; do not anisotropically resize evidence to make contours match.
