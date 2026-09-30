@@ -27,7 +27,7 @@ items:
     expected: Each side contains its complete thigh-to-foot DepthBone source chain.
   - id: depth-skeleton-result-009
     target: body and lower-clothing GridDeformers
-    expected: Relevant torso, Pelvis, and both-leg source chains are complete and ordered.
+    expected: Relevant torso/Pelvis/leg sources are complete for the declared ownership map. An independently driven skirt uses its verified front/back chains and waist blend; do not add both-leg or non-yaw Pelvis sources merely to satisfy a generic chain list. Use the conditional skirt change checks.
   - id: depth-skeleton-result-010
     target: all GridDeformer BoneSources
     expected: Every source UUID and inline weight/depth setting reads back exactly once with no omitted grid.

@@ -1,0 +1,556 @@
+{
+  "purpose": "Historical reading example; not an executable payload, current model audit, or universal preset",
+  "source_record": "ao-skirt-pelvis-retake-20260922",
+  "scope": "Pelvis-attached clothing driven by Body yaw without upper-Spine pitch inheritance",
+  "limitations": [
+    "Historical audit status is not user acceptance or present-day visual approval.",
+    "Later waist-seam and depth changes are outside this snapshot.",
+    "Numbers, bone names and key spacing are specific to this historical Ao state.",
+    "Pose screenshots are illustrative; they do not contain full parameter vectors and camera metadata.",
+    "Recorded Grid-versus-Pelvis displacement residual and sleeve folds are retained below; bone checks alone do not prove visual quality."
+  ],
+  "frame": {
+    "space": "Historical model coordinates for restHead/restTail; node-local transform as serialized",
+    "character_sides": "L is screen-right at neutral; R is screen-left",
+    "body_axes": [
+      "Yaw",
+      "Pitch"
+    ],
+    "pitch_sign": {
+      "-1": "forward",
+      "1": "backward"
+    }
+  },
+  "bones": [
+    {
+      "name": "Skirt.PelvisYaw",
+      "restHead": [
+        -6.0,
+        -115.0,
+        21.874952000000004
+      ],
+      "restTail": [
+        -6.0,
+        -135.0,
+        21.874952000000004
+      ],
+      "restRoll": 0.0,
+      "transform": {
+        "rot": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "trans": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "lockToRoot": false,
+      "parent": "Pelvis"
+    },
+    {
+      "name": "Skirt.Front",
+      "restHead": [
+        -6.0,
+        -135.0,
+        35.95102
+      ],
+      "restTail": [
+        -6.0,
+        100.0,
+        39.292725000000004
+      ],
+      "restRoll": 0.0,
+      "transform": {
+        "rot": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "trans": [
+          0.0,
+          -20.0,
+          14.076067
+        ]
+      },
+      "lockToRoot": false,
+      "parent": "Skirt.PelvisYaw"
+    },
+    {
+      "name": "Skirt.Front.Hem",
+      "restHead": [
+        -6.0,
+        100.0,
+        39.292725000000004
+      ],
+      "restTail": [
+        -6.0,
+        180.0,
+        39.292725000000004
+      ],
+      "restRoll": 0.0,
+      "transform": {
+        "rot": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "trans": [
+          0.0,
+          235.0,
+          3.3417048000000005
+        ]
+      },
+      "lockToRoot": false,
+      "parent": "Skirt.Front"
+    },
+    {
+      "name": "Skirt.Back",
+      "restHead": [
+        -6.0,
+        -110.0,
+        -40.76653
+      ],
+      "restTail": [
+        -6.0,
+        650.0,
+        -19.091208
+      ],
+      "restRoll": 0.0,
+      "transform": {
+        "rot": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "trans": [
+          0.0,
+          5.0,
+          -62.64148
+        ]
+      },
+      "lockToRoot": false,
+      "parent": "Skirt.PelvisYaw"
+    },
+    {
+      "name": "Skirt.Back.Hem",
+      "restHead": [
+        -6.0,
+        650.0,
+        -19.091208
+      ],
+      "restTail": [
+        -6.0,
+        720.0,
+        -19.091208
+      ],
+      "restRoll": 0.0,
+      "transform": {
+        "rot": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "trans": [
+          0.0,
+          760.0,
+          21.675320000000003
+        ]
+      },
+      "lockToRoot": false,
+      "parent": "Skirt.Back"
+    }
+  ],
+  "binding": {
+    "kind": "Direct bone property binding, not a ParameterLink",
+    "parameter": "Body::Yaw-Pitch",
+    "target": "Skirt.PelvisYaw",
+    "property": "transform.r.y",
+    "unit": "radian",
+    "axis_values": [
+      [
+        -1.0,
+        -0.5,
+        0.0,
+        0.5,
+        1.0
+      ],
+      [
+        -1.0,
+        -0.5,
+        0.0,
+        0.5,
+        1.0
+      ]
+    ],
+    "matrix_order": "values[yaw_index][pitch_index]",
+    "interpolation": "Linear",
+    "is_set": [
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "values": [
+      [
+        -0.5235988,
+        -0.5235988,
+        -0.5235988,
+        -0.5235988,
+        -0.5235988
+      ],
+      [
+        -0.2617994,
+        -0.2617994,
+        -0.2617994,
+        -0.2617994,
+        -0.2617994
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.2617994,
+        0.2617994,
+        0.2617994,
+        0.2617994,
+        0.2617994
+      ],
+      [
+        0.5235988,
+        0.5235988,
+        0.5235988,
+        0.5235988,
+        0.5235988
+      ]
+    ]
+  },
+  "clothing_targets": [
+    "Clothing::G::Front",
+    "Apron::G",
+    "SkirtPanel::G::L",
+    "SkirtPanel::G::R",
+    "Plush::G",
+    "Clothing::G::Back",
+    "TrainSide::G::L",
+    "TrainSide::G::R"
+  ],
+  "source_change": {
+    "source": "Pelvis",
+    "weight_before": 2.0,
+    "weight_after": 0.0,
+    "targets": [
+      "Clothing::G::Front",
+      "Apron::G",
+      "SkirtPanel::G::L",
+      "SkirtPanel::G::R",
+      "Plush::G",
+      "Clothing::G::Back",
+      "TrainSide::G::L",
+      "TrainSide::G::R"
+    ],
+    "reason": "Non-yaw Pelvis source diluted skirt yaw; Pelvis translation remains inherited through the bone hierarchy.",
+    "depth_response": "Previously established source depth settings retained; resetting depthScale/depthOffset to 1/0 was a rejected intermediate trial.",
+    "applicability": "Historical case only; preserve needed waistband blending in the current model."
+  },
+  "plush_hierarchy": {
+    "target": "Plush::G",
+    "parent_after": "body",
+    "reason": "Remove extra ancestor Part/Grid propagation while keeping neutral position, children and effective draw order."
+  },
+  "reported_preservation": {
+    "original_19_bones_preserved": true,
+    "mesh_depth_order_masks_preserved": true,
+    "neutral_same_camera": true,
+    "neutral_max_pixel_difference": 0
+  },
+  "recorded_numeric_checks": {
+    "body_bone_pose_count": 25,
+    "body_roll_bone_pose_count": 5,
+    "max_render_bone_error": 2.2751241099549255e-13,
+    "max_pitch_rotation_leak_error": 0.0,
+    "body_render_pose_count": 25,
+    "body_roll_render_pose_count": 5,
+    "single_parameter_render_fold_count": 0,
+    "max_grid_residual_from_pelvis_translation_model_units": 0.8054056536740535,
+    "combined_pose_checks": [
+      {
+        "Body": [
+          -1,
+          -1
+        ],
+        "BodyRoll": [
+          -1,
+          -1
+        ],
+        "folds": []
+      },
+      {
+        "Body": [
+          -1,
+          -1
+        ],
+        "BodyRoll": [
+          1,
+          -1
+        ],
+        "folds": [
+          {
+            "target": "Sleeve::G::R",
+            "cell": [
+              2,
+              11
+            ],
+            "signed_area_as_recorded": -0.0321597186856053
+          }
+        ]
+      },
+      {
+        "Body": [
+          -1,
+          1
+        ],
+        "BodyRoll": [
+          -1,
+          -1
+        ],
+        "folds": []
+      },
+      {
+        "Body": [
+          -1,
+          1
+        ],
+        "BodyRoll": [
+          1,
+          -1
+        ],
+        "folds": []
+      },
+      {
+        "Body": [
+          1,
+          -1
+        ],
+        "BodyRoll": [
+          -1,
+          -1
+        ],
+        "folds": [
+          {
+            "target": "Sleeve::G::L",
+            "cell": [
+              9,
+              11
+            ],
+            "signed_area_as_recorded": -14.463307455182076
+          }
+        ]
+      },
+      {
+        "Body": [
+          1,
+          -1
+        ],
+        "BodyRoll": [
+          1,
+          -1
+        ],
+        "folds": []
+      },
+      {
+        "Body": [
+          1,
+          1
+        ],
+        "BodyRoll": [
+          -1,
+          -1
+        ],
+        "folds": []
+      },
+      {
+        "Body": [
+          1,
+          1
+        ],
+        "BodyRoll": [
+          1,
+          -1
+        ],
+        "folds": []
+      }
+    ],
+    "face_only_grid_motion_model_units": [
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "key": [
+          -1,
+          -1
+        ],
+        "max_displacement": 0.0
+      },
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "key": [
+          -1,
+          1
+        ],
+        "max_displacement": 0.0
+      },
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "key": [
+          1,
+          -1
+        ],
+        "max_displacement": 0.0
+      },
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "key": [
+          1,
+          1
+        ],
+        "max_displacement": 0.0
+      },
+      {
+        "parameter": "Face::Yaw-Pitch",
+        "key": [
+          0,
+          0
+        ],
+        "max_displacement": 0.0
+      },
+      {
+        "parameter": "Face::Roll",
+        "key": [
+          -1,
+          -1
+        ],
+        "max_displacement": 0.00013148050232663762
+      },
+      {
+        "parameter": "Face::Roll",
+        "key": [
+          -0.5,
+          -1
+        ],
+        "max_displacement": 0.00010394446399573079
+      },
+      {
+        "parameter": "Face::Roll",
+        "key": [
+          0,
+          -1
+        ],
+        "max_displacement": 0.0
+      },
+      {
+        "parameter": "Face::Roll",
+        "key": [
+          0.5,
+          -1
+        ],
+        "max_displacement": 0.00010394446399573079
+      },
+      {
+        "parameter": "Face::Roll",
+        "key": [
+          1,
+          -1
+        ],
+        "max_displacement": 0.00010394446402115194
+      }
+    ],
+    "known_out_of_scope_findings": [
+      {
+        "target": "Sleeve::G::R",
+        "pose": {
+          "Body": [
+            -1,
+            -1
+          ],
+          "BodyRoll": [
+            1,
+            -1
+          ]
+        },
+        "finding": "one edge cell has negative area -0.0322 px2",
+        "state": "existing unchanged skeleton/source; binding drift <0.00015 model units from native refresh"
+      },
+      {
+        "target": "Sleeve::G::L",
+        "pose": {
+          "Body": [
+            1,
+            -1
+          ],
+          "BodyRoll": [
+            -1,
+            -1
+          ]
+        },
+        "finding": "one edge cell has negative area -14.4633 px2",
+        "state": "existing unchanged skeleton/source; binding drift <0.00015 model units from native refresh"
+      }
+    ]
+  }
+}

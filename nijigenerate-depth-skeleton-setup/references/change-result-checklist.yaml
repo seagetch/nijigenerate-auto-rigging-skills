@@ -9,7 +9,16 @@ items:
     expected: "Explicit source/destination axes and signs match the requested behavior with no duplicate driver, cycle or unintended Roll inheritance."
   - id: depth-skeleton-setup-change-003
     target: "skirt when edited"
-    expected: "Front/back bones occupy their own accepted surfaces; pelvis yaw and vertical movement reach the waistband without unwanted upper-chest pitch."
+    expected: "Front/back bones occupy their own accepted surfaces. The actual Body yaw driver reaches the skirt origin even when Pelvis itself has no yaw; yaw-only helper values stay constant across pitch keys, while intended pelvis translation/Roll remains and upper-chest pitch does not tip the skirt."
   - id: depth-skeleton-setup-change-004
     target: "knee lowering when edited"
     expected: "Both thigh/shin chains reach locked ankles, knees remain separated at intermediate and extreme bend, and lowering is not replaced by extra convergence."
+  - id: depth-skeleton-setup-change-005
+    target: "skirt source and hierarchy repair when requested"
+    expected: "BoneSource blending neither dilutes intended yaw nor applies ancestor motion twice; waistband continuity remains. Accepted source depth settings, neutral geometry and effective draw order are preserved, and native regenerated deformation changes are classified."
+  - id: depth-skeleton-setup-change-006
+    target: "rendered skirt regression when edited"
+    expected: "Front/apron/back/side/accessory surfaces follow the intended pose at both yaw directions, forward/backward pitch, half-values and relevant Roll combinations; Face-only motion does not drive a pelvis-owned skirt. Rendered residuals and unrelated defects remain explicit rather than inheriting a historical OK label."
+references:
+  - "pelvis-skirt-follow.md"
+  - "ao-skirt-follow-example.md"

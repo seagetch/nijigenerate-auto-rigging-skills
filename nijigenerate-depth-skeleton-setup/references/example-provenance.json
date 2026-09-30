@@ -1,0 +1,53 @@
+{
+  "purpose": "Historical references with symbolic source labels; no local file paths, access URIs or executable model commands",
+  "files": [
+    {
+      "path": "images/ao-skirt-follow-detail.png",
+      "source_record": "ao-skirt-pelvis-retake-20260922",
+      "source_artifact": "skirt-pelvis-detailed-comparison.png",
+      "source_sha256": "48b8c76d06c054371002411eddafd5e74a24297713c4ed76cc41cb36d98d6b30",
+      "sha256": "48b8c76d06c054371002411eddafd5e74a24297713c4ed76cc41cb36d98d6b30",
+      "metadata_chunks_removed": [],
+      "status": "historical-comparison-not-final-approval"
+    },
+    {
+      "path": "images/ao-skirt-follow-poses.png",
+      "source_record": "ao-skirt-pelvis-retake-20260922",
+      "source_artifact": "skirt-pelvis-review.png",
+      "source_sha256": "9ccb05ff57c624ed02271e79f54e0d83d8d18824d521efe1ab97fa8813cde359",
+      "sha256": "9ccb05ff57c624ed02271e79f54e0d83d8d18824d521efe1ab97fa8813cde359",
+      "metadata_chunks_removed": [],
+      "status": "historical-comparison-not-final-approval"
+    },
+    {
+      "path": "images/ao-skirt-follow-combined.png",
+      "source_record": "ao-skirt-pelvis-retake-20260922",
+      "source_artifact": "skirt-pelvis-combined-review.png",
+      "source_sha256": "1effca9ecb1b775230a46e96b4c4a92205e387bad8d0663626c51ab0c9390071",
+      "sha256": "1effca9ecb1b775230a46e96b4c4a92205e387bad8d0663626c51ab0c9390071",
+      "metadata_chunks_removed": [],
+      "status": "historical-comparison-not-final-approval"
+    },
+    {
+      "path": "examples/ao-skirt-follow.json",
+      "source_record": "ao-skirt-pelvis-retake-20260922",
+      "source_artifacts": [
+        {
+          "label": "final-audit.json",
+          "sha256": "6b16e0c89845ac348b55fb4a649d6350f0bee2f8e1211f5785ff29f58eb43024"
+        },
+        {
+          "label": "postsave.json.gz",
+          "sha256": "f40ab594c6dd611efd06295cb71f33666d50426174396099637f3cdf4a2b0720"
+        },
+        {
+          "label": "source-follow-correction.json",
+          "sha256": "c329ac8f96da9185de50efc17c3eaf35aa98d2aea3fdfc3f83902282ffcc98b4"
+        }
+      ],
+      "sha256": "d12c9ea622096d221a8c32a3111b86551b1742e9b0de0c4fc59be3f4432479e0",
+      "status": "whitelisted-settings-and-measurements-not-executable",
+      "omitted": "Machine paths, resource URIs, model UUIDs, save destinations, unrelated model state and unverified planning payloads"
+    }
+  ]
+}

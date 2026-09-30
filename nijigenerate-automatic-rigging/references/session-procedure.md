@@ -111,8 +111,10 @@ Use `nijigenerate-depth-skeleton-setup`.
    - face grids: Head only;
    - each arm/hand grid: every DepthBone in that side's shoulder-to-hand chain;
    - each leg grid: every DepthBone in that side's thigh-to-foot chain;
-   - body/lower clothing grids: the complete relevant torso, pelvis, and both-leg
-     chains;
+   - body/lower clothing grids: the complete chains required by their actual
+     surface ownership. For an independently driven skirt, use the
+     [pelvis/skirt procedure](../../nijigenerate-depth-skeleton-setup/references/pelvis-skirt-follow.md);
+     do not add both-leg or non-yaw pelvis sources merely because it is clothing;
    - other grids: the exact controlling chain, not a convenient partial list.
 8. Re-read every BoneSource list before proceeding.
 

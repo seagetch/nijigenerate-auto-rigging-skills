@@ -6,4 +6,4 @@ items:
     expected: "Front/back/side surfaces and waistband contacts have explicit owners; spatial proximity is not treated as inheritance."
   - id: front-back-clothing-rigging-change-002
     target: "existing-rig repair"
-    expected: "Source/link repairs preserve accepted meshes/depth and verify actual pelvis rotation/translation rather than only hierarchy names."
+    expected: "Source/link repairs preserve accepted meshes/depth and source depth response. Verify the actual Body yaw driver, pelvis translation and rendered garment motion rather than only hierarchy names; no diluted yaw, duplicate inheritance or unwanted upper-chest pitch. Use the skeleton skirt procedure and its conditional checks."
