@@ -1,0 +1,52 @@
+{
+  "current_saved_rig_numerical_validation_invalidated": false,
+  "findings": [
+    {
+      "code": "scripts/riglib/reference_fields.py:48",
+      "issue": "Head registration uses the face bounds center and width/height only. Core head transfer does not register eye, nose, mouth, chin and jaw correspondences."
+    },
+    {
+      "code": "scripts/compile_registered_reference.py:84",
+      "issue": "Registered depth and displacement fields are averaged from the two references; this alone does not separate identity-dependent shape from pose motion."
+    },
+    {
+      "code": "scripts/riglib/reference_fields.py:85",
+      "issue": "Positive cell constraints prevent local inversion at checked keys but do not constrain identity, facial feature ratios, seams, or all interpolated and combined poses."
+    },
+    {
+      "code": "scripts/riglib/reference_fields.py:13",
+      "issue": "Sampling clamps outside the template domain; template-domain coverage is not a semantic face correspondence or applicability test."
+    }
+  ],
+  "findings_scope": "Pre-semantic run-20261003-common-reference-5; retained as the audit that triggered the shared redesign",
+  "generic_face_template_completion_claim_supported": false,
+  "grid_part_authority_correction": {
+    "grid_rule": "Face Grid angle keys from fixed depth and reference bone curves through NJC only",
+    "part_rule": "Preserve reference-derived local Part corrections separately; no blanket prohibition",
+    "reference_evidence": "deterministic-test/reference-inspection-20261003/grid-part-separation-audit.json",
+    "run": "deterministic-test/run-20261003-depth-grid-part-1",
+    "status": "generation_stopped_pending_contour_grid_and_support_preflight"
+  },
+  "independent_held_out_target_psds_validated": 0,
+  "model_specific_branch_absence_is_not_generalization_evidence": true,
+  "remediation_in_progress": {
+    "acceptance": "deterministic-test/run-20261003-semantic-common-1/acceptance.json",
+    "fresh_generation": "deterministic-test/run-20261003-semantic-common-1",
+    "implementation": "shared semantic TPS charts for head, torso and four limbs; continuous fields with adaptive error-bounded sampling",
+    "landmark_observation_limit": "facial material envelope endpoints and centers; not learned landmark detection or arbitrary contour recognition",
+    "multiple_independent_psd_validation": "not performed",
+    "numerical_report": "deterministic-test/reference-inspection-20261003/semantic-reconstruction-audit.json",
+    "saved_model_report": "deterministic-test/run-20261003-semantic-common-1/validation/semantic-reconstruction.json",
+    "saved_model_validation": "completed_single_psd",
+    "status": "shared_implementation_and_single_psd_validation_complete_multi_psd_validation_pending"
+  },
+  "required_before_generalization_acceptance": [
+    "Register semantic face features and contours consistently in both designated references and each target PSD.",
+    "Separate neutral target facial geometry from reference pose motion and relative depth placement.",
+    "Validate feature continuity, shape distortion, coverage and visibility as well as cell orientation, including intermediate and combined poses.",
+    "Freeze the shared method and evaluate 5-10 diverse real PSDs without per-model coefficients or patches, including targets independent of the references."
+  ],
+  "status": "not_validated_for_multi_psd_face_generalization",
+  "target_psds_validated": 1,
+  "target_shares_character_with_reference": true
+}

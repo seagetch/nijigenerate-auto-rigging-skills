@@ -23,7 +23,7 @@ Codex の `skill-installer` を使う場合は、次のように依頼できま�
 
 ```text
 skill-installer を使い、https://github.com/seagetch/nijigenerate-auto-rigging-skills
-の直下にある nijigenerate-* の全17スキルをインストールしてください。
+の直下にある nijigenerate-* の全18スキルをインストールしてください。
 既存の同名スキルがある場合はローカル変更を確認し、退避してから更新してください。
 ```
 
@@ -33,7 +33,7 @@ skill-installer を使い、https://github.com/seagetch/nijigenerate-auto-riggin
 git clone https://github.com/seagetch/nijigenerate-auto-rigging-skills.git
 ```
 
-配置は次の形にします。リポジトリ全体を一つのスキルとして配置せず、各スキルを兄弟ディレクトリにしてください。相互参照があるため、通常は全17スキルをまとめて導入します。
+配置は次の形にします。リポジトリ全体を一つのスキルとして配置せず、各スキルを兄弟ディレクトリにしてください。相互参照があるため、通常は全18スキルをまとめて導入します。
 
 ```text
 skills/
@@ -96,6 +96,7 @@ reference-guided-rig-parts という名前のスキルとしてインストー�
 | スキル | 担当 |
 | --- | --- |
 | [automatic-rigging](nijigenerate-automatic-rigging/SKILL.md) | 自動リギング全体の順序と工程間の引き渡し |
+| [deterministic-rig](nijigenerate-deterministic-rig/SKILL.md) | PSDを入力に共通テンプレートとNJCで生成する開発中のリギングプログラム（個別Part補正は未実装） |
 | [shared-rigging-rules](nijigenerate-shared-rigging-rules/SKILL.md) | 操作・座標系・状態保存・検証の共通規則 |
 | [model-setup](nijigenerate-model-setup/SKILL.md) | 階層、Composite、Grid/Path、初期パラメータ |
 | [automesh-setup](nijigenerate-automesh-setup/SKILL.md) | AutoMeshの方式・密度・被覆範囲 |

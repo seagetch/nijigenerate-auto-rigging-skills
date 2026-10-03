@@ -1,0 +1,40 @@
+{
+  "acceptance": "deterministic-test/run-20261003-semantic-common-1/acceptance.json",
+  "acceptance_sha256": "7c962d9f3f6b7911ad7805010a8217415c9848af596c3bba8cda5688045d0a05",
+  "current_candidate": {
+    "bone_count": 21,
+    "grid_count": 35,
+    "njc_applied": true,
+    "program_sha256": "9fc3d015d489cc33660312ce4016e6c642153606c8c88b4ac1104df2fcee1636",
+    "reconstruction_accepted": false,
+    "rig_complete": false,
+    "sampling_failed_domains": [
+      "arm:l/skin",
+      "arm:r/skin",
+      "arm:r/sleeve",
+      "head/face",
+      "head/hair:back",
+      "head/hair:front",
+      "head/hair:l",
+      "head/headwear",
+      "torso/apron",
+      "torso/skirt"
+    ]
+  },
+  "generalization_audit": "references/face-generalization-audit.json",
+  "generic_face_template_accepted": false,
+  "human_approval": false,
+  "multi_psd_generalization_validated": false,
+  "part_mesh_stage": {
+    "full_rig_accepted": false,
+    "part_count": 77,
+    "report": "deterministic-test/automesh-preflight-20261003-2/automesh-readback.json",
+    "status": "native_automesh_saved_readback_verified"
+  },
+  "replacement_run": "deterministic-test/carrier-run-20261003",
+  "replacement_status": "35_native_grids_and_21_bones_applied_face_depth_bake_in_progress",
+  "run": "deterministic-test/run-20261003-semantic-common-1",
+  "status": "not_accepted_shared_design_in_progress",
+  "template": "structures/reference-humanoid.registered.json",
+  "template_sha256": "3dd1611876e396ee538ff42bbdeed941a2a5d255eef4adb78f7b4004d7159e43"
+}

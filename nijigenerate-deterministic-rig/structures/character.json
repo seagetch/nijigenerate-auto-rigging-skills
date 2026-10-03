@@ -1,0 +1,621 @@
+{
+  "schema_version": "semantic-structure/1",
+  "id": "character",
+  "version": "1.1.0",
+  "label": "全体の人体骨格・支持面・衣装を先に組み立てる構造候補",
+  "normalization": {
+    "coordinate_system": "primary_scaffold_hypotheses",
+    "required_slots": ["head", "torso", "left_screen_arm", "right_screen_arm", "left_screen_leg", "right_screen_leg"],
+    "hypothesis_limit": 3,
+    "iterations": 2,
+    "x_direction": "image_right",
+    "y_direction": "image_down",
+    "positions_are": "weak_template_priors_not_measured_landmarks",
+    "disabled_reference_parts": "exclude_from_bounds_and_assignment"
+  },
+  "primary_slots": [
+    {
+      "id": "head",
+      "template_id": "face_head",
+      "name_patterns": [
+        "(?i)(face|head(?!(wear|band|tassel|bow)))"
+      ],
+      "position": [
+        0.5,
+        0.2
+      ],
+      "size": [
+        0.28,
+        0.26
+      ]
+    },
+    {
+      "id": "torso",
+      "template_id": "torso",
+      "name_patterns": [
+        "(?i)(^|::|[_ -])(body|torso)(?=$|::|[_ -])|(^|::)(chest|chest_skin)(?=$|::)"
+      ],
+      "position": [
+        0.5,
+        0.43
+      ],
+      "size": [
+        0.34,
+        0.35
+      ]
+    },
+    {
+      "id": "left_screen_arm",
+      "template_id": "arm",
+      "name_patterns": [
+        "(?i)(arm|upperarm|forearm)"
+      ],
+      "position": [
+        0.27,
+        0.48
+      ],
+      "size": [
+        0.14,
+        0.38
+      ]
+    },
+    {
+      "id": "right_screen_arm",
+      "template_id": "arm",
+      "name_patterns": [
+        "(?i)(arm|upperarm|forearm)"
+      ],
+      "position": [
+        0.73,
+        0.48
+      ],
+      "size": [
+        0.14,
+        0.38
+      ]
+    },
+    {
+      "id": "left_screen_leg",
+      "template_id": "leg",
+      "name_patterns": [
+        "(?i)(leg|thigh|shin)"
+      ],
+      "position": [
+        0.43,
+        0.77
+      ],
+      "size": [
+        0.15,
+        0.43
+      ]
+    },
+    {
+      "id": "right_screen_leg",
+      "template_id": "leg",
+      "name_patterns": [
+        "(?i)(leg|thigh|shin)"
+      ],
+      "position": [
+        0.57,
+        0.77
+      ],
+      "size": [
+        0.15,
+        0.43
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "a": "head",
+      "b": "torso",
+      "kind": "above",
+      "margin": 0.02,
+      "weight": 2
+    },
+    {
+      "a": "torso",
+      "b": "left_screen_leg",
+      "kind": "above",
+      "margin": 0.03,
+      "weight": 2
+    },
+    {
+      "a": "torso",
+      "b": "right_screen_leg",
+      "kind": "above",
+      "margin": 0.03,
+      "weight": 2
+    },
+    {
+      "a": "left_screen_arm",
+      "b": "torso",
+      "kind": "left_of",
+      "margin": 0.01,
+      "weight": 1.5
+    },
+    {
+      "a": "torso",
+      "b": "right_screen_arm",
+      "kind": "left_of",
+      "margin": 0.01,
+      "weight": 1.5
+    },
+    {
+      "a": "left_screen_leg",
+      "b": "right_screen_leg",
+      "kind": "left_of",
+      "margin": 0,
+      "weight": 1.5
+    }
+  ],
+  "secondary_rules": [
+    {
+      "id": "neck_bridge",
+      "template_id": "neck",
+      "name_patterns": [
+        "(?i)(^neck$|neck::|::neck|neck_)"
+      ],
+      "host_slots": [
+        "head",
+        "torso"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "shoulder_transition",
+      "template_id": "shoulder",
+      "name_patterns": [
+        "(?i)(shoulder|clavicle|deltoid)"
+      ],
+      "host_slots": [
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "hand_terminal",
+      "template_id": "hand",
+      "name_patterns": [
+        "(?i)(hand|palm|finger)"
+      ],
+      "host_slots": [
+        "left_screen_arm",
+        "right_screen_arm"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "foot_terminal",
+      "template_id": "foot",
+      "name_patterns": [
+        "(?i)(foot|feet|shoe|boot|ankle)"
+      ],
+      "host_slots": [
+        "left_screen_leg",
+        "right_screen_leg"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "garment_shell",
+      "template_id": "skirt",
+      "name_patterns": [
+        "(?i)(skirt|bottomwear|dress)"
+      ],
+      "host_slots": [
+        "torso"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "sleeve_shell",
+      "template_id": "sleeve",
+      "name_patterns": [
+        "(?i)(sleeve|sleeve_cap)"
+      ],
+      "host_slots": [
+        "left_screen_arm",
+        "right_screen_arm"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "fitted_layer",
+      "template_id": "surface_layer",
+      "name_patterns": [
+        "(?i)(bodice|corset|topwear|garter|cuff|collar|headband|belt)"
+      ],
+      "host_slots": [
+        "head",
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm",
+        "left_screen_leg",
+        "right_screen_leg"
+      ],
+      "kind": "shared_offset"
+    },
+    {
+      "id": "hanging_surface",
+      "template_id": "hanging_sheet",
+      "name_patterns": [
+        "(?i)(hair|train|apron|cape|coat_tail|hanging|veil)"
+      ],
+      "host_slots": [
+        "head",
+        "torso"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "curved_rod",
+      "template_id": "tube",
+      "name_patterns": [
+        "(?i)(tail|rope|cord|cable|braid)"
+      ],
+      "host_slots": [
+        "head",
+        "torso"
+      ],
+      "kind": "chain"
+    },
+    {
+      "id": "ridged_appendage",
+      "template_id": "leaf",
+      "name_patterns": [
+        "(?i)(^ear|::ear|ear_|leaf|feather|wing)"
+      ],
+      "host_slots": [
+        "head",
+        "torso"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "band_network",
+      "template_id": "ribbon_network",
+      "name_patterns": [
+        "(?i)(bow|ribbon|chain|tassel|loop|strap)"
+      ],
+      "host_slots": [
+        "head",
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm",
+        "left_screen_leg",
+        "right_screen_leg"
+      ],
+      "kind": "chain"
+    },
+    {
+      "id": "seam_frill",
+      "template_id": "frill",
+      "name_patterns": [
+        "(?i)(frill|ruffle|lace_edge)"
+      ],
+      "host_slots": [
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "rigid_accessory",
+      "template_id": "rigid_panel",
+      "name_patterns": [
+        "(?i)(watch|clock|pendant|buckle|brooch|jewel|metal)"
+      ],
+      "host_slots": [
+        "head",
+        "torso"
+      ],
+      "kind": "independent_surface"
+    },
+    {
+      "id": "host_decal",
+      "template_id": "surface_layer",
+      "name_patterns": [
+        "(?i)(shadow|decal|print|overlay)"
+      ],
+      "host_slots": [
+        "head",
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm",
+        "left_screen_leg",
+        "right_screen_leg"
+      ],
+      "kind": "shared_offset"
+    },
+    {
+      "id": "local_body_relief",
+      "template_id": "surface_layer",
+      "name_patterns": [
+        "(?i)(chest|bust|breast|pectoral)"
+      ],
+      "host_slots": [
+        "torso"
+      ],
+      "kind": "shared_offset",
+      "parameter_overrides": {
+        "layer_offset": 0
+      },
+      "fit_policy": "shared_host_patch",
+      "material_status": "anatomical_host_component",
+      "interpretation": "共有torsoの局所的な面を参照する観測候補。独立した胸郭や胸体積を再生成しない。"
+    },
+    {
+      "id": "garment_covering",
+      "template_id": "surface_layer",
+      "name_patterns": [
+        "(?i)(clothing|garment|apparel)"
+      ],
+      "host_slots": [
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm",
+        "left_screen_leg",
+        "right_screen_leg"
+      ],
+      "kind": "shared_offset",
+      "fit_policy": "host_registration_candidate",
+      "material_status": "unknown",
+      "interpretation": "衣装という語だけでは密着/自由布や前後を確定しない。root帯と自由端の幾何証拠があればhanging_sheetを競合候補とし、接合/材質未確定を残す。",
+      "alternative_templates": [
+        "hanging_sheet",
+        "skirt"
+      ]
+    },
+    {
+      "id": "head_covering",
+      "template_id": "surface_layer",
+      "name_patterns": [
+        "(?i)(headwear|hat|cap|bonnet|headdress)"
+      ],
+      "host_slots": [
+        "head"
+      ],
+      "kind": "shared_offset",
+      "fit_policy": "host_registration_candidate",
+      "material_status": "unknown",
+      "interpretation": "頭の共有宿主を参照する覆い候補。耳/髪/loop等が一つの観測groupに混在する場合は複数chart対応の未解決候補として残す。",
+      "alternative_templates": [
+        "hanging_sheet",
+        "leaf",
+        "ribbon_network"
+      ]
+    },
+    {
+      "id": "soft_prop_proxy",
+      "template_id": "rigid_panel",
+      "name_patterns": [
+        "(?i)(plush|stuffed|toy|soft_prop)"
+      ],
+      "host_slots": [
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm"
+      ],
+      "kind": "independent_surface",
+      "fit_policy": "proxy_only",
+      "material_status": "unknown",
+      "interpretation": "位置と取付を扱う剛体proxy候補だけを出す。実素材が硬い・薄いという判定ではなく、柔らかさ/体積/接触は未推定でsource品質認証不可。",
+      "alternative_templates": [
+        "hanging_sheet"
+      ]
+    },
+    {
+      "id": "eye_mechanism",
+      "template_id": "eye_opening",
+      "name_patterns": [
+        "(?i)(eye|iris|sclera|lash|lid|canthus)"
+      ],
+      "host_slots": [
+        "head"
+      ],
+      "kind": "shared_offset"
+    },
+    {
+      "id": "mouth_mechanism",
+      "template_id": "mouth_opening",
+      "name_patterns": [
+        "(?i)(mouth|lip|teeth|tooth|tongue)"
+      ],
+      "host_slots": [
+        "head"
+      ],
+      "kind": "shared_offset"
+    }
+  ],
+  "ambiguity_margin": 0.25,
+  "beam_width": 128,
+  "inference_policy": {
+    "names": "Regexは候補の一証拠でありexact identityでも自動確定規則でもない。形状・相対配置・既存階層と競合する。",
+    "part_role": "Partは観測と素材登録の単位。生成器のunknownは全体骨格・共有surface・接続であり、Partごとに独立generatorを選ぶことを必須にしない。",
+    "side": "left_screen/right_screenは中立画像の側。モデル左右・素材suffix・骨suffixへ変換するには側規約と骨対応の確認が別に必要。",
+    "missing_primary": "不可視または未観測slotを架空の観測で埋めない。構造priorの仮説として残し、source-fit認証に用いない。",
+    "unmatched": "未割当の観測を捨てずunknown groupとして残す。名前がない場合は形状/接続候補を使い、LLMによるUUID専用recipeを作らない。",
+    "template_use": "このstructureのglobal assignment後にsurfaceごとの意味格子をfitし、Partをそのmaterial coordinatesへ登録する。低水準isolated template previewと全体fitを区別する。"
+  },
+  "slot_connections": [
+    {
+      "id": "neck_between_head_torso",
+      "slots": [
+        "head",
+        "torso"
+      ],
+      "optional_surface": "neck",
+      "anchors": [
+        "head.neck_attachment",
+        "torso.neck"
+      ],
+      "meaning": "首上端は顎の後ろの取付面。可視顎先へ直接固定しない。",
+      "implementation": "planned_global_attachment"
+    },
+    {
+      "id": "left_shoulder_arm",
+      "slots": [
+        "torso",
+        "left_screen_arm"
+      ],
+      "optional_surface": "shoulder",
+      "anchors": [
+        "torso.shoulder_a",
+        "arm.root"
+      ],
+      "meaning": "肩socketの接合帯を共有し、脇の自由面を接合しない。",
+      "implementation": "planned_global_attachment"
+    },
+    {
+      "id": "right_shoulder_arm",
+      "slots": [
+        "torso",
+        "right_screen_arm"
+      ],
+      "optional_surface": "shoulder",
+      "anchors": [
+        "torso.shoulder_b",
+        "arm.root"
+      ],
+      "meaning": "左右の対応はscreen sideから推測でモデルsideへ変換しない。",
+      "implementation": "planned_global_attachment"
+    },
+    {
+      "id": "left_pelvis_leg",
+      "slots": [
+        "torso",
+        "left_screen_leg"
+      ],
+      "anchors": [
+        "torso.pelvis",
+        "leg.root"
+      ],
+      "meaning": "骨盤と脚の根元を共有。脚間の面は自動接合しない。",
+      "implementation": "planned_global_attachment"
+    },
+    {
+      "id": "right_pelvis_leg",
+      "slots": [
+        "torso",
+        "right_screen_leg"
+      ],
+      "anchors": [
+        "torso.pelvis",
+        "leg.root"
+      ],
+      "meaning": "骨盤と脚の根元を共有。左右脚のshapeは素材に合わせ個別fit。",
+      "implementation": "planned_global_attachment"
+    }
+  ],
+  "shared_surface_policy": {
+    "canonical_owners": [
+      "head",
+      "torso",
+      "left_screen_arm",
+      "right_screen_arm",
+      "left_screen_leg",
+      "right_screen_leg"
+    ],
+    "body_cloth": "身体基礎体積と局所的な胸面はtorsoで一度だけ評価。密着衣装は共有面の登録と離隔を持ち、同じ体積を衣装側へ再加算しない。",
+    "inheritance": "描画hierarchyが深度継承の証明ではない。compilerは実評価した親寄与を引いてresidualまたは独立surfaceのいずれか一つを採用。",
+    "host_offset": "surface_layerのhost_depthは共有宿主から同一material coordinates・単位へsampleして渡す。host未確定で0面を仮定しない。",
+    "shadow": "shadow/decalは原則host共有面とoffset=0。暗いtextureをdepthとして扱わない。",
+    "carrier_conflict": "一つのGridの同じ位置へ異なる独立surfaceが必要なら複数carrier計画へ分ける。平均値に潰さない。"
+  },
+  "optional_branches": [
+    {
+      "id": "hands_feet",
+      "template_ids": [
+        "hand",
+        "foot"
+      ],
+      "parents": [
+        "left_screen_arm",
+        "right_screen_arm",
+        "left_screen_leg",
+        "right_screen_leg"
+      ],
+      "evidence": [
+        "terminal_shape",
+        "existing_attachment"
+      ],
+      "implementation": "candidate_then_surface_fit"
+    },
+    {
+      "id": "garment_layers",
+      "template_ids": [
+        "skirt",
+        "sleeve",
+        "hanging_sheet",
+        "surface_layer",
+        "frill"
+      ],
+      "parents": [
+        "torso",
+        "left_screen_arm",
+        "right_screen_arm"
+      ],
+      "evidence": [
+        "shell_outline",
+        "root_band",
+        "existing_hierarchy"
+      ],
+      "implementation": "candidate_then_surface_fit"
+    },
+    {
+      "id": "head_appendages",
+      "template_ids": [
+        "leaf",
+        "hanging_sheet",
+        "tube",
+        "ribbon_network"
+      ],
+      "parents": [
+        "head"
+      ],
+      "evidence": [
+        "root_proximity",
+        "centerline",
+        "independent_alpha_component"
+      ],
+      "implementation": "candidate_then_surface_fit"
+    },
+    {
+      "id": "body_appendages",
+      "template_ids": ["tube", "leaf", "hanging_sheet", "ribbon_network"],
+      "parents": ["torso"],
+      "evidence": ["root_proximity", "centerline", "attachment_band", "existing_hierarchy"],
+      "implementation": "candidate_then_surface_fit",
+      "interpretation": "尾・翼・腰から下がる長い部材の接続候補。全体の外接矩形や画面上の最上点を人体frameや取付位置と同一視しない。裏面・閉断面・非剛体接合は別途未実装。"
+    },
+    {
+      "id": "accessory_networks",
+      "template_ids": [
+        "ribbon_network",
+        "tube",
+        "rigid_panel"
+      ],
+      "parents": [
+        "head",
+        "torso"
+      ],
+      "evidence": [
+        "connected_bands",
+        "rigid_piece_plus_hanging_curve"
+      ],
+      "implementation": "candidate_then_surface_fit"
+    }
+  ],
+  "validation": {
+    "require_unique_primary_assignment": true,
+    "retain_ambiguous_candidates": true,
+    "report_missing_observations": true,
+    "forbid_model_uuid_in_structure": true,
+    "forbid_double_host_volume": true,
+    "source_fit_requires_connected_landmark_evidence": true
+  }
+}

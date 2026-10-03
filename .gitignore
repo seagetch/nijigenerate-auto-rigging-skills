@@ -9,3 +9,7 @@
 **/public/projects/
 **/reviews/
 **/review-results/
+
+# Local deterministic-rig dependencies and generated verification reports.
+nijigenerate-deterministic-rig/.runtime/
+nijigenerate-deterministic-rig/reports/

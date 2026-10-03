@@ -1,0 +1,29 @@
+{
+  "acceptance": "references/common-template-acceptance.json",
+  "authority": "user explicitly designated latest Midori and Ao shown in attached file list",
+  "model_io": "NJC only",
+  "purpose": "development of one common reusable template; never per-target character input",
+  "references": [
+    {
+      "capture_directory": "deterministic-test/reference-inspection-20261003/Midori",
+      "label": "Midori",
+      "path": "output/Midori-auto-rig/Midori-face-depth-least-squares-20261003-092818.inx",
+      "pose_count": 18,
+      "public_serialized_state_unchanged_after_poses": true,
+      "public_snapshot_sha256": "a661ba9939551f63b163e9434befb4130a2592ff4596f248be92d83a4860dd9e",
+      "repeated_read_equal": true
+    },
+    {
+      "capture_directory": "deterministic-test/reference-inspection-20261003/Ao",
+      "label": "Ao",
+      "path": "output/Ao-depth-consistency-repair/Ao-latest-20260926-depth-consistent-20261003.inx",
+      "pose_count": 18,
+      "public_serialized_state_unchanged_after_poses": true,
+      "public_snapshot_sha256": "683b0013dc24dc37889ffc0f78763a2154e9557d74ac9a2db3be2369378bc853",
+      "repeated_read_equal": true
+    }
+  ],
+  "schema_version": "designated-reference-set/1",
+  "status": "verified_single_psd_semantic_reconstruction_generalization_not_validated",
+  "template": "structures/reference-humanoid.registered.json"
+}
