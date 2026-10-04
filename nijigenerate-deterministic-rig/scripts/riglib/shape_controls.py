@@ -77,6 +77,19 @@ def profile(points,basis,origin,width):
     return axis,np.asarray(low),np.asarray(high)
 
 
+def contact_profile(points,basis,origin,width,lower_edge):
+    """Sample the painted boundary, not a percentile of a wide alpha band."""
+    p=(points-origin)@basis;axis=np.linspace(-width/2,width/2,65)
+    half_step=(axis[1]-axis[0])/2
+    values=np.full(len(axis),np.nan)
+    for i,u in enumerate(axis):
+        section=p[abs(p[:,0]-u)<=half_step,1]
+        if len(section):values[i]=section.max() if lower_edge else section.min()
+    valid=np.isfinite(values)
+    if not valid.any():raise ValueError('No painted lash boundary intersects the eye span')
+    return np.interp(axis,axis[valid],values[valid])
+
+
 def shared_brow_support(eyes,capture,translation):
     """Detect one PSD Part containing substantial alpha on both eye sides."""
     if len(eyes)!=2:return set()
@@ -136,9 +149,9 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         upper_contact=top
         lower_contact=bottom
         if groups.get('upper'):
-            _,_,upper_contact=profile(source_cloud(capture,groups['upper'],translation),basis,origin,width)
+            upper_contact=contact_profile(source_cloud(capture,groups['upper'],translation),basis,origin,width,True)
         if groups.get('lower'):
-            _,lower_contact,_=profile(source_cloud(capture,groups['lower'],translation),basis,origin,width)
+            lower_contact=contact_profile(source_cloud(capture,groups['lower'],translation),basis,origin,width,False)
         lookup={uid:role for role,ids in groups.items() for uid in ids}
         lashes=detect(capture,groups,origin,basis)
         def blink(uid,world,x,y):
