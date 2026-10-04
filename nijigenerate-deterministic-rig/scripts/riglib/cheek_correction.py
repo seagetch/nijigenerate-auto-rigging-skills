@@ -7,18 +7,16 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 from .data import read_json, write_json, json_digest, digest
-from .carrier import to_local, rotation
-from .reference_fields import sample
 from .shape_controls import area_ratios
 from .cheek_scope import pose_frame, support, assert_scope
 
-MECHANISM = 'psd_near_cheek_section_envelope_v4'
+MECHANISM = 'psd_near_cheek_reference_contour_v5'
 PARAMETER = 'Face::Yaw-Pitch'
-POLICY = {'mechanism': MECHANISM, 'alpha_threshold': 32, 'section_samples': 129,
+POLICY = {'mechanism': MECHANISM, 'alpha_threshold': 32,
           'scope': 'near-side chin-to-temple skin only; far side and feature interior fixed',
           'side_authority': 'NJC projection and PSD anatomical across axis',
-          'contour_authority': 'support point of fitted anatomical elliptic section under native XYZ projection',
-          'hidden_surface_prior': 'templates/face_head.json section_surface ellipse; not observed backside pixels',
+          'contour_authority': 'bundled generated-image silhouette prior in homologous iris/chin coordinates',
+          'hidden_surface_prior': 'smooth join from observed cheek to unchanged hair-covered temple',
           'authority': 'PSD alpha and feature anchors; native parent Grid readback',
           'grid_writes': False, 'depth_writes': False, 'reference_part_transfer': False}
 
@@ -63,79 +61,8 @@ def skin_profile(material, eyes, mouth, temple_points):
             'skin_part': material['part'], 'source_alpha_sha256': material['sha256']}
 
 
-def cheek_field(world, profile, domain, offsets, projection, depth_scale, frame):
-    """Extend only the near cut edge to the rotated head-section silhouette.
-
-    A front depth chart has no surface behind its lateral cut edge. Its own
-    projected extrema therefore cannot recover the missing side silhouette.
-    Fit the declared elliptic section radius to the immutable front depth,
-    then use its analytic support point under the *same native projection*.
-    No pose amplitudes, borrowed displacements or angular sign tables enter
-    the target. The opposite (far) cut edge is not corrected.
-    """
-    origin = np.asarray(profile['origin']); basis = np.asarray(profile['basis'])
-    points = (np.asarray(world)-origin)@basis; y = points[:, 1]
-    left = np.interp(y, profile['y'], profile['left']); right = np.interp(y, profile['y'], profile['right'])
-    ey, my, chin = profile['eye_y'], profile['mouth_y'], profile['y'][-1]
-    if not ey < my < chin: raise ValueError('PSD eye, mouth and chin order is unresolved')
-    temple = profile['temple_y']
-    vertical = smoothstep((y-temple)/(ey-temple))*smoothstep((chin-y)/(chin-my))
-    il = np.maximum(np.interp(y, [ey, my], [profile['eye_span'][0], profile['mouth_span'][0]]), left)
-    ir = np.minimum(np.interp(y, [ey, my], [profile['eye_span'][1], profile['mouth_span'][1]]), right)
-    local_rotation = rotation(domain['carrier_frame']['rotation'])
-    def projected(q):
-        flat = q.reshape(-1, 2); wp = flat@basis.T+origin
-        delta = sample(domain['axis_x'], domain['axis_y'], offsets,
-                       to_local(wp, domain['carrier_frame']))@local_rotation.T
-        return (wp+delta).reshape(q.shape)
-    t = np.linspace(0., 1., POLICY['section_samples'])
-    sections = np.stack((left[:, None]+(right-left)[:, None]*t,
-                         np.broadcast_to(y[:, None], (len(y), len(t)))), axis=-1)
-    posed = projected(sections)
-    world_sections = sections.reshape(-1, 2)@basis.T+origin
-    depth = sample(domain['axis_x'], domain['axis_y'], domain['depths'],
-                   to_local(world_sections, domain['carrier_frame']))[:, 0].reshape(len(y), -1)*depth_scale
-    baseline = depth[:, :1]*(1-t)+depth[:, -1:]*t
-    ellipse = np.sqrt(np.maximum(0., 1.-(2*t-1.)**2))
-    radius = np.maximum(0., (depth-baseline)@ellipse/float(ellipse@ellipse))
-    center = (posed[:, 0]+posed[:, -1])/2
-    u = (posed[:, -1]-posed[:, 0])/2
-    v = radius[:, None]*np.asarray(projection)[2]
-    length = np.linalg.norm(u, axis=1)
-    direction = u/np.maximum(length[:, None], 1e-8)
-    du = np.einsum('ni,ni->n', u, direction)
-    dv = np.einsum('ni,ni->n', v, direction)
-    # For c + u*cos(t) + v*sin(t), the support point along direction n is
-    # c + (u*(u.n) + v*(v.n))/hypot(u.n, v.n). Select only the near side.
-    side = frame['near_side']
-    envelope = side*(u*du[:, None]+v*dv[:, None])/np.maximum(np.hypot(du, dv)[:, None], 1e-8)
-    edge = posed[:, 0 if side < 0 else -1]
-    residual = center+envelope-edge
-    usable = (length > 1e-8) & (right-left > 1e-8) & (vertical > 0) & (radius > 0) & (side != 0)
-    wl = smoothstep((il-points[:, 0])/np.maximum(il-left, 1e-8))
-    wr = smoothstep((points[:, 0]-ir)/np.maximum(right-ir, 1e-8))
-    weight = wl if side < 0 else wr
-    result = residual*(weight*vertical)[:, None]; result[~usable] = 0.
-    return result
-
-
-def anchor_vertices(rest, indices, anchors):
-    """Pin native triangles carrying the face origin and feature anchors.
-
-    A zero analytic residual at a point is insufficient on a coarse mesh:
-    its containing triangle must also carry zero residual to retain children.
-    """
-    triangles = np.asarray(indices, int).reshape(-1, 3); pinned = np.zeros(len(rest), bool)
-    for tri in triangles:
-        a, b, c = rest[tri]; matrix = np.column_stack((b-a, c-a))
-        if abs(np.linalg.det(matrix)) < 1e-10: continue
-        q = (anchors-a)@np.linalg.inv(matrix).T
-        if np.any((q[:, 0] >= -1e-7) & (q[:, 1] >= -1e-7) & (q.sum(axis=1) <= 1.+1e-7)):
-            pinned[tri] = True
-    return pinned
-
-
 def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
+    from .cheek_silhouette import prepare, solve
     domain = next(d for d in program['domains'] if d['semantic_chart'] == 'head/face')
     if grid.get('dynamic'): raise ValueError('Cheek residual requires standard static face Grid sampling')
     materials = {m['part']: m for m in capture['materials']}; face_ids = set(evidence['face_parts']['face'])
@@ -165,21 +92,16 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
         if uid == skin:
             skin_world = world; skin_indices = node['mesh']['indices']
             anchors = [matrix[:2, 3], *evidence.get('facial_landmarks_model', {}).values()]
-            feature_ids = {u for e in evidence.get('eyes', []) for ids in e['part_groups'].values() for u in ids}
-            feature_ids.update(evidence.get('mouth', {}).get('parts', []))
-            anchors.extend(np.asarray(nodes[u]['nominal_world_matrix'])[:2, 3] for u in feature_ids)
-            local_anchors = (np.asarray(anchors)-matrix[:2, 3])@np.linalg.inv(linear).T
-            pinned = anchor_vertices(rest, node['mesh']['indices'], local_anchors)
+            prepared = prepare(node, materials[skin], profile, evidence['eyes'], materials, anchors)
         else:
             sample_ids, sample_weights, _ = mesh_weights(skin_world, skin_indices, world)
         for i, x in enumerate(binding['axisValues'][0]):
             for j, y in enumerate(binding['axisValues'][1]):
                 frame = poses[i, j]
                 allowed = support(world, node['mesh']['indices'], profile, frame)
+                fit_observation = {}
                 if uid == skin:
-                    delta = (np.zeros_like(rest) if x == 0 and y == 0 else
-                             cheek_field(world, profile, domain, binding['data']['values'][i][j],
-                                         projections[i, j], program['native_depth_scale'], frame)@np.linalg.inv(linear).T)
+                    delta, fit_observation = solve(prepared, profile, domain, binding['data']['values'][i][j], frame)
                 else:
                     shared = np.einsum('ni,nij->nj', sample_weights, skin_fields[i, j][sample_ids])
                     delta = shared@np.linalg.inv(linear).T
@@ -193,9 +115,10 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
                 observations.append({'target': uid, 'key': [x, y], 'maximum_local_residual': float(abs(delta).max()),
                                      'near_side': frame['near_side'], 'near_depth_slope': frame['near_depth_slope'],
                                      'forbidden_support_maximum': 0.,
-                                     'minimum_local_area_ratio': ratio})
+                                     'minimum_local_area_ratio': ratio, 'contour_fit': fit_observation})
                 ops.append({'parameter': PARAMETER, 'target': uid, 'key': [x, y],
                             'mechanism': MECHANISM, 'protected_vertices': np.flatnonzero(pinned).tolist(),
+                            'protected_constraints': prepared['protected'].tolist() if uid == skin else [],
                             'forbidden_vertices': np.flatnonzero(~allowed).tolist(),
                             'near_side': frame['near_side'],
                             'values': delta.ravel().tolist()})
@@ -226,6 +149,8 @@ def load_owned(run, state):
             raise ValueError('Part angle correction escaped the PSD cheek scope')
         if np.any(np.asarray(op['values']).reshape(-1, 2)[op['protected_vertices']]):
             raise ValueError('Cheek correction moved a protected origin or feature triangle')
+        if op.get('protected_constraints') and np.max(abs(np.asarray(op['protected_constraints']) @ np.asarray(op['values']).reshape(-1, 2))) > .00002:
+            raise ValueError('Cheek correction moved a protected anatomical point')
         if np.any(np.asarray(op['values']).reshape(-1, 2)[op['forbidden_vertices']]):
             raise ValueError('Cheek correction moved the far side or a triangle spanning the midline')
     return report
