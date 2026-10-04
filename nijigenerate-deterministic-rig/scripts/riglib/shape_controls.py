@@ -7,7 +7,7 @@ from .live import Live,created_id
 from .model import observe_model
 from .face_draw_order import plan as face_order_plan
 
-POLICY={'version':'1.1','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
+POLICY={'version':'1.2','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
         'eye_gaze_width_ratio':.18,'expression_width_ratio':.035,
         'brow_width_ratio':.08,'local_bend_radians':.55,
         'axes':[-1.,-.5,0.,.5,1.],
@@ -28,7 +28,7 @@ def area_ratios(rest,delta,indices):
     return after/before
 
 
-def preserve_orientation(rest,delta,indices):
+def preserve_orientation(rest,delta,indices,locked=None):
     """Closest displacement with positive native triangle areas.
 
     For these local mechanisms the horizontal positions are fixed during the
@@ -44,8 +44,12 @@ def preserve_orientation(rest,delta,indices):
     x=q[:,0];a,b,c=t.T
     coefficients=np.c_[x[c]-x[b],x[a]-x[c],x[b]-x[a]]/before[:,None]
     A=sparse.csc_matrix((coefficients.ravel(),(np.repeat(np.arange(len(t)),3),t.ravel())),shape=(len(t),len(q)))
+    lower=np.full(len(t),.004);upper=np.full(len(t),np.inf)
+    if locked is not None and np.any(locked):
+        A=sparse.vstack([A,sparse.eye(len(q),format='csc')[np.flatnonzero(locked)]],format='csc')
+        lower=np.r_[lower,q[locked,1]];upper=np.r_[upper,q[locked,1]]
     solver=osqp.OSQP();solver.setup(P=sparse.eye(len(q),format='csc'),q=-q[:,1],A=A,
-        l=np.full(len(t),.004),u=np.full(len(t),np.inf),verbose=False,eps_abs=1e-7,eps_rel=1e-8,max_iter=30000,polishing=True)
+        l=lower,u=upper,verbose=False,eps_abs=1e-7,eps_rel=1e-8,max_iter=30000,polishing=True)
     result=solver.solve()
     if result.info.status_val not in (1,2):raise ValueError('PSD contour orientation solve failed: '+result.info.status)
     q[:,1]=result.x
@@ -88,7 +92,8 @@ def shared_brow_support(eyes,capture,translation):
     return shared
 
 
-def compile_controls(evidence,capture,nodes):
+def compile_controls(evidence,capture,nodes,parameters=None):
+    from .eyelash_shape import detect,side_compression,report as lash_report
     capture={m['part']:m for m in capture['materials']};translation=np.asarray(evidence['source_to_model'])[:2,2]
     eyes=evidence.get('eyes',[]);shared_brows=shared_brow_support(eyes,capture,translation)
     geometries={};specs={};ops=[]
@@ -99,7 +104,8 @@ def compile_controls(evidence,capture,nodes):
             mesh=node['mesh'];rest=np.asarray(mesh['vertices']);linear=matrix[:2,:2]
             geometries[uid]=(rest,rest@linear.T+matrix[:2,3],linear,mesh['indices'])
         return geometries[uid]
-    def mechanism(name,axes,parts,field):
+    def mechanism(name,axes,parts,field,detail=None):
+        if parameters is not None and name not in parameters:return
         if not parts:return
         specs[name]={'axes':axes,'targets':list(dict.fromkeys(parts)),'source':'PSD_shape_field','neutral':[0.,0.]}
         for uid in specs[name]['targets']:
@@ -107,7 +113,12 @@ def compile_controls(evidence,capture,nodes):
             for x in axes[0]:
                 for y in axes[1]:
                     displacement=field(uid,world,x,y)@np.linalg.inv(linear).T
-                    displacement=np.round(preserve_orientation(rest,displacement,indices),5)
+                    displacement=preserve_orientation(rest,displacement,indices)
+                    if detail is not None:
+                        extra=detail(uid,world,x,y)@np.linalg.inv(linear).T
+                        locked=np.max(abs(extra),axis=1)<1e-12
+                        displacement=preserve_orientation(rest,displacement+extra,indices,locked=locked)
+                    displacement=np.round(displacement,5)
                     if not np.isfinite(displacement).all():raise ValueError('Nonfinite local mechanism')
                     minimum=float(area_ratios(rest,displacement,indices).min())
                     if minimum<=0:raise ValueError(f'Local mechanism folds: {name} {x},{y} {uid} {minimum}')
@@ -119,6 +130,7 @@ def compile_controls(evidence,capture,nodes):
         cloud=source_cloud(capture,groups['sclera'],translation)
         ax,top,bottom=profile(cloud,basis,origin,width);height=float(np.median(bottom-top))
         lookup={uid:role for role,ids in groups.items() for uid in ids}
+        lashes=detect(capture,groups,origin,basis)
         def blink(uid,world,x,y):
             p=(world-origin)@basis;t=np.clip(p[:,0]/(width/2),-1,1)
             upper=np.interp(p[:,0],ax,top);lower=np.interp(p[:,0],ax,bottom)
@@ -129,7 +141,12 @@ def compile_controls(evidence,capture,nodes):
             elif role in ('upper','fold','corner'):delta[:,1]=x*(seam-upper)
             return delta@basis.T
         parts=[uid for role,ids in groups.items() if role not in ('iris','brow') for uid in ids]
-        mechanism('Eye::'+eye['side']+'::Blink',[[0.,.25,.5,.75,1.],[-1.,0.,1.]],parts,blink)
+        blink_name='Eye::'+eye['side']+'::Blink'
+        def lash_detail(uid,world,x,y):
+            normal=side_compression(lashes,uid,world,x,POLICY['closed_height_ratio'])
+            return np.c_[np.zeros(len(world)),normal]@basis.T
+        mechanism(blink_name,[[0.,.25,.5,.75,1.],[-1.,0.,1.]],parts,blink,detail=lash_detail)
+        if blink_name in specs:specs[blink_name]['shape_analysis']=lash_report(lashes)
         mechanism('Eye::'+eye['side']+'::X-Y',[POLICY['axes'],[-1.,0.,1.]],groups.get('iris',[]),
                   lambda uid,w,x,y:np.tile(np.array([x*width*.18,y*height*.18])@basis.T,(len(w),1)))
         def brow(uid,world,x,y):
@@ -199,7 +216,8 @@ def apply(run,njc,replace_owned=False):
     for op in ops:n.preflight_call('ModelCommand_SetDeformBinding',bindingName='deform',values=op['values'],context={'parameters':[4294967295],'nodes':[op['target']],'parameterValue':op['key']})
     report={'program_sha256':state['program_sha256'],'policy':POLICY,'parameters':specs,'operations':ops,'face_draw_order':face_order,
             'source_uv_program_sha256':state['source_uv_program_sha256'],
-            'evidence_sha256':json_digest(evidence),'generator_sha256':digest(Path(__file__))}
+            'evidence_sha256':json_digest(evidence),'generator_sha256':digest(Path(__file__)),
+            'eyelash_shape_sha256':digest(Path(__file__).with_name('eyelash_shape.py'))}
     report['content_sha256']=json_digest(report);write_json(run/'shape-controls-pending.json',report)
     if previous:
         for name,spec in previous['parameters'].items():
