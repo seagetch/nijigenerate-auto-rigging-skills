@@ -133,7 +133,14 @@ def validate_hierarchy(client,state,program):
         if parents[uid]!=resolve(spec['surface_parents'][d['id']]):raise ValueError('Surface origin mismatch: '+d['id'])
         for part in d['parts']:
             chain=ancestors(part['uuid'])
-            if next((v for v in chain if types[v]=='GridDeformer'),None)!=uid:raise ValueError('Part has a different deformation authority')
+            # PSD group grids retain the original hierarchy underneath the
+            # bone-driven surface. Only a grid bound to the skeleton owns its
+            # anatomical motion; unbound source grids inherit that motion.
+            grid_chain=[v for v in chain if types[v]=='GridDeformer']
+            if next((v for v in grid_chain if v in bindings),None)!=uid:raise ValueError('Part has a different deformation authority')
+            for v in grid_chain[:grid_chain.index(uid)]:
+                if spec['source_nodes'].get(str(v),{}).get('type')!='GridDeformer':
+                    raise ValueError('Unexpected Grid between material and its bone-driven surface')
             if d['owner']=='head' and head not in chain:raise ValueError('Head material escaped the common Head origin')
             if d['semantic_chart']=='head/face' and spec['face_origin'] not in chain:raise ValueError('Facial mechanism escaped its face Part')
         if set(bindings[uid]['sourceBoneUuids'])!={state['bones'][b] for b in d['bone_sources']}:raise ValueError('Incorrect BoneSources')

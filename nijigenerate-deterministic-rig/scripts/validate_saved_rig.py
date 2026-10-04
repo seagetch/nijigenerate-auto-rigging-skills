@@ -68,11 +68,12 @@ def validate(state_path,out,executable,baseline=None):
             for child in node.get('children',[]):collect(child,uid)
         collect(after['nodes']['nodes'])
         bound={b['target']['uuid'] for b in after['bindings'].values()}
+        bone_bound={b['target'] for node in public_nodes.values() if node['type']=='DepthRigRoot'
+                    for b in node.get('bindings',[]) if b.get('sourceBoneUuids')}
         for material in evidence['static_materials']:
             uid=material['part'];chain=[];cursor=uid
             while cursor is not None:chain.append(cursor);cursor=parents[cursor]
-            if set(chain)&bound or any((public_nodes[k]['type']=='DepthBone' or
-                    (public_nodes[k]['type']=='GridDeformer' and public_nodes[k].get('bone_sources'))) for k in chain):
+            if set(chain)&(bound|bone_bound) or any(public_nodes[k]['type']=='DepthBone' for k in chain):
                 raise ValueError('Static PSD background still has an animated support')
             static_checked.append({'part':uid,'animated_supports':False,'source_rendering_retained':public_nodes[uid]['enabled']})
     humanoid=program.get('kind','humanoid')=='humanoid'

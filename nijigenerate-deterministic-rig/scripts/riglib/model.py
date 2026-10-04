@@ -127,8 +127,11 @@ def _capture_metadata(client, require_parameters):
             if not isinstance(mesh, dict) or not {"verts", "indices", "origin"} <= mesh.keys():
                 raise ValueError("NJC Part resource omitted complete base mesh geometry")
         if data["type"] == "GridDeformer":
-            if not {"grid_axis_x", "grid_axis_y", "depths"} <= data.keys():
-                raise ValueError("NJC Grid resource omitted axes/depth geometry")
+            # Native ExDepthMapped omits depths while they are unassigned.
+            # Source-group grids are valid in that state; keep it distinct
+            # from an explicitly populated depth surface.
+            if not {"grid_axis_x", "grid_axis_y"} <= data.keys():
+                raise ValueError("NJC Grid resource omitted axis geometry")
         if not isinstance(data["enabled"], bool):
             raise ValueError("NJC node enabled must be boolean")
         _trs(transform)
