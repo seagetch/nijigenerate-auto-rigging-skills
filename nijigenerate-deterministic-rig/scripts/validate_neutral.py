@@ -19,7 +19,14 @@ def validate(run,njc):
         from riglib.render_camera import capture as capture_camera
         p=out/name;capture_camera(n,run,p);return p
     source=read_json(run/'registered-neutral.json');a_path=Path(source['file'])
-    if not source.get('saved_active_readback_verified',source.get('saved_reopen_equal')) or digest(a_path)!=source['sha256'] or source['public_source_sha256']!=program['psd_import_source']['metadata_sha256']:
+    import_hash=program['psd_import_source']['metadata_sha256']
+    source_matches=source['public_source_sha256']==import_hash
+    group_file=run/'source-group-meshes.json'
+    if group_file.is_file():
+        groups=read_json(group_file)
+        source_matches=source_matches or (source['public_source_sha256']==groups.get('source_before',{}).get('metadata_sha256')
+            and import_hash==groups['source']['metadata_sha256'])
+    if not source.get('saved_active_readback_verified',source.get('saved_reopen_equal')) or digest(a_path)!=source['sha256'] or not source_matches:
         raise ValueError('Registered source screenshot identity mismatch')
     require_single_rig(n,state['rig_root'],state['bones'].values())
     b_path=capture('rig-neutral-saved.png')

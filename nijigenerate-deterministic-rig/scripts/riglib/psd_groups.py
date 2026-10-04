@@ -8,6 +8,7 @@ from .model import observe_model
 def prepare(run, njc, observation, registration, materials):
     run = Path(run)
     n = Live(njc, run/'group-mesh-journal')
+    source_before = observation['source']
     nodes = {r['uuid']: r for r in observation['nodes']}
     features = {m['part']: m.get('feature') or '' for m in materials}
     eye = {'sclera', 'iris', 'upper', 'lower', 'corner', 'fold', 'brow'}
@@ -62,4 +63,5 @@ def prepare(run, njc, observation, registration, materials):
     observation.clear(); observation.update(fresh)
     for material in materials: material['node'] = updated[material['part']]
     write_json(run/'source-group-meshes.json', {'groups': records, 'native_automesh': True,
-               'source': fresh['source'], 'stage': 'initial_construction_before_assembly'})
+               'source_before': source_before, 'source': fresh['source'],
+               'stage': 'initial_construction_before_assembly'})
