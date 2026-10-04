@@ -204,7 +204,7 @@ def comparison_sheet(run, before, after, capture, skin):
     camera_center = np.asarray(transform['trans'][:2])
     lo = (center-extent-camera_center)/scale+viewport/2
     hi = (center+extent-camera_center)/scale+viewport/2
-    crop = tuple(np.r_[np.floor(lo), np.ceil(hi)].astype(int))
+    crop = tuple(int(v) for v in np.r_[np.floor(lo), np.ceil(hi)])
     width, height = 420, 400
     sheet = Image.new('RGB', (width*2, height*len(before)), (32, 38, 48)); draw = ImageDraw.Draw(sheet)
     for row, pair in enumerate(zip(before, after)):
