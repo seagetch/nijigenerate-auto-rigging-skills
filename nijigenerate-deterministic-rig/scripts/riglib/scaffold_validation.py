@@ -1,12 +1,19 @@
 """Read and validate actual native rest bones against the shared scaffold."""
 import numpy as np
 from .data import json_digest
+from .reference_skeleton import support_differences
 
 
 def validate_rest_scaffold(client, state, program):
     if state['program_sha256'] != program['content_sha256']:
         raise ValueError('Scaffold program and native state differ')
     spec = program['scaffold']
+    if support_differences(spec):raise ValueError('Compiled bone constraints differ from the standard template')
+    parents={}
+    def visit(node,parent=None):
+        parents[node['uuid']]=parent
+        for child in node.get('children') or []:visit(child,node['uuid'])
+    for node in client.find('*')['items']:visit(node)
     axis = spec['torso_axis_fit']
     tolerance = max(1e-5, spec['body_height']*1e-6)
     observed, joints, errors = {}, {}, []
@@ -15,11 +22,16 @@ def validate_rest_scaffold(client, state, program):
                        if np.allclose(bone[end][:2],p,rtol=0,atol=1e-9)}
     for bone in spec['bones']:
         uid = state['bones'][bone['id']]
+        expected_parent=state['bones'][bone['parent']] if bone['parent'] is not None else state['rig_root']
+        if parents.get(uid)!=expected_parent:
+            raise ValueError('Saved DepthBone parent differs from standard template: '+bone['id'])
         item = client.read(uid).get('item',{})
         data = item.get('data',{})
         if item.get('uuid') != uid or data.get('type') != 'DepthBone' or data.get('boneId') != bone['id']:
             raise ValueError('Unexpected native bone identity')
         observed[bone['id']] = data
+        for field,key in [('allowParentToTargets','allow_parent_to_targets'),('lockToRoot','lock_to_root')]:
+            if data[field]!=bone[key]:raise ValueError('Saved DepthBone constraint differs from standard template: '+bone['id']+' '+field)
         for field,key in [('restHead','head'),('restTail','tail')]:
             value = np.asarray(data[field],float)
             if value.shape != (3,) or not np.isfinite(value).all():
@@ -47,6 +59,8 @@ def validate_rest_scaffold(client, state, program):
     if deviation > tolerance or not order or attachment_error > tolerance:
         raise ValueError('Saved skeleton violates torso axis or pelvis attachment')
     return {'native_bones':observed,'bone_count':len(observed),
+            'standard_template_constraints_verified':True,
+            'native_bone_parents':{name:parents[uid] for name,uid in state['bones'].items()},
             'rest_bone_readback_sha256':json_digest(observed),
             'max_program_coordinate_error':max(errors),
             'torso_axis_max_transverse_deviation':deviation,

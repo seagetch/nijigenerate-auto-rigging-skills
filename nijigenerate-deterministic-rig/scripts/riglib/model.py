@@ -103,8 +103,10 @@ def _capture_metadata(client, require_parameters):
     if parameters and require_parameters:
         raise ValueError("NJC public Parameter resources omit axes/bindings; complete parameter metadata unavailable")
     resolved = {}
-    for record in discovered:
-        response = _resource_payload(client.read(record["uuid"]))
+    responses=(client.read_many([r['uuid'] for r in discovered]) if callable(getattr(client,'read_many',None))
+               else [client.read(r['uuid']) for r in discovered])
+    for record,response in zip(discovered,responses):
+        response = _resource_payload(response)
         item = response.get("item")
         if (not isinstance(item, dict) or item.get("typeId") != "Node"
                 or item.get("uuid") != record["uuid"] or item.get("name") != record["name"]):
@@ -132,6 +134,11 @@ def _capture_metadata(client, require_parameters):
         _trs(transform)
         _mesh(data, False)
         _grid(data, False)
+        # Projectable.createSimpleMesh updates this render-target quad when
+        # descendant bounds change. It is generated render state, not authored
+        # geometry. Part/Grid and fixed Composite meshes stay in the snapshot.
+        if data['type'] in ('DynamicComposite', 'Projectable') and data.get('auto_resized') is True:
+            data.pop('mesh', None)
         # Basics discovery supplies the hierarchy; detail reads do not request
         # the serializer's Children flag. Preserve that declared tree explicitly.
         data["children"] = []
@@ -169,7 +176,7 @@ def read_model_metadata(path=None, *, client=None, require_parameters=True,
     identities = first["public_parameter_identities"]
     return first, {
         "path": None, "transport": "njc", "container": "njc-public-resource-snapshot",
-        "metadata_sha256": fingerprint, "hash_scope": "canonical_njc_public_metadata_snapshot",
+        "metadata_sha256": fingerprint, "hash_scope": "canonical_njc_public_metadata_snapshot_except_auto_resized_render_quads",
         "parameter_count_observed": len(identities), "parameters_complete": not identities,
         "serialized_metadata_complete": False, "node_geometry_complete": True,
         "consistency": "two_identical_reads_not_atomic", "file_identity_verified": False,
@@ -260,7 +267,7 @@ def _mesh(node, include_geometry):
         "origin_semantics": "not_assumed; verts used directly for nominal bounds",
     }
     if include_geometry:
-        result.update(vertices=vertices, indices=indices)
+        result.update(vertices=vertices, indices=indices,uvs=deepcopy(mesh.get('uvs',[])))
     return result, vertices
 
 

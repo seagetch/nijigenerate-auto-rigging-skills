@@ -65,17 +65,21 @@ def _image_asset(image, output, relative, *, role, canvas_bounds, icc=None):
     from PIL import Image
     import numpy as np
 
-    clean = Image.frombytes(image.mode, image.size, image.tobytes())
+    clean = image.copy()
+    clean.info.clear()
     path = output / relative
     path.parent.mkdir(parents=True, exist_ok=True)
     options = {"compress_level": 9, "optimize": False}
     if icc:
         options["icc_profile"] = icc
     clean.save(path, format="PNG", **options)
+    pixel_digest=hashlib.sha256()
+    for y in range(0,clean.height,128):
+        pixel_digest.update(clean.crop((0,y,clean.width,min(clean.height,y+128))).tobytes())
     result = {"path": relative, "sha256": digest(path), "bytes": path.stat().st_size,
               "role": role, "mode": clean.mode, "size": list(clean.size),
               "canvas_bounds": list(canvas_bounds),
-              "pixel_sha256": hashlib.sha256(clean.tobytes()).hexdigest()}
+              "pixel_sha256": pixel_digest.hexdigest()}
     if clean.mode == "RGBA":
         alpha_image = clean.getchannel("A")
         alpha = np.asarray(alpha_image, dtype=np.uint8)
@@ -128,7 +132,7 @@ def _simple_mask(layer, rgba, row, output, stem, issue):
     if bitmap is None:
         issue("mask_pixels_unavailable", "Mask pixels cannot be decoded", row["id"])
         return rgba
-    data["asset"] = _image_asset(bitmap.convert("L"), output, f"masks/{stem}.png",
+    data["asset"] = _image_asset(bitmap.convert("L"), output, f"source-mask-{stem}.png",
                                  role="original_bitmap_mask", canvas_bounds=data["bounds"])
     unsupported = []
     if data["combined_real_mask_present"]:
@@ -224,6 +228,9 @@ def prepare_psd(psd_path, destination):
             matches=identity.get('psd_sha256')==source_sha and identity.get('psd_path')==str(source)
         elif manifest_path.is_file():
             matches=read_json(manifest_path).get('source',{}).get('sha256')==source_sha
+        elif (output/'run-origin.json').is_file():
+            identity=read_json(output/'run-origin.json')
+            matches=identity.get('psd_sha256')==source_sha and identity.get('external_character_input')==str(source)
         else:matches=False
         if not matches:raise ValueError('PSD extraction output is not owned by this input')
     output.mkdir(parents=True,exist_ok=True)
@@ -333,7 +340,12 @@ def prepare_psd(psd_path, destination):
                 issue("vector_mask", "Vector mask cannot be silently approximated by cached pixels", uid)
             if row["effects_present"]:
                 issue("layer_effects", "Layer effects are not baked into the pixel asset", uid)
-            allowed_blends = (b"norm", b"mul ", b"pass") if layer.is_group() else (b"norm", b"mul ")
+            # Raster observation retains blend metadata. Native NJC import owns
+            # compositing; readiness does not assert a Python re-composition.
+            allowed_blends = (b"norm", b"mul ", b"scrn", b"over", b"dark", b"lite",
+                              b"div ", b"lddg", b"idiv", b"hLit", b"sLit", b"diff", b"smud", b"fsub")
+            if layer.is_group():
+                allowed_blends += (b"pass",)
             if _key(layer.blend_mode) not in allowed_blends:
                 issue("unsupported_blend_mode", f"Blend mode {row['blend_mode']} is metadata-only", uid)
             _blending_metadata(layer, row, issue)
@@ -356,7 +368,7 @@ def prepare_psd(psd_path, destination):
                 issue("pixel_asset_unavailable", "Nonempty layer has no supported embedded raster pixels", uid)
             rgba = _simple_mask(layer, rgba, row, output, stem, issue)
             if rgba is not None:
-                row["asset"] = _image_asset(rgba, output, f"layers/{stem}.png",
+                row["asset"] = _image_asset(rgba, output, f"source-layer-{stem}.png",
                     role="isolated_layer_pixels_with_declared_bitmap_mask", canvas_bounds=bounds, icc=icc)
                 row["rasterization"] = "pixel_channels_decoded; only_declared_bitmap_mask_baked"
                 manifest["assets"].append(row["asset"])

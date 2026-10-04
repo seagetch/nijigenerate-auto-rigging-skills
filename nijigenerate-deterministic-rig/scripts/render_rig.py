@@ -9,19 +9,21 @@ from build_native import require_single_rig
 import numpy as np
 
 
-def inspect_live(client):
-    data,source=read_model_metadata(client=client,require_parameters=False)
+def inspect_live(client,snapshot=None,source=None):
+    if snapshot is None:data,source=read_model_metadata(client=client,require_parameters=False)
+    else:data=snapshot['nodes']
     nodes={}
     def visit(node):
         nodes[node['uuid']]=node
         for c in node.get('children',[]):visit(c)
     visit(data['nodes'])
     stats={}
-    resources=client.binding_resources()
-    for resource in resources:
-        uri=resource.get('uri','')
-        if not uri.startswith('resource://nijigenerate/bindings/get?'):continue
-        item=client.invoke(['resources','read',uri]).get('item')
+    if snapshot is not None:
+        items=snapshot['bindings'].values()
+    else:
+        resources=client.binding_resources()
+        items=(client.invoke(['resources','read',r['uri']]).get('item') for r in resources)
+    for item in items:
         if not isinstance(item,dict):raise ValueError('NJC binding resource is missing')
         parameter=item['parameter']
         record=stats.setdefault(parameter['uuid'],{'name':parameter['name'],'grid_bindings':[]})

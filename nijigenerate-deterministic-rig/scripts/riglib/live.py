@@ -7,8 +7,12 @@ Open/save submit NJC commands only. An acknowledgement is not a proof of a
 completed document transition; the caller must verify through NJC resources.
 """
 import json
+import os
 from pathlib import Path
 import subprocess
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
 from .data import write_json
 
 
@@ -21,6 +25,20 @@ class NJCRequestTooLarge(ValueError):
 
 class NJCTransportError(RuntimeError):
     """A single NJC invocation failed or returned an invalid protocol envelope."""
+
+
+def _open_journal(path):
+    """Retry only opening a temporarily unavailable cloud-synced log.
+
+    The NJC request has already completed: never resend it on a logging error.
+    Once opened, writes are not retried in the same file because partial
+    completion is unknown.
+    """
+    for attempt in range(6):
+        try:return path.open('a',encoding='utf-8')
+        except OSError as error:
+            if error.errno not in (13,22) or attempt==5:raise
+            time.sleep(.1*(attempt+1))
 
 
 def _compact_numbers(value):
@@ -50,13 +68,23 @@ class Live:
     def __init__(self, executable, journal=None):
         self.executable = str(Path(executable).resolve(strict=True))
         self.journal = Path(journal) if journal else None
+        self._journal_file = self.journal.with_suffix('.jsonl') if self.journal else None
         self.sequence = 0
+        self._node_types = {}
+        self._journal_lock = threading.Lock()
+        self.read_workers=int(os.environ.get('NIJIGEN_NJC_READ_WORKERS','1'))
+        if not 1<=self.read_workers<=16:raise ValueError('NJC read workers must be between 1 and 16')
+        self.timeout = float(os.environ.get('NIJIGEN_NJC_TIMEOUT_SECONDS','600'))
+        if not 1 <= self.timeout <= 3600:
+            raise ValueError('NJC timeout must be between 1 and 3600 seconds')
 
     def _prepare(self, args, data=None):
         if not isinstance(args, (list, tuple)) or not args:
             raise ValueError("NJC arguments must be a nonempty list or tuple of strings")
         if any(not isinstance(arg, str) or "\x00" in arg for arg in args):
             raise ValueError("NJC arguments must be strings without NUL characters")
+        if any(arg in ('VertexCommand_DefineMesh','VertexCommand_DefineGrid') for arg in args):
+            raise ValueError('Direct mesh definition is disabled in this rigging adapter; generate geometry through NJC AutoMesh')
         command = [self.executable, *args]
         encoded = None
         if data is not None:
@@ -95,7 +123,7 @@ class Live:
         command, _ = self._prepare(args, data)
         try:
             run = subprocess.run(command, capture_output=True, encoding="utf-8", errors="strict",
-                                 timeout=120, shell=False, stdin=subprocess.DEVNULL,
+                                 timeout=self.timeout, shell=False, stdin=subprocess.DEVNULL,
                                  creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired as error:
             raise NJCTransportError("NJC timed out; completion is unknown. Request was not retried.") from error
@@ -128,9 +156,32 @@ class Live:
                     raise NJCTransportError("NJC content contains invalid structured JSON") from error
         output = decoded[0] if len(decoded) == 1 else (decoded or result)
         if self.journal:
-            self.journal.mkdir(parents=True, exist_ok=True)
-            self.sequence += 1
-            write_json(self.journal / f"{self.sequence:06d}.json", {"args": args, "input": data, "output": output})
+            self.journal.parent.mkdir(parents=True, exist_ok=True)
+            with self._journal_lock:
+                self.sequence += 1
+                sequence=self.sequence
+                record={'sequence':sequence,'args':args,'input':data,'output':output}
+                try:
+                    with _open_journal(self._journal_file) as stream:
+                        stream.write(json.dumps(record,ensure_ascii=False,allow_nan=False)+'\n')
+                except OSError as error:
+                    if error.errno not in (13,22):raise
+                    # A cloud-backed existing file may open successfully but
+                    # reject its append/close. Preserve it (possibly with a
+                    # partial record), and write this already-returned result
+                    # to a new sibling. The NJC command is NEVER replayed.
+                    record['journal_recovery']={'previous_file':str(self._journal_file),
+                        'error':str(error),'request_replayed':False}
+                    base=self.journal.with_suffix('.jsonl')
+                    for index in range(1,10000):
+                        following=base.with_name(base.stem+f'-continued-{index:04d}.jsonl')
+                        try:stream=following.open('x',encoding='utf-8')
+                        except FileExistsError:continue
+                        with stream:stream.write(json.dumps(record,ensure_ascii=False,allow_nan=False)+'\n')
+                        self._journal_file=following
+                        print('Continued NJC journal in '+following.name+'; command was not resent',flush=True)
+                        break
+                    else:raise OSError('No unused sibling journal path') from error
         nested = output.get("result") if isinstance(output, dict) else None
         if ((isinstance(result, dict) and result.get("isError")) or
             (isinstance(output, dict) and (output.get("succeeded") is False or output.get("status") == "error")) or
@@ -139,10 +190,29 @@ class Live:
         return output
 
     def call(self, tool_name, **kwargs):
+        if tool_name in ('FileCommand_OpenFile','FileCommand_ImportPSD'):
+            self._node_types.clear()
+        if tool_name == 'ModelCommand_SetDeformBinding':
+            targets=kwargs.get('context',{}).get('nodes',[])
+            if not targets:raise ValueError('Deform write requires explicit Part targets')
+            for uid in targets:
+                if uid not in self._node_types:
+                    self._node_types[uid]=self.read(uid)['item']['data']['type']
+                if self._node_types[uid]!='Part':
+                    raise ValueError('Direct deform binding writes are allowed only on Parts; generate Grid angles with native depth and bones')
         return self.invoke(["tools", "call", tool_name], kwargs)
 
     def read(self, uid):
         return self.invoke(["read", str(uid)])
+
+    def read_many(self,uids):
+        """Independent read-only CLI requests, returned in requested order."""
+        with ThreadPoolExecutor(max_workers=self.read_workers) as pool:
+            return list(pool.map(self.read,list(uids)))
+
+    def read_resources(self,uris):
+        with ThreadPoolExecutor(max_workers=self.read_workers) as pool:
+            return list(pool.map(lambda uri:self.invoke(['resources','read',uri]),list(uris)))
 
     def find(self, selector):
         return self.invoke(["find", selector])
@@ -170,6 +240,19 @@ class Live:
     def open(self, path):
         # No Python read, parse, existence check or validation of an INX file.
         return self.call("FileCommand_OpenFile", file=str(Path(path).resolve()))
+
+    def ensure_source(self,path,expected_metadata_sha256):
+        """Reuse only an exactly verified live stage; otherwise open and verify.
+
+        Avoid redundant asynchronous document reloads between sequential
+        stages. Never let a successful OpenFile acknowledgement stand in for
+        the expected model identity.
+        """
+        from .model import read_model_metadata
+        _,identity=read_model_metadata(client=self)
+        if identity['metadata_sha256']==expected_metadata_sha256:return identity
+        raise ValueError('Active source differs from the PSD stage; do not reopen a saved file. Start a fresh PSD build.')
+
 
 
 def created_id(result):

@@ -2,15 +2,47 @@
 from pathlib import Path
 import numpy as np
 from .data import read_json, json_digest
-from .reference_fields import make_frames, to_frame, from_frame, sample, CORE_PARAMETERS, DEPTH_ANGLE_PARAMETERS, evaluate_component, fit_positive_cells
+from .reference_fields import make_frames, to_frame, from_frame, sample, CORE_PARAMETERS, DEPTH_ANGLE_PARAMETERS
 from .semantic_registration import facial_landmarks,observed_landmarks,install_charts
 from .resampling import choose_grid,quantize_deformation
 from .reference_skeleton import install_support
 from .carrier import make_carrier,to_local,to_root,local_frames,bounds_corners
 
 
+def register_bilateral(domain,template,frames,scaffold,by_id,torso,checks):
+    """Sample both anatomical fields onto one unsplit bilateral source Part.
+
+    Distance to the fitted limb polylines gives continuous partition weights;
+    artwork is neither duplicated nor assigned wholly to its centroid's side.
+    """
+    from .resampling import anchored_axis,calibrated_depth
+    family=domain['owner'].split(':')[0]
+    names=[family+'/'+s for s in ('r','l')]
+    comps=[template['components'][name] for name in names]
+    boxes=np.array([by_id[p['uuid']]['bounds']['nominal_world_xy'] for p in domain['parts']])
+    lower=boxes[:,:2].min(0)-domain['bounds_padding'];upper=boxes[:,2:].max(0)+domain['bounds_padding']
+    counts=[max(max(r[k] for r in c['source_resolution']) for c in comps) for k in (0,1)]
+    xs=anchored_axis(lower[0],upper[0],counts[0]*2,[]);ys=anchored_axis(lower[1],upper[1],counts[1],[])
+    xy=np.array([[x,y] for y in ys for x in xs]);dist=[]
+    roles=('shoulder','elbow','wrist','hand_tip') if family=='arm' else ('hip','knee','ankle','foot_tip')
+    for side in ('R','L'):
+        pts=[np.asarray(scaffold['landmarks'][r+'.'+side]) for r in roles];segments=[]
+        for a,b in zip(pts[:-1],pts[1:]):
+            t=np.clip((xy-a)@(b-a)/np.dot(b-a,b-a),0,1)
+            segments.append(np.linalg.norm(xy-a-t[:,None]*(b-a),axis=1))
+        dist.append(np.min(segments,axis=0))
+    d=np.array(dist);w=1/np.maximum(d,torso*.002)**4;w/=w.sum(0)
+    depth=sum(w[k]*(calibrated_depth(template,name,frames[c['frame']],xy,torso)+template['bone_z'][c['depth']['origin']]*torso)
+              for k,(name,c) in enumerate(zip(names,comps)))
+    fields={}
+    domain.update(reference_component=names,registration_frame=frames['body'],
+                  carrier_frame={'origin':[0.,0.],'rotation':0.},axis_x=xs.tolist(),axis_y=ys.tolist(),
+                  support_bounds=np.r_[lower,upper].tolist(),depth_model_units=depth.tolist(),reference_deformations=fields,
+                  resampling={'method':'continuous distance partition of two shared template components','axis_counts':[len(xs),len(ys)]})
+
+
 def component_role(domain,evidence):
-    owner=domain['owner'];label=domain['id'].split('/',1)[1]
+    owner=domain['owner'];label=domain.get('semantic_chart',domain['id']).split('/',1)[1]
     if owner=='head':
         fixed={'face':'face','hair:front':'hair_front','hair:back':'hair_back','headwear':'headwear'}
         if label in fixed:return fixed[label]
@@ -38,7 +70,7 @@ def register_program(program,observation,evidence,template=None):
     if template.get('depth_angle_parameters')!=list(DEPTH_ANGLE_PARAMETERS):
         raise ValueError('Template must declare native depth-only face angles')
     for collection in ('components',):
-        if any(p in c['deformations'] for c in template[collection].values() for p in DEPTH_ANGLE_PARAMETERS):
+        if any(c['deformations'] for c in template[collection].values()):
             raise ValueError('Forbidden angle-specific face residual in shared template')
     scaffold=program['scaffold'];bones={b['id']:b for b in scaffold['bones']}
     by_id={n['uuid']:n for n in observation['nodes']}
@@ -51,7 +83,9 @@ def register_program(program,observation,evidence,template=None):
         b=node['bounds']['nominal_world_xy']
         materials.append((node['name'],[[b[0],b[1]],[b[2],b[3]]]))
     if 'semantic_charts' not in template:raise ValueError('Common template lacks required semantic correspondence')
-    landmarks=observed_landmarks(bones,facial_landmarks(materials))
+    if 'facial_landmarks_model' not in evidence:
+        raise ValueError('Compiler requires PSD-derived semantic facial landmarks')
+    landmarks=observed_landmarks(bones,evidence['facial_landmarks_model'])
     install_charts(frames,landmarks,template['semantic_charts'])
     torso=np.linalg.norm(np.array(bones['Neck']['head'])-bones['Pelvis']['head'])
     face_width=face_bounds[2]-face_bounds[0]
@@ -60,6 +94,9 @@ def register_program(program,observation,evidence,template=None):
     install_support(scaffold,template,frames,torso)
     domain_errors=[]
     for domain in program['domains']:
+        if domain['owner'].endswith(':both'):
+            register_bilateral(domain,template,frames,scaffold,by_id,torso,domain_errors)
+            continue
         name=component_role(domain,evidence)
         if name not in template['components']:raise ValueError('Missing common template surface: '+name)
         c=template['components'][name];f=frames[c['frame']]
@@ -92,33 +129,15 @@ def register_program(program,observation,evidence,template=None):
         domain.update({'reference_component':name,'registration_frame':f,'carrier_frame':carrier,
             'support_bounds':np.r_[root_corners.min(0),root_corners.max(0)].tolist(),'axis_x':xs.tolist(),'axis_y':ys.tolist(),
             'depth_model_units':depth.tolist(),'reference_deformations':{},'resampling':resampling})
-        for parameter in c['deformations']:
-            spec=c['deformations'][parameter];a=np.asarray(spec['values']);result=[]
-            for i in range(a.shape[0]):
-                column=[]
-                for j in range(a.shape[1]):
-                    off=fields[parameter,i,j]
-                    fitted,fit_report=fit_positive_cells(xy+off,xs,ys)
-                    off=quantize_deformation(fitted-xy,unit);posed=(xy+off).reshape(len(ys),len(xs),2)
-                    dx=posed[:-1,1:]-posed[:-1,:-1];dy=posed[1:,:-1]-posed[:-1,:-1]
-                    dx2=posed[1:,1:]-posed[1:,:-1];dy2=posed[1:,1:]-posed[:-1,1:]
-                    den=np.diff(ys)[:,None]*np.diff(xs)[None,:]
-                    ratio=min(float(np.min((u[:,:,0]*v[:,:,1]-u[:,:,1]*v[:,:,0])/den))
-                              for u,v in ((dx,dy),(dx2,dy2),(dx,dy2),(dx2,dy)))
-                    if ratio<=.02:raise ValueError(f'Registered reference field folds: {domain["id"]} {parameter} {i},{j}: {ratio}')
-                    domain_errors.append({'surface':domain['id'],'parameter':parameter,'key':[i,j],'min_area_ratio':ratio,
-                                          'registration_orientation_fit':fit_report})
-                    column.append(off.ravel().tolist())
-                result.append(column)
-            domain['reference_deformations'][parameter]={'axes':spec['axes'],'values':result}
     by_domain={d['id']:d for d in program['domains']};order_reports=[]
     for constraint in evidence.get('depth_order_constraints',[]):
-        front=by_domain[constraint['front']];back=by_domain[constraint['back']]
+        aliases=program.get('domain_aliases',{})
+        front=by_domain[aliases.get(constraint['front'],constraint['front'])];back=by_domain[aliases.get(constraint['back'],constraint['back'])]
         if front['bone_sources']!=['Head'] or back['bone_sources']!=['Head']:
             raise ValueError('Depth placement requires a shared verified head projection')
         xy=constraint['xy_model']
-        zf=sample(front['axis_x'],front['axis_y'],front['depth_model_units'],xy)[:,0]
-        zb=sample(back['axis_x'],back['axis_y'],back['depth_model_units'],xy)[:,0]
+        zf=sample(front['axis_x'],front['axis_y'],front['depth_model_units'],to_local(xy,front['carrier_frame']))[:,0]
+        zb=sample(back['axis_x'],back['axis_y'],back['depth_model_units'],to_local(xy,back['carrier_frame']))[:,0]
         gap=face_width*.001;shift=max(0.,float(np.max(zb-zf))+gap)
         front['depth_model_units']=(np.array(front['depth_model_units'])+shift).tolist()
         front['placement_offset_model_units']=shift
@@ -132,12 +151,12 @@ def register_program(program,observation,evidence,template=None):
     program['native_depth_scale']=float(scale)
     for spec in program['parameters']:
         if spec['name'] not in CORE_PARAMETERS:continue
-        spec['deformation_authority']='native_depth_projection' if spec['name'] in DEPTH_ANGLE_PARAMETERS else 'registered_reference_fields'
+        spec['deformation_authority']='native_depth_projection'
         spec['reference_curves']=[c for c in template['bone_curves'] if c['parameter']==spec['name']]
         spec['bindings']=[]
     program['reference_template']={'sha256':signature,'count':1,'reference_count':template['reference_count'],
         'frames':frames,'torso_length':float(torso),'orientation_checks':domain_errors,
         'motion_policy':template['motion_policy'],'depth_order_fit':order_reports}
-    program['quantization']['reference_deformation']='4 significant digits; <=0.001 anatomical units; orientation checked after quantization'
+    program['quantization']['reference_deformation']='6 significant digits, rounded to 0.0001 model units; orientation and transport checked after quantization'
     program.pop('content_sha256',None);program['content_sha256']=json_digest(program)
     return program

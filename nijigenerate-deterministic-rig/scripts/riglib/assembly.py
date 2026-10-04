@@ -88,7 +88,7 @@ def assemble_model(observation, specification, evidence=None):
         uid = str(row["part"])
         if uid in annotated or uid not in by_id or by_id[uid]["type"] != "Part":
             raise ValueError("invalid or duplicate evidence Part")
-        if row.get("role") not in rules_by_id or row.get("provenance") not in {"visual_observation", "source_annotation"}:
+        if row.get("role") not in rules_by_id or row.get("provenance") not in {"visual_observation", "source_annotation", "PSD_computed_candidate"}:
             raise ValueError("semantic evidence requires a known role and explicit provenance")
         rule = rules_by_id[row["role"]]
         tag = row.get("side_tag")
@@ -98,9 +98,13 @@ def assemble_model(observation, specification, evidence=None):
         annotated[uid] = {"owner": rule["owner"].format(side=tag), "chart": rule["chart"].format(side=tag),
                           "usage": rule["usage"], "rule": rule["id"], "side_tag": tag,
                           "provenance": row["provenance"]}
+    static={str(row['part']):row for row in evidence.get('static_parts',[])}
+    for uid,row in static.items():
+        if uid in annotated or uid not in by_id or by_id[uid]['type']!='Part' or row.get('provenance')!='PSD_computed_candidate':
+            raise ValueError('Static source material requires PSD-derived evidence and exclusive ownership')
     materials, excluded, unknown, charts, owners, mechanisms = [], [], [], {}, {}, {}
     questions = defaultdict(list)
-    for node in sorted(nodes, key=lambda n: str(n["uuid"])):
+    for node in sorted(nodes, key=lambda n: (n.get('source_order', 10**9), n.get('source_layer_id', ''), n['name'])):
         if node["type"] != "Part":
             continue
         cursor, visited, enabled = node, set(), True
@@ -116,6 +120,9 @@ def assemble_model(observation, specification, evidence=None):
             cursor = by_id.get(str(parent)) if parent is not None else None
         if not enabled:
             excluded.append({"part": node["uuid"], "reason": "disabled_in_source"})
+            continue
+        if str(node['uuid']) in static:
+            excluded.append({'part':node['uuid'],'reason':'static_PSD_backdrop','evidence':static[str(node['uuid'])]})
             continue
         name = normalized_name(node["name"])
         role = annotated.get(str(node["uuid"]))

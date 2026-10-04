@@ -129,13 +129,14 @@ def install_charts(frames,landmarks,charts):
 
 def map_chart(points,chart,inverse=False):
     q=np.asarray(points);shape=q.shape;q=q.reshape(-1,2)
+    if chart.get('mapping'):raise ValueError('Unsupported semantic mapping; only TPS is permitted')
     if not inverse:return _forward(q,chart).reshape(shape)
     key=(id(chart),q.shape,q.tobytes())
     if key in _inverse_cache:
         cached,owner=_inverse_cache.pop(key);_inverse_cache[key]=(cached,owner)
         return cached.reshape(shape)
     out=q.copy()
-    for iteration in range(20):
+    for iteration in range(80):
         value,jac=_forward(out,chart,True);error=value-q
         if np.max(abs(error),initial=0)<1e-10:
             _inverse_cache[key]=(out.copy(),chart)
@@ -143,11 +144,25 @@ def map_chart(points,chart,inverse=False):
             return out.reshape(shape)
         if np.any(np.linalg.det(jac)<=.01):raise ValueError('Semantic chart inverse leaves its invertible domain')
         step=np.linalg.solve(jac,error[...,None])[...,0]
-        out-=step
+        # A full Newton step can overshoot the curved chart on wide bilateral
+        # artwork. Backtrack each point while keeping positive Jacobians and
+        # decreasing the same correspondence residual; never clamp landmarks.
+        scale=np.ones(len(out));norm=np.linalg.norm(error,axis=1)
+        active=norm>=1e-10
+        for backtrack in range(30):
+            candidate=out-step*scale[:,None]
+            proposed,jnext=_forward(candidate,chart,True)
+            accepted=(np.linalg.norm(proposed-q,axis=1)<norm) & (np.linalg.det(jnext)>.01)
+            pending=active & ~accepted
+            if not pending.any():break
+            scale[pending]*=.5
+        else:raise ValueError('Semantic inverse line search did not reduce its residual')
+        out[active]=candidate[active]
     raise ValueError('Semantic correspondence inverse did not converge')
 
 
 def _forward(q,chart,derivative=False):
+    if chart.get('mapping'):raise ValueError('Unsupported semantic mapping; only TPS is permitted')
     centers=np.asarray(chart['canonical']);coef=np.asarray(chart['coefficients']);n=len(centers)
     delta=q[:,None,:]-centers[None,:,:];r2=np.sum(delta*delta,axis=-1)
     log=np.log(np.maximum(r2,1e-30));kernel=r2*log

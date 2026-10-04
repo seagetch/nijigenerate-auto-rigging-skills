@@ -7,7 +7,7 @@ import numpy as np
 from .semantic_registration import affine_to,affine_from,map_chart
 
 CORE_PARAMETERS = ('Face::Yaw-Pitch', 'Face::Roll', 'Body::Yaw-Pitch', 'Body::Roll')
-DEPTH_ANGLE_PARAMETERS = ('Face::Yaw-Pitch', 'Face::Roll')
+DEPTH_ANGLE_PARAMETERS = CORE_PARAMETERS
 TRANSFER_PARAMETERS = tuple(p for p in CORE_PARAMETERS if p not in DEPTH_ANGLE_PARAMETERS)
 
 
@@ -98,68 +98,8 @@ def evaluate_component(template,name,parameter,i,j,root_points,frames):
     return result
 
 
-def fit_positive_cells(points,xs,ys):
-    """Minimum change to a common reference field, not a target-model patch.
-
-    The QP changes only screen projection, never depth or driver angles. A fixed
-    direction makes all four bilinear cell Jacobians affine in the unknowns.
-    Both anatomical axes are tried and the least squared correction is retained.
-    """
-    from .face_transfer import jacobian_constraints, minimum_ratio
-    from scipy.sparse import eye, vstack, coo_matrix
-    import osqp
-    points=np.asarray(points);before=minimum_ratio(points,xs,ys)
-    if before>=.055:return points,{'corrected':False,'minimum_area_ratio':before}
-    n=len(points);limit=np.linalg.norm([np.ptp(xs),np.ptp(ys)])*.05
-    edges=[]
-    for j in range(len(ys)):
-        for i in range(len(xs)):
-            a=j*len(xs)+i
-            if i+1<len(xs):edges.append((a,a+1))
-            if j+1<len(ys):edges.append((a,a+len(xs)))
-    rr=np.repeat(np.arange(len(edges)),2);cc=np.array(edges).ravel()
-    D=coo_matrix((np.tile([-1.,1.],len(edges)),(rr,cc)),shape=(len(edges),n)).tocsc()
-    H=eye(n,format='csc')+D.T@D;solutions=[]
-    for direction in (np.array([1.,0.]),np.array([0.,1.]),np.array([1.,1.])/np.sqrt(2),np.array([-1.,1.])/np.sqrt(2)):
-        A,rhs,_=jacobian_constraints(points,xs,ys,direction)
-        solver=osqp.OSQP();solver.setup(P=H,q=np.zeros(n),A=vstack([A,eye(n)],format='csc'),
-            l=np.r_[np.full(len(rhs),-np.inf),np.full(n,-limit)],u=np.r_[rhs,np.full(n,limit)],
-            verbose=False,eps_abs=1e-8,eps_rel=1e-8,max_iter=50000,polishing=True)
-        result=solver.solve()
-        if result.info.status_val not in (1,2):continue
-        q=points+result.x[:,None]*direction;after=minimum_ratio(q,xs,ys)
-        if after<.0549:continue
-        solutions.append((float(result.x@result.x),q,{'corrected':True,'before_minimum_area_ratio':before,
-            'minimum_area_ratio':after,'maximum_frame_correction':float(max(abs(result.x))),
-            'maximum_allowed_frame_correction':float(limit),'direction':direction.tolist()}))
-    if not solutions:
-        # One common direction can be infeasible even when a small planar
-        # correction exists. Re-linearize both coordinates within the SAME
-        # displacement budget; verify the true bilinear Jacobians each time.
-        # Used only for transferred Body fields, never native Face angles.
-        from scipy.sparse import hstack,block_diag
-        q=points.copy();component_limit=limit/np.sqrt(2)
-        for iteration in range(20):
-            ax,rhs,_=jacobian_constraints(q,xs,ys,np.array([1.,0.]))
-            ay,_,_=jacobian_constraints(q,xs,ys,np.array([0.,1.]))
-            A=hstack([ax,ay],format='csc');delta=(q-points).T.ravel()
-            solver=osqp.OSQP();solver.setup(P=block_diag([H,H],format='csc'),q=np.zeros(2*n),
-                A=vstack([A,eye(2*n)],format='csc'),
-                l=np.r_[np.full(len(rhs),-np.inf),np.full(2*n,-component_limit)],
-                u=np.r_[rhs+A@delta,np.full(2*n,component_limit)],verbose=False,
-                eps_abs=1e-8,eps_rel=1e-8,max_iter=50000,polishing=True)
-            result=solver.solve()
-            if result.info.status_val not in (1,2):break
-            q=points+result.x.reshape(2,n).T;after=minimum_ratio(q,xs,ys)
-            maximum=float(np.max(np.linalg.norm(q-points,axis=1)))
-            if after>=.0549 and maximum<=limit+1e-6:
-                solutions.append((float(result.x@result.x),q,{'corrected':True,
-                    'before_minimum_area_ratio':before,'minimum_area_ratio':after,
-                    'maximum_frame_correction':maximum,'maximum_allowed_frame_correction':float(limit),
-                    'method':'bounded planar sequential Jacobian projection','iterations':iteration+1}))
-                break
-    if not solutions:raise ValueError('No bounded common-template fit with positive cells')
-    _,q,report=min(solutions,key=lambda x:x[0]);return q,report
+def fit_positive_cells(*args, **kwargs):
+    raise ValueError('Angle-specific Grid vertex fitting is forbidden; repair common depth and skeletal support')
 
 
 class StaticReference:

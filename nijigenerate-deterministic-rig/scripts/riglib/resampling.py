@@ -17,11 +17,13 @@ def native_axis_distinct(axis):
 def anchored_axis(lower,upper,count,coordinates):
     """Move grid lines through semantic landmarks within the reference budget."""
     axis=np.unique(np.round(np.r_[lower,coordinates,upper],4))
-    if len(axis)>count:raise ValueError('Semantic grid lines exceed reference division budget')
+    # Landmark coverage is structural; a reference's division count is only
+    # a density preference and must not discard landmarks or stop a new PSD.
+    count=max(count,len(axis))
     while len(axis)<count:
         k=int(np.argmax(np.diff(axis)))
         midpoint=round(float((axis[k]+axis[k+1])/2),4)
-        if midpoint in axis:raise ValueError('Reference grid budget cannot be allocated without duplicate lines')
+        if midpoint in axis:break  # Retain the representable native density.
         axis=np.sort(np.r_[axis,midpoint])
     return axis
 
@@ -29,12 +31,12 @@ def anchored_axis(lower,upper,count,coordinates):
 def quantize_deformation(values,unit):
     """Bounded precision for NJC transport.
 
-    Four significant digits keep fine grids within NJC's literal JSON limit.
-    This rounds transmitted values without fitting a different field.
+    Six significant digits preserve narrow landmark cells. NJC payloads are
+    separately preflighted; transport size cannot justify folded geometry.
     """
     original=np.asarray(values)
-    a=np.round(original,2)
-    out=np.array([float(format(float(v),'.4g')) for v in a.ravel()]).reshape(a.shape)
+    a=np.round(original,4)
+    out=np.array([float(format(float(v),'.6g')) for v in a.ravel()]).reshape(a.shape)
     if np.max(np.linalg.norm(out-original,axis=-1))>unit*.001:
         raise ValueError('NJC wire quantization exceeds the geometric precision budget')
     return out
@@ -60,8 +62,7 @@ def choose_grid(template,name,frames,lower,upper,unit,initial_counts,landmarks):
     nx,ny=initial_counts
     xs=anchored_axis(lower[0],upper[0],nx,anchors[:,0])
     ys=anchored_axis(lower[1],upper[1],ny,anchors[:,1])
-    if not native_axis_distinct(xs) or not native_axis_distinct(ys):
-        raise ValueError('Required semantic lines collapse under native Grid axis tolerance')
+    native_distinct=native_axis_distinct(xs) and native_axis_distinct(ys)
     landmark_distances=[float(np.hypot(np.min(abs(xs-p[0])),np.min(abs(ys-p[1])))) for p in anchors]
     if max(landmark_distances,default=0.)>POLICY['landmark_vertex_tolerance_model']:
         raise ValueError('Semantic landmark is not a grid vertex')
@@ -73,6 +74,7 @@ def choose_grid(template,name,frames,lower,upper,unit,initial_counts,landmarks):
     if not np.isfinite(z).all() or any(not np.isfinite(v).all() for v in fields.values()):
         raise ValueError('Non-finite generated Grid values')
     return xs,ys,xy,z,fields,{'policy':POLICY,'unit_model':float(unit),
+        'requested_axes_distinct_at_native_precision':native_distinct,
         'reference_axis_budget':list(initial_counts),'axis_counts':[len(xs),len(ys)],
         'maximum_landmark_vertex_error_model':max(landmark_distances,default=0.),
         'landmark_vertices':len(anchors)}

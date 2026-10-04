@@ -5,8 +5,26 @@ Missing optional ancestors contribute identity motion when a shared hierarchy is
 formed. Conflicting nonempty support chains are rejected instead of flattened.
 """
 from collections import defaultdict
+from pathlib import Path
 import numpy as np
 from .reference_fields import to_frame,from_frame
+from .data import read_json,json_digest
+
+SUPPORT_FIELDS=('parent','lock_to_root','allow_parent_to_targets')
+
+
+def reference_support():
+    template=read_json(Path(__file__).resolve().parents[2]/'structures/reference-humanoid.registered.json')
+    if json_digest({k:v for k,v in template.items() if k!='content_sha256'})!=template['content_sha256']:
+        raise ValueError('Reference template signature mismatch')
+    return {r['bone']:r for r in template['support_skeleton']}
+
+
+def support_differences(scaffold):
+    expected=reference_support();bones={b['id']:b for b in scaffold['bones']}
+    if set(bones)!=set(expected):raise ValueError('Scaffold bone set differs from standard support skeleton')
+    return [{'bone':name,'field':key,'actual':bones[name].get(key),'expected':row[key]}
+            for name,row in expected.items() for key in SUPPORT_FIELDS if bones[name].get(key)!=row[key]]
 
 
 def compile_support(sources,core):
@@ -84,10 +102,22 @@ def install_support(scaffold,template,frames,torso):
             pose_z=anchor['pose_origin_z']
         bones[spec['id']]={'id':spec['id'],'head':head,'tail':tail,'rest_roll':spec['rest_roll'],
                            'pose_origin_z':pose_z}
+    # These options come from ngAddStandardDepthSkeleton in exdepthbone.d,
+    # independently of the registered reference's two Arm.Hang auxiliaries.
+    for name,bone in bones.items():
+        if name.startswith('Arm.Hang.'):continue
+        standard_locked=name in ('Foot.L','Foot.R')
+        row=next(r for r in template['support_skeleton'] if r['bone']==name)
+        if row['lock_to_root']!=standard_locked or row['allow_parent_to_targets']!=(name!='Head'):
+            raise ValueError('Registered DepthBone options conflict with native Standard Template: '+name)
     ordered=[]
     for row in template['support_skeleton']:
         bone=bones[row['bone']]
         bone.update({key:row[key] for key in ('parent','lock_to_root','allow_parent_to_targets')})
         ordered.append(bone)
     if {b['id'] for b in ordered}!=set(bones):raise ValueError('Unmapped scaffold bone')
+    # The standard Head excludes parent motion from its targets. Preserve that
+    # separation instead of inferring a different rule from the anatomical tree.
+    scaffold['support_constraint_authority']='reference support hierarchy; native standard Head/feet options; no post-install overrides'
+    scaffold.pop('head_support_inheritance',None)
     scaffold['bones']=ordered

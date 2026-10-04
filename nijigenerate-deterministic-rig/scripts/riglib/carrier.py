@@ -10,12 +10,10 @@ def rotation(angle):
 
 
 def make_carrier(owner,frame):
-    if owner=='head':return {'origin':[0.,0.],'rotation':0.}
-    basis=np.asarray(frame['matrix'],float)
-    basis=basis/np.linalg.norm(basis,axis=0)
-    if not np.allclose(basis.T@basis,np.eye(2),atol=1e-6) or np.linalg.det(basis)<0:
-        raise ValueError('Anatomical carrier must be a proper rigid frame')
-    return {'origin':list(frame['origin']),'rotation':float(math.atan2(basis[1,0],basis[0,0]))}
+    # Reference Grid axes are aligned with model XY. Anatomical orientation
+    # belongs to the semantic sampling frame and DepthBones, not a second
+    # rotated Grid frame underneath an artwork Part.
+    return {'origin':list(frame['origin']),'rotation':0.}
 
 
 def to_local(points,carrier):

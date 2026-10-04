@@ -1,4 +1,4 @@
-"""Generate Parts through NJC AutoMesh, save, reopen and capture native arrays."""
+"""Generate Parts through NJC AutoMesh, save and capture native arrays."""
 import argparse
 from collections import defaultdict
 from pathlib import Path
@@ -20,12 +20,11 @@ def prepare(run,out,njc):
     if any(d['observation_sha256']!=json_digest(observation) for d in (assembly,evidence)):
         raise ValueError('Part AutoMesh source provenance mismatch')
     output=out/'automeshed.inx';n=Live(njc,out/'automesh-journal')
-    n.open(run/'imported.inx')
-    _,identity=read_model_metadata(client=n)
+    identity=n.ensure_source(run/'imported.inx',observation['source']['metadata_sha256'])
     if identity['metadata_sha256']!=observation['source']['metadata_sha256']:
         raise ValueError('NJC did not load the recorded unrigged PSD import')
-    targets=sorted({m['part'] for m in assembly['materials']})
-    original={uid:n.read(uid)['item']['data'] for uid in targets}
+    targets=list(dict.fromkeys(m['part'] for m in assembly['materials']))
+    original={uid:r['item']['data'] for uid,r in zip(targets,n.read_many(targets))}
     if any(d['type']!='Part' for d in original.values()):raise ValueError('Part AutoMesh target is not a Part')
     n.save(output)
     n.call('ViewportCommand_ResetParameters')
@@ -34,29 +33,34 @@ def prepare(run,out,njc):
     # independently of material names, model identity or manual coordinates.
     groups=defaultdict(list)
     for uid in targets:
-        short,long=sorted(materials[uid]['size'])
-        if short<2*SIMPLE['min_distance']:
-            step=max(1,int(min(short/2,long/12)))
-            groups['contour',step].append(uid)
-        else:groups['optimum',0].append(uid)
+        from PIL import Image
+        alpha=Image.open(materials[uid]['file']).convert('RGBA').getchannel('A')
+        box=alpha.getbbox()
+        if box is None:raise ValueError('AutoMesh target has no visible alpha')
+        short,long=sorted((box[2]-box[0],box[3]-box[1]))
+        # A contour approximation may trim painted tips or discard small
+        # islands. Native Grid AutoMesh covers the entire alpha rectangle and
+        # its filtering margin, including transparent holes in mouth outlines.
+        # It remains native-generated Part topology, not Python triangles.
+        groups['grid',0].append(uid)
     configurations=[]
     for (processor,step),ids in sorted(groups.items()):
-        simple=SIMPLE if processor=='optimum' else {'sampling_step':step,'mask_threshold':1}
-        advanced=ADVANCED if processor=='optimum' else {'min_distance':max(1,step/2),
-            'max_distance':step*2,'scales':[1,1.1,.5,0]}
+        simple={'x_segments':12,'y_segments':12,'margin':.1,'mask_threshold':1}
+        axis=[-.1,*[i/12 for i in range(13)],1.1]
+        advanced={'scale_x':axis,'scale_y':axis}
         n.call('AutoMesh_SetSimple_'+processor,**simple)
         n.call('AutoMesh_SetAdvanced_'+processor,**advanced)
         n.call('AutoMesh_Apply_'+processor,context={'nodes':ids})
         configurations.append({'processor':processor,'simple':simple,'advanced':advanced,'targets':ids})
         print('NJC AutoMesh',processor,step,':',len(ids),'Parts',flush=True)
     meshes={}
-    for uid in targets:
-        data=n.read(uid)['item']['data']
+    for uid,response in zip(targets,n.read_many(targets)):
+        data=response['item']['data']
         if data['transform']!=original[uid]['transform']:
             raise ValueError('AutoMesh changed the Part coordinate frame')
         meshes[str(uid)]=captured_mesh(data)
-    n.save(output);n.open(output)
-    for uid in targets:verify_mesh(n.read(uid)['item']['data'],meshes[str(uid)])
+    n.save(output)
+    for uid,response in zip(targets,n.read_many(targets)):verify_mesh(response['item']['data'],meshes[str(uid)])
     _,saved_identity=read_model_metadata(client=n)
     evidence['part_meshes']=meshes
     evidence['part_mesh_source']=saved_identity

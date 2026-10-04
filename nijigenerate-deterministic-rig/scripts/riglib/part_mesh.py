@@ -15,7 +15,7 @@ def captured_mesh(data):
     areas=a[:,0]*b[:,1]-a[:,1]*b[:,0]
     if np.min(abs(areas))<1e-8:raise ValueError('Native AutoMesh returned degenerate triangles')
     # Preserve the native vertex order, triangle order, coordinates and UVs.
-    return {'vertices':mesh['verts'],'indices':mesh['indices'],'native_mesh_sha256':json_digest(mesh),
+    return {'vertices':mesh['verts'],'indices':mesh['indices'],'uvs':mesh['uvs'],'origin':mesh['origin'],'native_mesh_sha256':json_digest(mesh),
             'method':METHOD,'vertex_count':len(vertices),'triangle_count':len(indices),
             'minimum_absolute_triangle_area_twice':float(np.min(abs(areas)))}
 
@@ -24,3 +24,6 @@ def verify_mesh(data,record):
     if record.get('method')!=METHOD:raise ValueError('Part mesh must originate from NJC AutoMesh')
     if data['mesh']['verts']!=record['vertices'] or data['mesh']['indices']!=record['indices']:
         raise ValueError('Live Part geometry differs from recorded AutoMesh output')
+    for key in ('uvs','origin'):
+        if key in record and data['mesh'][key]!=record[key]:
+            raise ValueError('Live Part '+key+' differs from recorded AutoMesh output')

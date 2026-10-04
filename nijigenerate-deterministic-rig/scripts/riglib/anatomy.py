@@ -73,6 +73,17 @@ def solve_scaffold(evidence, prior):
         source.append(xy)
         weights.append(weight)
     source = np.asarray(source)
+    # A garment's upper alpha section can be above the jaw. It is coverage,
+    # not the inferior neck joint. Native terminal-bone axes are inferred
+    # from parent node positions, so this mistake reverses Head yaw.
+    down = source[index['head_root']] - source[index['head_top']]
+    down /= np.linalg.norm(down)
+    neck_order = {'observed_neck_base':source[index['neck_base']].tolist(),
+                  'method':'observed neck joint retained'}
+    if (source[index['neck_base']]-source[index['head_root']])@down <= 0:
+        source[index['neck_base']] = np.mean([source[index['shoulder.L']],source[index['shoulder.R']]],axis=0)
+        neck_order['method']='paired PSD shoulder roots; upper garment alpha is not the neck base'
+    neck_order['neck_base_used']=source[index['neck_base']].tolist()
     basis, station_roles, axis_report = torso_basis(roles, source, prior)
     for role,xy,weight in zip(roles,source,weights):
         if role in station_roles:
@@ -91,7 +102,8 @@ def solve_scaffold(evidence, prior):
     height = float(np.linalg.norm(fitted[index['head_top']] - (fitted[index['foot_tip.L']]+fitted[index['foot_tip.R']])/2))
     residual = np.linalg.norm(fitted-np.asarray(source),axis=1)
     if height <= 0 or max(residual)/height > prior["acceptance"]["joint_fit_max_relative_residual"]:
-        raise ValueError("joint fit residual exceeds declared tolerance")
+        worst=sorted(zip(roles,(residual/max(height,1e-12)).tolist(),source.tolist(),fitted.tolist()),key=lambda v:-v[1])[:4]
+        raise ValueError("joint fit residual exceeds declared tolerance: "+str(worst))
     axis_policy = prior['torso_axis']
     axial_roles = [axis_policy['start'], *axis_policy['stations'], axis_policy['end']]
     axial_points = np.array([points[role] for role in axial_roles])
@@ -129,6 +141,7 @@ def solve_scaffold(evidence, prior):
     result={"schema_version":"rig-scaffold/1","status":"fitted_landmark_scaffold","landmarks":points,
             "bones":bones,"volumes":shape,"body_height":height,
             "torso_axis_fit":axis_report,"generator_sha256":digest(Path(__file__)),
+            "neck_joint_observation":neck_order,
             "residual_model_units":dict(zip(roles,residual.tolist())),
             "evidence_sha256":json_digest(evidence),"prior_sha256":json_digest(prior),
             "limitations":["visible landmarks plus declared shape priors; hidden anatomy is estimated",

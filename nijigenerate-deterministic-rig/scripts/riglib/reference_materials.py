@@ -9,13 +9,6 @@ from .assembly import normalized_name, _classification
 from .reference_fields import to_frame, from_frame, delta_to_frame, CORE_PARAMETERS
 
 
-def require_shape_based_part_solver():
-    raise RuntimeError(
-        'Required PSD-shape-based Part correction solver is not implemented. '
-        'Reference Part displacement transfer is prohibited and cannot be used '
-        'as a fallback. This Part correction stage has not modified the model.')
-
-
 def fit_mesh_projection(rest,posed,indices,*,directions=None):
     """Bounded minimum projection correction with the original triangle signs."""
     from .face_transfer import cross
