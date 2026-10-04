@@ -78,7 +78,7 @@ def profile(points,basis,origin,width):
 
 
 def contact_profile(points,basis,origin,width,lower_edge):
-    """Sample the painted boundary, not a percentile of a wide alpha band."""
+    """Fit the painted lid edge as a smooth cubic in the eye-local frame."""
     p=(points-origin)@basis;axis=np.linspace(-width/2,width/2,65)
     half_step=(axis[1]-axis[0])/2
     values=np.full(len(axis),np.nan)
@@ -87,7 +87,9 @@ def contact_profile(points,basis,origin,width,lower_edge):
         if len(section):values[i]=section.max() if lower_edge else section.min()
     valid=np.isfinite(values)
     if not valid.any():raise ValueError('No painted lash boundary intersects the eye span')
-    return np.interp(axis,axis[valid],values[valid])
+    t=axis/(width/2)
+    coefficients=np.polynomial.polynomial.polyfit(t[valid],values[valid],min(3,int(valid.sum())-1))
+    return np.polynomial.polynomial.polyval(t,coefficients)
 
 
 def shared_brow_support(eyes,capture,translation):
@@ -148,8 +150,16 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         # through each stroke's normal cross-section, preserving thickness.
         upper_contact=top
         lower_contact=bottom
+        upper_contact_parts=[]
         if groups.get('upper'):
-            upper_contact=contact_profile(source_cloud(capture,groups['upper'],translation),basis,origin,width,True)
+            # The largest painted upper band within the aperture owns the
+            # contact curve. Separate colored tips, wings and lid creases
+            # follow it; their decorative extrema must not redefine it.
+            upper_clouds={u:source_cloud(capture,[u],translation) for u in groups['upper']}
+            scores={u:np.count_nonzero(abs(((q-origin)@basis)[:,0])<=width/2)
+                *abs(np.linalg.det(np.asarray(capture[u]['source_to_model'])[:2,:2])) for u,q in upper_clouds.items()}
+            owner=max(scores,key=scores.get);upper_contact_parts=[owner]
+            upper_contact=contact_profile(upper_clouds[owner],basis,origin,width,True)
         if groups.get('lower'):
             lower_contact=contact_profile(source_cloud(capture,groups['lower'],translation),basis,origin,width,False)
         lookup={uid:role for role,ids in groups.items() for uid in ids}
@@ -173,8 +183,8 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             specs[blink_name]['shape_analysis']=lash_report(lashes)
             specs[blink_name]['contact_curves']={'frame_origin':origin.tolist(),'frame_basis':basis.tolist(),
                 'tangent':ax.tolist(),'upper_lower_edge':upper_contact.tolist(),'lower_upper_edge':lower_contact.tolist(),
-                'upper_parts':groups.get('upper',[]),'lower_parts':groups.get('lower',[]),
-                'target':'shared sclera midpoint plus expression curvature'}
+                'upper_parts':upper_contact_parts,'lower_parts':groups.get('lower',[]),
+                'target':'shared sclera midpoint plus expression curvature','neutral_target':((top+bottom)/2).tolist()}
         mechanism('Eye::'+eye['side']+'::X-Y',[POLICY['axes'],[-1.,0.,1.]],groups.get('iris',[]),
                   lambda uid,w,x,y:np.tile(np.array([x*width*.18,y*height*.18])@basis.T,(len(w),1)))
         def brow(uid,world,x,y):
