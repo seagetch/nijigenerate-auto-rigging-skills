@@ -10,11 +10,14 @@ from .data import read_json, write_json, json_digest, digest
 from .carrier import to_local, rotation
 from .reference_fields import sample
 from .shape_controls import area_ratios
+from .cheek_scope import pose_frame, support, assert_scope
 
-MECHANISM = 'psd_cheek_silhouette_v1'
+MECHANISM = 'psd_cheek_near_scope_v3'
 PARAMETER = 'Face::Yaw-Pitch'
 POLICY = {'mechanism': MECHANISM, 'alpha_threshold': 32, 'section_samples': 129,
-          'scope': 'lateral cheek skin and face shading; feature interior fixed',
+          'scope': 'near-side chin-to-temple skin only; far side and feature interior fixed',
+          'side_authority': 'NJC projection and PSD anatomical across axis',
+          'contour_solver_status': 'legacy foldback solver still requires replacement',
           'authority': 'PSD alpha and feature anchors; native parent Grid readback',
           'grid_writes': False, 'depth_writes': False, 'reference_part_transfer': False}
 
@@ -24,7 +27,7 @@ def smoothstep(t):
     return t*t*(3.-2.*t)
 
 
-def skin_profile(material, eyes, mouth):
+def skin_profile(material, eyes, mouth, temple_points):
     """Measure asymmetric skin sections in the observed eye-line frame."""
     eye_points = np.concatenate([e['canthi_model'] for e in eyes])
     centers = sorted([np.mean(e['canthi_model'], axis=0) for e in eyes], key=lambda p: p[0])
@@ -45,8 +48,14 @@ def skin_profile(material, eyes, mouth):
     np.minimum.at(left, bins, points[:, 0]); np.maximum.at(right, bins, points[:, 0])
     valid = np.isfinite(left) & (right > left); stations = points[:, 1].min()+np.arange(count)*step
     ep = (eye_points-origin)@basis; mp = (np.asarray(mouth['axis_model'])-origin)@basis
+    upper = (np.asarray(temple_points)-origin)@basis
+    temple_y = float(upper[:, 1].min())
+    if not temple_y < float(ep[:, 1].mean()):
+        raise ValueError('PSD upper eye/brow support does not resolve the temple level')
     return {'origin': origin.tolist(), 'basis': basis.tolist(), 'y': stations[valid].tolist(),
             'left': left[valid].tolist(), 'right': right[valid].tolist(),
+            'temple_y': temple_y,
+            'temple_authority': 'top of observed PSD upper eyelid/brow alpha in the eye-line frame',
             'eye_y': float(ep[:, 1].mean()), 'mouth_y': float(mp[:, 1].mean()),
             'eye_span': [float(ep[:, 0].min()), float(ep[:, 0].max())],
             'mouth_span': [float(mp[:, 0].min()), float(mp[:, 0].max())],
@@ -60,7 +69,8 @@ def cheek_field(world, profile, domain, offsets):
     left = np.interp(y, profile['y'], profile['left']); right = np.interp(y, profile['y'], profile['right'])
     ey, my, chin = profile['eye_y'], profile['mouth_y'], profile['y'][-1]
     if not ey < my < chin: raise ValueError('PSD eye, mouth and chin order is unresolved')
-    vertical = smoothstep((y-ey)/(my-ey))*smoothstep((chin-y)/(chin-my))
+    temple = profile['temple_y']
+    vertical = smoothstep((y-temple)/(ey-temple))*smoothstep((chin-y)/(chin-my))
     il = np.maximum(np.interp(y, [ey, my], [profile['eye_span'][0], profile['mouth_span'][0]]), left)
     ir = np.minimum(np.interp(y, [ey, my], [profile['eye_span'][1], profile['mouth_span'][1]]), right)
     local_rotation = rotation(domain['carrier_frame']['rotation'])
@@ -110,10 +120,17 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
     if skin not in face_ids: raise ValueError('Face origin is not registered PSD skin')
     if not evidence.get('eyes') or not evidence.get('mouth'):
         raise ValueError('Cheek correction requires internally observed eye and mouth anchors')
-    profile = skin_profile(materials[skin], evidence['eyes'], evidence['mouth'])
+    from .shape_controls import source_cloud
+    temple_ids = sorted({uid for eye in evidence['eyes'] for role in ('brow', 'upper')
+                         for uid in eye['part_groups'].get(role, [])})
+    temple_points = source_cloud(materials, temple_ids, np.asarray(evidence['source_to_model'])[:2, 2])
+    profile = skin_profile(materials[skin], evidence['eyes'], evidence['mouth'], temple_points)
+    profile['temple_source_parts'] = temple_ids
     binding = next(b for b in bake['bindings'] if b['target']['uuid'] == state['grids'][domain['id']]
                    and b['parameter']['name'] == PARAMETER and b['name'] == 'deform')
     from .reference_materials import mesh_weights
+    poses = {tuple(row['key']): pose_frame(row['projection_matrix'], profile['basis'])
+             for row in bake['head_projection_checks'] if row['parameter'] == PARAMETER}
     ops = []; observations = []; skin_fields = {}; skin_world = None; skin_indices = None
     for uid in [skin, *sorted(face_ids-{skin})]:
         node = nodes[uid]
@@ -133,6 +150,8 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
             sample_ids, sample_weights, _ = mesh_weights(skin_world, skin_indices, world)
         for i, x in enumerate(binding['axisValues'][0]):
             for j, y in enumerate(binding['axisValues'][1]):
+                frame = poses[i, j]
+                allowed = support(world, node['mesh']['indices'], profile, frame)
                 if uid == skin:
                     delta = (np.zeros_like(rest) if x == 0 and y == 0 else
                              cheek_field(world, profile, domain, binding['data']['values'][i][j])@np.linalg.inv(linear).T)
@@ -140,14 +159,20 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
                     shared = np.einsum('ni,nij->nj', sample_weights, skin_fields[i, j][sample_ids])
                     delta = shared@np.linalg.inv(linear).T
                 delta = np.round(delta, 5)
+                delta[~allowed] = 0.
                 delta[pinned] = 0.
+                assert_scope(delta, allowed)
                 if uid == skin: skin_fields[i, j] = delta@linear.T
                 if not np.isfinite(delta).all(): raise ValueError('Nonfinite cheek residual')
                 ratio = float(area_ratios(rest, delta, node['mesh']['indices']).min())
                 observations.append({'target': uid, 'key': [x, y], 'maximum_local_residual': float(abs(delta).max()),
+                                     'near_side': frame['near_side'], 'near_depth_slope': frame['near_depth_slope'],
+                                     'forbidden_support_maximum': 0.,
                                      'minimum_local_area_ratio': ratio})
                 ops.append({'parameter': PARAMETER, 'target': uid, 'key': [x, y],
                             'mechanism': MECHANISM, 'protected_vertices': np.flatnonzero(pinned).tolist(),
+                            'forbidden_vertices': np.flatnonzero(~allowed).tolist(),
+                            'near_side': frame['near_side'],
                             'values': delta.ravel().tolist()})
     return {'policy': POLICY, 'profile': profile, 'operations': ops, 'observations': observations,
             'axes': binding['axisValues'], 'face_targets': sorted(face_ids),
@@ -176,6 +201,8 @@ def load_owned(run, state):
             raise ValueError('Part angle correction escaped the PSD cheek scope')
         if np.any(np.asarray(op['values']).reshape(-1, 2)[op['protected_vertices']]):
             raise ValueError('Cheek correction moved a protected origin or feature triangle')
+        if np.any(np.asarray(op['values']).reshape(-1, 2)[op['forbidden_vertices']]):
+            raise ValueError('Cheek correction moved the far side or a triangle spanning the midline')
     return report
 
 
