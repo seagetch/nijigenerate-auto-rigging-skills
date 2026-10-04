@@ -26,7 +26,9 @@ def build(root):
             current=False;completed={};v={}
         running=running or status.get('status') in ('running','queued')
         cheek=read(run/'shape-corrections-readback.json') if s.get('shape_corrections_sha256') else {}
-        executed+=int(bool(completed.get('all_stages_attempted') and not completed.get('stage_errors') and cheek))
+        cheek_review=read(run/'cheek-review.json') if cheek else {}
+        executed+=int(bool(completed.get('all_stages_attempted') and not completed.get('stage_errors')
+                          and cheek and cheek_review.get('correction_complete') is not False))
         reopened+=int(bool(v.get('readback_equal')))
         image_count+=len(v.get('rendered',[]))
         log=run/'run.log';lines=log.read_text(encoding='utf-8',errors='replace').splitlines() if log.is_file() else []
@@ -47,6 +49,8 @@ def build(root):
         if (review.get('program_sha256')!=program.get('content_sha256') or
                 review.get('sheet_sha256')!=support_review.get('sheet_sha256')):review={}
         if review.get('notes'):reason+=' 画像確認: '+' / '.join(review['notes'])
+        if cheek_review.get('notes'):reason+=' 頬の画像確認: '+' / '.join(cheek_review['notes'])
+        if status.get('outstanding_work'):reason+=' 未完了: '+status['outstanding_work']
         grids=s.get('grid_automesh',{})
         defaults=[name for name,g in grids.items() if g.get('generated_axis_x')==[-.5,.5] or g.get('generated_axis_y')==[-.5,.5]]
         grid_result=(f'{len(grids)}面をNJCで生成。既定の1×1格子: {len(defaults)}面。'
@@ -63,7 +67,8 @@ def build(root):
             f'済・{len(s.get("control_specs",{}))}操作' if s.get('shape_controls_sha256') else '未',
             '記録済' if (run/'depth-input-validation.json').is_file() else '未',
             '済' if s.get('depth_angle_program_sha256') else '未',
-            f'{cheek["verified_keys"]}キーを保存照合・外観確認は別途' if cheek else '未実行',
+            ('未達：補正0キー・画像変化なし' if cheek_review.get('correction_complete') is False else
+             f'{cheek["verified_keys"]}キーを保存照合・外観確認は別途') if cheek else '未実行',
             ('済・現在モデルの保存後状態' if v.get('save_reopen_performed') is False else '済・再読込') if v.get('readback_equal') else '未',
             f'{len(v.get("rendered",[]))}枚',reason]
         rows.append('<tr><td><a href="#model-'+str(index)+'">'+html.escape(str(cells[0]))+'</a></td>'+''.join('<td>'+html.escape(str(x))+'</td>' for x in cells[1:])+'</tr>')
