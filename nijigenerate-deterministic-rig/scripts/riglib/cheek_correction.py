@@ -113,26 +113,35 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
     profile = skin_profile(materials[skin], evidence['eyes'], evidence['mouth'])
     binding = next(b for b in bake['bindings'] if b['target']['uuid'] == state['grids'][domain['id']]
                    and b['parameter']['name'] == PARAMETER and b['name'] == 'deform')
-    ops = []; observations = []
-    for uid in sorted(face_ids):
+    from .reference_materials import mesh_weights
+    ops = []; observations = []; skin_fields = {}; skin_world = None; skin_indices = None
+    for uid in [skin, *sorted(face_ids-{skin})]:
         node = nodes[uid]
         if node['type'] != 'Part': raise ValueError('Cheek output must target a Part')
         matrix = np.asarray(node['nominal_world_matrix']); linear = matrix[:2, :2]
         rest = np.asarray(node['mesh']['vertices']); world = rest@linear.T+matrix[:2, 3]
         pinned = np.zeros(len(rest), bool)
         if uid == skin:
+            skin_world = world; skin_indices = node['mesh']['indices']
             anchors = [matrix[:2, 3], *evidence.get('facial_landmarks_model', {}).values()]
             feature_ids = {u for e in evidence.get('eyes', []) for ids in e['part_groups'].values() for u in ids}
             feature_ids.update(evidence.get('mouth', {}).get('parts', []))
             anchors.extend(np.asarray(nodes[u]['nominal_world_matrix'])[:2, 3] for u in feature_ids)
             local_anchors = (np.asarray(anchors)-matrix[:2, 3])@np.linalg.inv(linear).T
             pinned = anchor_vertices(rest, node['mesh']['indices'], local_anchors)
+        else:
+            sample_ids, sample_weights, _ = mesh_weights(skin_world, skin_indices, world)
         for i, x in enumerate(binding['axisValues'][0]):
             for j, y in enumerate(binding['axisValues'][1]):
-                delta = (np.zeros_like(rest) if x == 0 and y == 0 else
-                         cheek_field(world, profile, domain, binding['data']['values'][i][j])@np.linalg.inv(linear).T)
+                if uid == skin:
+                    delta = (np.zeros_like(rest) if x == 0 and y == 0 else
+                             cheek_field(world, profile, domain, binding['data']['values'][i][j])@np.linalg.inv(linear).T)
+                else:
+                    shared = np.einsum('ni,nij->nj', sample_weights, skin_fields[i, j][sample_ids])
+                    delta = shared@np.linalg.inv(linear).T
                 delta = np.round(delta, 5)
                 delta[pinned] = 0.
+                if uid == skin: skin_fields[i, j] = delta@linear.T
                 if not np.isfinite(delta).all(): raise ValueError('Nonfinite cheek residual')
                 ratio = float(area_ratios(rest, delta, node['mesh']['indices']).min())
                 observations.append({'target': uid, 'key': [x, y], 'maximum_local_residual': float(abs(delta).max()),
