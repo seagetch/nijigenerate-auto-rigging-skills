@@ -123,9 +123,19 @@ def side_compression(detection, uid, world, closure, remaining_height):
     sample=(points-detection['raster_origin'])/detection['raster_step']
     for branch in detection['branches']:
         if uid not in branch['parts']: continue
-        field=(detection['ownership']==branch['label']).astype(float)
-        weight=ndimage.map_coordinates(field,[sample[:,1],sample[:,0]],order=1,mode='nearest')
-        result-=closure*(1-remaining_height)*weight*np.maximum(points[:,1]-branch['hinge'],0.)
+        separate=branch['part_modes'][str(uid)]=='side_component'
+        if separate and sum(uid in b['parts'] for b in detection['branches'])==1:
+            # A separate side has no upper stroke to protect. Collapse its
+            # complete normal extent into the attachment center, including
+            # the taper above it. Stopping at the upper stroke's lower edge
+            # leaves a detached horizontal remnant beneath the closed lash.
+            weight=np.ones(len(world))
+            distance=points[:,1]-branch['junction_local'][1]
+        else:
+            field=(detection['ownership']==branch['label']).astype(float)
+            weight=ndimage.map_coordinates(field,[sample[:,1],sample[:,0]],order=1,mode='nearest')
+            distance=np.maximum(points[:,1]-branch['hinge'],0.)
+        result-=closure*(1-remaining_height)*weight*distance
     return result
 
 

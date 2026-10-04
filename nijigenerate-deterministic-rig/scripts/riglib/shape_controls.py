@@ -7,7 +7,7 @@ from .live import Live,created_id
 from .model import observe_model
 from .face_draw_order import plan as face_order_plan
 
-POLICY={'version':'1.2','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
+POLICY={'version':'1.3','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
         'eye_gaze_width_ratio':.18,'expression_width_ratio':.035,
         'brow_width_ratio':.08,'local_bend_radians':.55,
         'axes':[-1.,-.5,0.,.5,1.],
@@ -129,6 +129,16 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         groups['brow']=sorted(set(groups.get('brow',[]))|shared_brows)
         cloud=source_cloud(capture,groups['sclera'],translation)
         ax,top,bottom=profile(cloud,basis,origin,width);height=float(np.median(bottom-top))
+        # The white aperture is not the painted lash boundary. Move the
+        # lower edge of the upper stroke and the upper edge of the lower
+        # stroke to one shared contact curve. The displacement is constant
+        # through each stroke's normal cross-section, preserving thickness.
+        upper_contact=top
+        lower_contact=bottom
+        if groups.get('upper'):
+            _,_,upper_contact=profile(source_cloud(capture,groups['upper'],translation),basis,origin,width)
+        if groups.get('lower'):
+            _,lower_contact,_=profile(source_cloud(capture,groups['lower'],translation),basis,origin,width)
         lookup={uid:role for role,ids in groups.items() for uid in ids}
         lashes=detect(capture,groups,origin,basis)
         def blink(uid,world,x,y):
@@ -137,8 +147,8 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             seam=(upper+lower)/2+y*width*POLICY['expression_width_ratio']*(1-t*t)
             role=lookup[uid];delta=np.zeros_like(p)
             if role=='sclera':delta[:,1]=x*(1-POLICY['closed_height_ratio'])*(seam-p[:,1])
-            elif role=='lower':delta[:,1]=x*(seam-lower)
-            elif role in ('upper','fold','corner'):delta[:,1]=x*(seam-upper)
+            elif role=='lower':delta[:,1]=x*(seam-np.interp(p[:,0],ax,lower_contact))
+            elif role in ('upper','fold','corner'):delta[:,1]=x*(seam-np.interp(p[:,0],ax,upper_contact))
             return delta@basis.T
         parts=[uid for role,ids in groups.items() if role not in ('iris','brow') for uid in ids]
         blink_name='Eye::'+eye['side']+'::Blink'
@@ -146,7 +156,12 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             normal=side_compression(lashes,uid,world,x,POLICY['closed_height_ratio'])
             return np.c_[np.zeros(len(world)),normal]@basis.T
         mechanism(blink_name,[[0.,.25,.5,.75,1.],[-1.,0.,1.]],parts,blink,detail=lash_detail)
-        if blink_name in specs:specs[blink_name]['shape_analysis']=lash_report(lashes)
+        if blink_name in specs:
+            specs[blink_name]['shape_analysis']=lash_report(lashes)
+            specs[blink_name]['contact_curves']={'frame_origin':origin.tolist(),'frame_basis':basis.tolist(),
+                'tangent':ax.tolist(),'upper_lower_edge':upper_contact.tolist(),'lower_upper_edge':lower_contact.tolist(),
+                'upper_parts':groups.get('upper',[]),'lower_parts':groups.get('lower',[]),
+                'target':'shared sclera midpoint plus expression curvature'}
         mechanism('Eye::'+eye['side']+'::X-Y',[POLICY['axes'],[-1.,0.,1.]],groups.get('iris',[]),
                   lambda uid,w,x,y:np.tile(np.array([x*width*.18,y*height*.18])@basis.T,(len(w),1)))
         def brow(uid,world,x,y):
