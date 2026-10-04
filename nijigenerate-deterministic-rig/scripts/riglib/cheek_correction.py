@@ -1,4 +1,4 @@
-"""PSD cheek silhouettes on the immutable native depth-generated face field.
+"""Near jaw-to-temple silhouettes on the native depth-generated face field.
 
 Only a lateral cheek residual is authored on Parts. Feature interiors and
 the chin anchor remain fixed. No head rotation or Grid offset is authored.
@@ -12,12 +12,13 @@ from .reference_fields import sample
 from .shape_controls import area_ratios
 from .cheek_scope import pose_frame, support, assert_scope
 
-MECHANISM = 'psd_cheek_near_scope_v3'
+MECHANISM = 'psd_near_cheek_section_envelope_v4'
 PARAMETER = 'Face::Yaw-Pitch'
 POLICY = {'mechanism': MECHANISM, 'alpha_threshold': 32, 'section_samples': 129,
           'scope': 'near-side chin-to-temple skin only; far side and feature interior fixed',
           'side_authority': 'NJC projection and PSD anatomical across axis',
-          'contour_solver_status': 'legacy foldback solver still requires replacement',
+          'contour_authority': 'support point of fitted anatomical elliptic section under native XYZ projection',
+          'hidden_surface_prior': 'templates/face_head.json section_surface ellipse; not observed backside pixels',
           'authority': 'PSD alpha and feature anchors; native parent Grid readback',
           'grid_writes': False, 'depth_writes': False, 'reference_part_transfer': False}
 
@@ -62,8 +63,16 @@ def skin_profile(material, eyes, mouth, temple_points):
             'skin_part': material['part'], 'source_alpha_sha256': material['sha256']}
 
 
-def cheek_field(world, profile, domain, offsets):
-    """Return an additive world-XY residual for the standard static face Grid."""
+def cheek_field(world, profile, domain, offsets, projection, depth_scale, frame):
+    """Extend only the near cut edge to the rotated head-section silhouette.
+
+    A front depth chart has no surface behind its lateral cut edge. Its own
+    projected extrema therefore cannot recover the missing side silhouette.
+    Fit the declared elliptic section radius to the immutable front depth,
+    then use its analytic support point under the *same native projection*.
+    No pose amplitudes, borrowed displacements or angular sign tables enter
+    the target. The opposite (far) cut edge is not corrected.
+    """
     origin = np.asarray(profile['origin']); basis = np.asarray(profile['basis'])
     points = (np.asarray(world)-origin)@basis; y = points[:, 1]
     left = np.interp(y, profile['y'], profile['left']); right = np.interp(y, profile['y'], profile['right'])
@@ -83,16 +92,30 @@ def cheek_field(world, profile, domain, offsets):
     sections = np.stack((left[:, None]+(right-left)[:, None]*t,
                          np.broadcast_to(y[:, None], (len(y), len(t)))), axis=-1)
     posed = projected(sections)
-    middle = projected(np.stack((np.c_[il, y], np.c_[ir, y]), axis=1))
-    direction = middle[:, 1]-middle[:, 0]; length = np.linalg.norm(direction, axis=1)
-    usable = (length > 1e-8) & (right-left > 1e-8) & (vertical > 0)
-    direction = direction/np.maximum(length[:, None], 1e-8)
-    lateral = np.einsum('nki,ni->nk', posed, direction); rows = np.arange(len(y))
-    dl = posed[rows, np.argmin(lateral, axis=1)]-posed[:, 0]
-    dr = posed[rows, np.argmax(lateral, axis=1)]-posed[:, -1]
+    world_sections = sections.reshape(-1, 2)@basis.T+origin
+    depth = sample(domain['axis_x'], domain['axis_y'], domain['depths'],
+                   to_local(world_sections, domain['carrier_frame']))[:, 0].reshape(len(y), -1)*depth_scale
+    baseline = depth[:, :1]*(1-t)+depth[:, -1:]*t
+    ellipse = np.sqrt(np.maximum(0., 1.-(2*t-1.)**2))
+    radius = np.maximum(0., (depth-baseline)@ellipse/float(ellipse@ellipse))
+    center = (posed[:, 0]+posed[:, -1])/2
+    u = (posed[:, -1]-posed[:, 0])/2
+    v = radius[:, None]*np.asarray(projection)[2]
+    length = np.linalg.norm(u, axis=1)
+    direction = u/np.maximum(length[:, None], 1e-8)
+    du = np.einsum('ni,ni->n', u, direction)
+    dv = np.einsum('ni,ni->n', v, direction)
+    # For c + u*cos(t) + v*sin(t), the support point along direction n is
+    # c + (u*(u.n) + v*(v.n))/hypot(u.n, v.n). Select only the near side.
+    side = frame['near_side']
+    envelope = side*(u*du[:, None]+v*dv[:, None])/np.maximum(np.hypot(du, dv)[:, None], 1e-8)
+    edge = posed[:, 0 if side < 0 else -1]
+    residual = center+envelope-edge
+    usable = (length > 1e-8) & (right-left > 1e-8) & (vertical > 0) & (radius > 0) & (side != 0)
     wl = smoothstep((il-points[:, 0])/np.maximum(il-left, 1e-8))
     wr = smoothstep((points[:, 0]-ir)/np.maximum(right-ir, 1e-8))
-    result = (wl[:, None]*dl+wr[:, None]*dr)*vertical[:, None]; result[~usable] = 0.
+    weight = wl if side < 0 else wr
+    result = residual*(weight*vertical)[:, None]; result[~usable] = 0.
     return result
 
 
@@ -129,8 +152,9 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
     binding = next(b for b in bake['bindings'] if b['target']['uuid'] == state['grids'][domain['id']]
                    and b['parameter']['name'] == PARAMETER and b['name'] == 'deform')
     from .reference_materials import mesh_weights
-    poses = {tuple(row['key']): pose_frame(row['projection_matrix'], profile['basis'])
-             for row in bake['head_projection_checks'] if row['parameter'] == PARAMETER}
+    projections = {tuple(row['key']): row['projection_matrix']
+                   for row in bake['head_projection_checks'] if row['parameter'] == PARAMETER}
+    poses = {key: pose_frame(matrix, profile['basis']) for key, matrix in projections.items()}
     ops = []; observations = []; skin_fields = {}; skin_world = None; skin_indices = None
     for uid in [skin, *sorted(face_ids-{skin})]:
         node = nodes[uid]
@@ -154,7 +178,8 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
                 allowed = support(world, node['mesh']['indices'], profile, frame)
                 if uid == skin:
                     delta = (np.zeros_like(rest) if x == 0 and y == 0 else
-                             cheek_field(world, profile, domain, binding['data']['values'][i][j])@np.linalg.inv(linear).T)
+                             cheek_field(world, profile, domain, binding['data']['values'][i][j],
+                                         projections[i, j], program['native_depth_scale'], frame)@np.linalg.inv(linear).T)
                 else:
                     shared = np.einsum('ni,nij->nj', sample_weights, skin_fields[i, j][sample_ids])
                     delta = shared@np.linalg.inv(linear).T
@@ -245,24 +270,43 @@ def comparison_sheet(run, before, after, capture, skin):
     return {'file': str(path), 'sha256': digest(path), 'crop_pixels': list(crop)}
 
 
-def apply(run, njc):
+def apply(run, njc, *, single_feature_check=False, contour_only=False):
     from .live import Live
     from .model import observe_model
     from bake_depth_angles import angle_bindings, fixed_inputs, check_bindings
     from build_native import require_single_rig
     run = Path(run); state = read_json(run/'native-state.json'); program = read_json(run/'program.json')
-    if state.get('shape_corrections_sha256'): raise ValueError('Start a fresh PSD model instead of patching the cheek stage')
+    previous = None
+    if state.get('shape_corrections_sha256'):
+        if not single_feature_check:
+            raise ValueError('Start a fresh PSD model; existing INX needs explicit --single-feature-check')
+        previous = read_json(run/'shape-corrections-program.json')
+        signature = previous['content_sha256']
+        if signature != state['shape_corrections_sha256'] or signature != json_digest({k: v for k, v in previous.items() if k != 'content_sha256'}):
+            raise ValueError('Existing cheek program ownership does not match the current INX state')
+        for key in ('program_sha256', 'source_uv_program_sha256', 'depth_angle_program_sha256'):
+            if previous[key] != state[key]: raise ValueError('Existing cheek program has different '+key)
     n = Live(njc, run/'shape-corrections-journal')
     n.call('ToolCommand_ModelEditMode'); n.call('ViewportCommand_ResetParameters')
     require_single_rig(n, state['rig_root'], state['bones'].values())
     bake = read_json(run/'depth-angle-program.json')
     if bake['content_sha256'] != state['depth_angle_program_sha256']: raise ValueError('Native depth bake identity mismatch')
-    before = angle_bindings(n); check_bindings(state, before); fixed_before = json_digest(fixed_inputs(n, state))
+    before = angle_bindings(n); check_bindings(state, before, previous); fixed_before = json_digest(fixed_inputs(n, state))
+    if previous:
+        existing = {(b['target']['uuid'], b['parameter']['name']): b for b in before if b['name'] == 'deform'}
+        for op in previous['operations']:
+            if op['target'] not in previous['bound_targets']: continue
+            b = existing[op['target'], op['parameter']]
+            i, j = [axis.index(q) for axis, q in zip(b['axisValues'], op['key'])]
+            if np.max(abs(np.asarray(b['data']['values'][i][j]).ravel()-op['values'])) > .0003:
+                raise ValueError('Existing Part has edits outside the owned cheek program')
     nodes = {row['uuid']: row for row in observe_model(client=n, require_parameters=False)['nodes']}
     face = next(d for d in program['domains'] if d['semantic_chart'] == 'head/face')
     grid = n.read(state['grids'][face['id']])['item']['data']
     capture = read_json(run/'capture.json')
     report = compile_corrections(read_json(run/'evidence.json'), capture, nodes, program, state, bake, grid)
+    report['execution_scope'] = 'existing INX single-feature check' if single_feature_check else 'fresh PSD full pipeline'
+    report['comparison_mode'] = 'native UV contour overlay' if contour_only else 'PNG pose comparison'
     targets = {op['target'] for op in report['operations'] if np.any(op['values'])}
     report['bound_targets'] = sorted(targets); report['content_sha256'] = json_digest(report)
     write_json(run/'shape-corrections-pending.json', report)
@@ -270,7 +314,14 @@ def apply(run, njc):
     for op in operations:
         n.preflight_call('ModelCommand_SetDeformBinding', bindingName='deform', values=op['values'],
                          context={'parameters': [state['parameters'][op['parameter']]], 'nodes': [op['target']], 'parameterValue': op['key']})
-    before_images = capture_poses(n, run, state, 'before')
+    before_images = [] if contour_only else capture_poses(n, run, state, 'before')
+    if contour_only:
+        comparison_ids = {report['profile']['skin_part'], state['grids'][face['id']]}
+        write_json(run/'cheek-contour-before-bindings.json', [b for b in before if b['target']['uuid'] in comparison_ids])
+    if previous:
+        for uid in previous['bound_targets']:
+            n.call('BindingCommand_RemoveBinding', context={'parameters': [state['parameters'][PARAMETER]],
+                   'bindings': [{'target': uid, 'name': 'deform'}]})
     for op in sorted(operations, key=lambda op: not np.any(op['values'])):
         n.call('ModelCommand_SetDeformBinding', bindingName='deform', values=op['values'],
                context={'parameters': [state['parameters'][op['parameter']]], 'nodes': [op['target']], 'parameterValue': op['key']})
@@ -278,7 +329,8 @@ def apply(run, njc):
     original_targets = set(state['bones'].values()) | set(state['grids'].values())
     retained = [b for b in after if b['target']['uuid'] in original_targets]
     keyed = lambda rows: {(b['target']['uuid'], b['parameter']['name'], b['name']): b for b in rows}
-    if keyed(before) != keyed(retained) or fixed_before != json_digest(fixed_inputs(n, state)):
+    native_before = [b for b in before if b['target']['uuid'] in original_targets]
+    if keyed(native_before) != keyed(retained) or fixed_before != json_digest(fixed_inputs(n, state)):
         raise ValueError('Part correction changed native Grid, depth or bone authority')
     lookup = {(b['target']['uuid'], b['parameter']['name']): b for b in after if b['name'] == 'deform'}; maximum = 0.
     for op in operations:
@@ -290,9 +342,16 @@ def apply(run, njc):
     (run/'shape-corrections-pending.json').unlink()
     write_json(run/'shape-corrections-readback.json', {'verified_keys': len(operations), 'maximum_saved_error': maximum,
                'native_grid_depth_bones_unchanged': True, 'program_sha256': report['content_sha256'], 'visually_reviewed': False})
-    after_images = capture_poses(n, run, state, 'after')
-    sheet = comparison_sheet(run, before_images, after_images, capture, report['profile']['skin_part'])
-    write_json(run/'cheek-review.json', {'program_sha256': program['content_sha256'],
-               'correction_sha256': report['content_sha256'], 'before': before_images, 'after': after_images,
-               'sheet': sheet, 'visually_reviewed': False})
+    review = {'program_sha256': program['content_sha256'], 'correction_sha256': report['content_sha256'],
+              'execution_scope': report['execution_scope'], 'comparison_mode': report['comparison_mode'],
+              'visually_reviewed': False}
+    if contour_only:
+        from .cheek_contours import compare
+        skin = report['profile']['skin_part']; material = next(m for m in capture['materials'] if m['part'] == skin)
+        review['contours'] = compare(run, report, nodes[skin], material, face, state['grids'][face['id']], before, after)
+    else:
+        after_images = capture_poses(n, run, state, 'after')
+        sheet = comparison_sheet(run, before_images, after_images, capture, report['profile']['skin_part'])
+        review.update(before=before_images, after=after_images, sheet=sheet)
+    write_json(run/'cheek-review.json', review)
     print('Saved PSD cheek Part corrections:', len(targets), 'Parts,', len(operations), 'keys', flush=True)
