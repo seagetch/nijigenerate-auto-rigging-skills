@@ -9,7 +9,7 @@ from PIL import Image
 from .data import read_json, write_json, json_digest, digest
 from .carrier import to_local, rotation
 from .reference_fields import sample
-from .shape_controls import area_ratios
+from .shape_controls import minimum_area_ratio
 from .cheek_scope import pose_frame, support, assert_scope
 
 MECHANISM = 'psd_near_cheek_section_envelope_v4'
@@ -189,7 +189,7 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
                 assert_scope(delta, allowed)
                 if uid == skin: skin_fields[i, j] = delta@linear.T
                 if not np.isfinite(delta).all(): raise ValueError('Nonfinite cheek residual')
-                ratio = float(area_ratios(rest, delta, node['mesh']['indices']).min())
+                ratio = minimum_area_ratio(rest, delta, node['mesh']['indices'])
                 observations.append({'target': uid, 'key': [x, y], 'maximum_local_residual': float(abs(delta).max()),
                                      'near_side': frame['near_side'], 'near_depth_slope': frame['near_depth_slope'],
                                      'forbidden_support_maximum': 0.,

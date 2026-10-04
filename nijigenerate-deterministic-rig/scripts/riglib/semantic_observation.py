@@ -14,7 +14,7 @@ def name_tokens(value):
     name=normalized_name(value.rstrip('\x00').lstrip('*# '))
     name=re.sub(r'(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])','_',name)
     replacements={'irides':'iris','eyewhite':'sclera','eye_white':'sclera',
-                  'eyeslash':'eyelash','innewr':'inner','sholder':'shoulder',
+                  'eyeslash':'eyelash','eylid':'eyelid','innewr':'inner','sholder':'shoulder',
                   'cloths':'clothes','sodenhair':'side_hair'}
     for old,new in replacements.items():
         name=re.sub(r'(?<![a-z])'+old+r'(?![a-z])',new,name)
@@ -38,7 +38,7 @@ def candidate(name, ancestors):
         return 'face_feature',f
     if re.search(r'(^|_)(eyebrow|brow)(_|$)',n):return 'face_feature','brow'
     if re.search(r'(^|_)(sclera|eyeball)(_|$)',n):return 'face_feature','sclera'
-    if re.search(r'(^|_)eye_highlight(_|$)',n):return 'face_feature','iris'
+    if re.search(r'(^|_)eye_(highlight|light)(_|$)',n):return 'face_feature','iris'
     if re.search(r'(^|_)(iris|pupil)(_|$)',n):return 'face_feature','iris'
     if re.search(r'(^|_)(canthus|eye_corner|side_eyelash)(_|$)',n):return 'face_feature','corner'
     if re.search(r'(^|_)(eyelid|eyeline|lid|lash|eyelash|double_eyelid)(_|$)',n):

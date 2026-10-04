@@ -1,7 +1,7 @@
 """Verify PSD-shape keys authored in the registered, immutable AutoMesh frame."""
 import numpy as np
 from .data import read_json,json_digest
-from .shape_controls import area_ratios
+from .shape_controls import minimum_area_ratio
 from .part_mesh import verify_mesh
 
 
@@ -53,8 +53,9 @@ def validate(run,state,snapshot):
                 findings.append({'part':uid,'parameter':name,'key':op['key'],'saved_difference':error,
                                  'key_set':b['data']['isSet'][i][j]})
             mesh=nodes[uid]['mesh'];rest=np.asarray(mesh['verts']).reshape(-1,2)
-            ratio=float(area_ratios(rest,actual,mesh['indices']).min());minimum=min(minimum,ratio)
-            if ratio<=0:findings.append({'part':uid,'parameter':name,'key':op['key'],'minimum_area_ratio':ratio})
+            ratio=minimum_area_ratio(rest,actual,mesh['indices'])
+            if ratio is not None:minimum=min(minimum,ratio)
+            if ratio is not None and ratio<=0:findings.append({'part':uid,'parameter':name,'key':op['key'],'minimum_area_ratio':ratio})
             verified+=1
     return {'passed':not findings,'findings':findings,'native_automesh_parts_verified':len(uv['parts']),
             'cheek_correction_verified':correction is not None,

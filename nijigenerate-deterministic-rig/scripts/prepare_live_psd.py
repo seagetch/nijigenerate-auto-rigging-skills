@@ -78,6 +78,18 @@ def prepare(manifest_path, destination, executable):
     root = created_id(n.call('NodeCommand_AddNode', className='Node', _suffix='', context={'nodes':[]}))
     n.call('NodeCommand_SetNodeName', newNames=['Source::PSD'], context={'nodes':[root]})
     n.call('NodeCommand_MoveNode', newParent=root, index=0, context={'nodes':[i['uuid'] for i in items]})
+    # Inspector commands require the existing Inspector panel to initialize.
+    # Explicit context.nodes alone does not create its inspector instances.
+    # Use the public panel command and restore the original visibility. Read
+    # the actual root between transitions so each operation is a separate NJC
+    # round trip; no model reload, node conversion or geometry edit is needed.
+    n.call('ToolCommand_ModelEditMode')
+    n.call('Panel_Toggle_Inspector')
+    try:
+        n.read(root)
+    finally:
+        n.call('Panel_Toggle_Inspector')
+    n.read(root)
     observation = annotate_observation(observe_model(client=n),pairs)
     from riglib.render_camera import create,capture
     if render_images(out):

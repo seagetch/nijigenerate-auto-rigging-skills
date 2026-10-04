@@ -7,7 +7,7 @@ from .live import Live,created_id
 from .model import observe_model
 from .face_draw_order import plan as face_order_plan
 
-POLICY={'version':'1.7','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
+POLICY={'version':'2.0','closed_height_ratio':.015,'eye_closed_height_ratio':0.,'mouth_open_width_ratio':.20,
         'blink_expression_range':.3,
         'smile_inner_drop_width_ratio':.08,
         'eye_gaze_width_ratio':.18,'expression_width_ratio':.035,
@@ -27,7 +27,15 @@ def area_ratios(rest,delta,indices):
     cross=lambda a,b:a[:,0]*b[:,1]-a[:,1]*b[:,0]
     before=cross(rest[t[:,1]]-rest[t[:,0]],rest[t[:,2]]-rest[t[:,0]])
     after=cross(q[t[:,1]]-q[t[:,0]],q[t[:,2]]-q[t[:,0]])
-    return after/before
+    # A native zero-area triangle has no defined area ratio or orientation.
+    # Keep it in the mesh; omit only its undefined ratio from this calculation.
+    valid=before!=0
+    return after[valid]/before[valid]
+
+
+def minimum_area_ratio(rest,delta,indices):
+    ratios=area_ratios(rest,delta,indices)
+    return float(ratios.min()) if ratios.size else None
 
 
 def preserve_orientation(rest,delta,indices,locked=None):
@@ -38,11 +46,14 @@ def preserve_orientation(rest,delta,indices,locked=None):
     This corrects discretization of curved PSD contours on coarse AutoMesh
     triangles, without changing mesh topology or sampling another model.
     """
-    if float(area_ratios(rest,delta,indices).min())>=.002:return delta
+    minimum=minimum_area_ratio(rest,delta,indices)
+    if minimum is None or minimum>=.002:return delta
     import osqp
     from scipy import sparse
     q=rest+delta;t=np.asarray(indices,int).reshape(-1,3)
     before=np.cross(rest[t[:,1]]-rest[t[:,0]],rest[t[:,2]]-rest[t[:,0]])
+    valid=before!=0
+    t=t[valid];before=before[valid]
     x=q[:,0];a,b,c=t.T
     coefficients=np.c_[x[c]-x[b],x[a]-x[c],x[b]-x[a]]/before[:,None]
     A=sparse.csc_matrix((coefficients.ravel(),(np.repeat(np.arange(len(t)),3),t.ravel())),shape=(len(t),len(q)))
@@ -120,7 +131,7 @@ def shared_brow_support(eyes,capture,translation):
 
 
 def compile_controls(evidence,capture,nodes,parameters=None):
-    from .eyelash_shape import detect,side_compression,report as lash_report
+    from .eyelash_shape import detect,report as lash_report
     capture={m['part']:m for m in capture['materials']};translation=np.asarray(evidence['source_to_model'])[:2,2]
     eyes=evidence.get('eyes',[]);shared_brows=shared_brow_support(eyes,capture,translation)
     geometries={};specs={};ops=[]
@@ -131,7 +142,7 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             mesh=node['mesh'];rest=np.asarray(mesh['vertices']);linear=matrix[:2,:2]
             geometries[uid]=(rest,rest@linear.T+matrix[:2,3],linear,mesh['indices'])
         return geometries[uid]
-    def mechanism(name,axes,parts,field,detail=None):
+    def mechanism(name,axes,parts,field,detail=None,orientation_solve=True):
         if parameters is not None and name not in parameters:return
         if not parts:return
         specs[name]={'axes':axes,'targets':list(dict.fromkeys(parts)),'source':'PSD_shape_field','neutral':[0.,0.]}
@@ -140,17 +151,20 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             for x in axes[0]:
                 for y in axes[1]:
                     displacement=field(uid,world,x,y)@np.linalg.inv(linear).T
-                    displacement=preserve_orientation(rest,displacement,indices)
+                    if orientation_solve:displacement=preserve_orientation(rest,displacement,indices)
                     if detail is not None:
                         extra=detail(uid,world,x,y)@np.linalg.inv(linear).T
                         locked=np.max(abs(extra),axis=1)<1e-12
                         displacement=preserve_orientation(rest,displacement+extra,indices,locked=locked)
                     displacement=np.round(displacement,5)
                     if not np.isfinite(displacement).all():raise ValueError('Nonfinite local mechanism')
-                    minimum=float(area_ratios(rest,displacement,indices).min())
-                    if minimum<=0:raise ValueError(f'Local mechanism folds: {name} {x},{y} {uid} {minimum}')
+                    ratios=area_ratios(rest,displacement,indices)
+                    minimum=float(ratios.min()) if ratios.size else None
+                    if orientation_solve and minimum is not None and minimum<=0:raise ValueError(f'Local mechanism folds: {name} {x},{y} {uid} {minimum}')
                     if x==0 and y==0 and np.max(abs(displacement))>1e-8:raise ValueError('Local mechanism changes source neutral')
-                    ops.append({'parameter':name,'target':uid,'key':[x,y],'values':displacement.ravel().tolist(),'minimum_area_ratio':minimum})
+                    ops.append({'parameter':name,'target':uid,'key':[x,y],'values':displacement.ravel().tolist(),
+                                'minimum_area_ratio':minimum,
+                                'undefined_area_ratio_triangles':len(np.asarray(indices).reshape(-1,3))-ratios.size})
     for eye in eyes:
         origin,basis,width=feature_frame(eye['canthi_model']);groups={k:list(v) for k,v in eye['part_groups'].items()}
         groups['brow']=sorted(set(groups.get('brow',[]))|shared_brows)
@@ -166,6 +180,7 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         flat_close=np.linspace(down_close[0],down_close[-1],len(ax))
         expression_offset=POLICY['blink_expression_range']*(down_close-flat_close)
         smile_close=flat_close-expression_offset
+        lashes=detect(capture,groups,origin,basis)
         # The white aperture is not the painted lash boundary. Move the
         # lower edge of the upper stroke and the upper edge of the lower
         # stroke to one shared contact curve. The displacement is constant
@@ -173,6 +188,7 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         upper_contact=top
         lower_contact=bottom
         upper_contact_parts=[]
+        upper_contains_lower=False
         if groups.get('upper'):
             # The largest painted upper band within the aperture owns the
             # contact curve. Separate colored tips, wings and lid creases
@@ -181,11 +197,19 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             scores={u:np.count_nonzero(abs(((q-origin)@basis)[:,0])<=width/2)
                 *abs(np.linalg.det(np.asarray(capture[u]['source_to_model'])[:2,:2])) for u,q in upper_clouds.items()}
             owner=max(scores,key=scores.get);upper_contact_parts=[owner]
-            upper_contact=contact_profile(upper_clouds[owner],basis,origin,width,True)
+            painted=upper_clouds[owner];q=(painted-origin)@basis
+            middle=np.interp(q[:,0],ax,(top+bottom)/2)
+            upper_pixels=q[:,1]<=middle
+            upper_contact=contact_profile(painted[upper_pixels],basis,origin,width,True,smooth=False)
+            lower_pixels=(~upper_pixels)&(abs(q[:,0])<=width/2)
+            # One source Part may contain both eyelids and the connecting side.
+            # Detect the lower band by its span across the white aperture.
+            upper_contains_lower=bool(np.count_nonzero(lower_pixels)>1 and np.ptp(q[lower_pixels,0])>width*.25)
+            if upper_contains_lower:
+                lower_contact=contact_profile(painted[lower_pixels],basis,origin,width,False,smooth=False)
         if groups.get('lower'):
-            lower_contact=contact_profile(source_cloud(capture,groups['lower'],translation),basis,origin,width,False)
+            lower_contact=contact_profile(source_cloud(capture,groups['lower'],translation),basis,origin,width,False,smooth=False)
         lookup={uid:role for role,ids in groups.items() for uid in ids}
-        lashes=detect(capture,groups,origin,basis)
         # Identify the medial endpoint anatomically, independently of Part
         # names and screen side. Fit one cubic arch, then lower its medial
         # endpoint using the cubic Bezier endpoint basis. This moves the end
@@ -211,18 +235,35 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             target=flat_close+y*(smile_close-flat_close) if y>0 else flat_close-y*expression_offset
             seam=np.interp(p[:,0],ax,target)
             role=lookup[uid];delta=np.zeros_like(p)
-            if role=='sclera':delta[:,1]=x*(1-POLICY['closed_height_ratio'])*(seam-p[:,1])
+            if role=='sclera':
+                remaining=1-x*(1-POLICY['eye_closed_height_ratio'])
+                chord=flat_close[0]+(p[:,0]-ax[0])*(flat_close[-1]-flat_close[0])/(ax[-1]-ax[0])
+                # A curved locus still encloses finite native triangles even
+                # when every vertex lies on it. Let the aperture's curvature
+                # vanish with its height: fully closed white is one affine
+                # line, so every triangle has zero area. Painted lids retain
+                # their shared expression curve and original stroke width.
+                center=chord+remaining*(seam-chord)
+                delta[:,1]=(1-remaining)*(center-p[:,1])
             elif role=='lower':delta[:,1]=x*(seam-np.interp(p[:,0],ax,lower_contact))
-            elif role in ('upper','fold','corner'):delta[:,1]=x*(seam-np.interp(p[:,0],ax,upper_contact))
+            elif role in ('upper','corner'):
+                upper=np.interp(p[:,0],ax,upper_contact)
+                lower=np.interp(p[:,0],ax,lower_contact)
+                # One piecewise-affine closure field. Above the upper contact
+                # and below the lower contact the normal derivative stays 1,
+                # preserving both painted bands. Only the connecting side
+                # inside the aperture contracts, whether joined or separate.
+                inside=np.clip(p[:,1]-upper,0,np.maximum(lower-upper,0))
+                delta[:,1]=x*(seam-upper-(1-POLICY['eye_closed_height_ratio'])*inside)
+            elif role=='fold':delta[:,1]=x*(seam-np.interp(p[:,0],ax,upper_contact))
             return delta@basis.T
         parts=[uid for role,ids in groups.items() if role not in ('iris','brow') for uid in ids]
         blink_name='Eye::'+eye['side']+'::Blink'
-        def lash_detail(uid,world,x,y):
-            normal=side_compression(lashes,uid,world,x,POLICY['closed_height_ratio'])
-            return np.c_[np.zeros(len(world)),normal]@basis.T
-        mechanism(blink_name,[[0.,.25,.5,.75,1.],[-1.,0.,1.]],parts,blink,detail=lash_detail)
+        mechanism(blink_name,[[0.,.25,.5,.75,1.],[-1.,0.,1.]],parts,blink,orientation_solve=False)
         if blink_name in specs:
             specs[blink_name]['shape_analysis']=lash_report(lashes)
+            specs[blink_name]['shape_analysis']['upper_part_contains_lower_band']=upper_contains_lower
+            specs[blink_name]['shape_analysis']['closure_field']='upper and lower bands preserve normal thickness; the intervening side contracts'
             specs[blink_name]['contact_curves']={'frame_origin':origin.tolist(),'frame_basis':basis.tolist(),
                 'tangent':ax.tolist(),'upper_lower_edge':upper_contact.tolist(),'lower_upper_edge':lower_contact.tolist(),
                 'upper_parts':upper_contact_parts,'lower_parts':groups.get('lower',[]),
@@ -353,3 +394,70 @@ def apply(run,njc,replace_owned=False):
     write_json(run/'native-state.json',state)
     write_json(run/'shape-controls-readback.json',{'passed':True,'verified_keys':verified,'program_sha256':report['content_sha256']})
     print('Saved and read back PSD-shape controls:',len(specs),'parameters',verified,'keys',flush=True)
+
+
+def apply_eyes(run,njc):
+    """Replace only owned Blink keys on the already-open saved model."""
+    from validate_saved_rig import public_snapshot
+    from build_native import require_single_rig
+    from .model import observe_metadata
+    from .shape_validation import validate as validate_shapes
+    run=Path(run).resolve();state=read_json(run/'native-state.json')
+    evidence=read_json(run/'evidence.json');capture=read_json(run/'capture.json')
+    previous=read_json(run/'shape-controls-program.json')
+    if previous['content_sha256']!=state['shape_controls_sha256'] or json_digest({k:v for k,v in previous.items() if k!='content_sha256'})!=previous['content_sha256']:
+        raise ValueError('Owned shape control identity mismatch')
+    selected={'Eye::'+e['side']+'::Blink' for e in evidence.get('eyes',[])}
+    if not selected or not selected<=previous['parameters'].keys():raise ValueError('Existing eye control ownership unavailable')
+    n=Live(njc,run/'eye-controls-journal')
+    require_single_rig(n,state['rig_root'],state['bones'].values())
+    n.call('ToolCommand_ModelEditMode');n.call('ViewportCommand_ResetParameters')
+    before,identity=public_snapshot(n)
+    observed=observe_metadata(before['nodes'],identity)
+    nodes={row['uuid']:row for row in observed['nodes']}
+    specs,ops=compile_controls(evidence,capture,nodes,parameters=selected)
+    if set(specs)!=selected:raise ValueError('Not every existing eye was compiled')
+    for op in ops:n.preflight_call('ModelCommand_SetDeformBinding',bindingName='deform',values=op['values'],
+        context={'parameters':[state['parameters'][op['parameter']]],'nodes':[op['target']],'parameterValue':op['key']})
+    for name in sorted(selected):
+        if specs[name]['axes']!=previous['parameters'][name]['axes']:raise ValueError('Eye-only refresh cannot change parameter axes')
+        n.call('BindingCommand_RemoveBinding',context={'parameters':[state['parameters'][name]],
+            'bindings':[{'target':uid,'name':'deform'} for uid in previous['parameters'][name]['targets']]})
+    for op in sorted(ops,key=lambda o:not np.any(o['values'])):
+        n.call('ModelCommand_SetDeformBinding',bindingName='deform',values=op['values'],
+            context={'parameters':[state['parameters'][op['parameter']]],'nodes':[op['target']],'parameterValue':op['key']})
+    n.call('ViewportCommand_ResetParameters');n.save(state['output'])
+    after,_=public_snapshot(n)
+    def outside(snapshot):
+        return {'nodes':snapshot['nodes'],'bindings':{k:v for k,v in snapshot['bindings'].items()
+            if v['parameter']['name'] not in selected}}
+    before_hash=json_digest(outside(before));after_hash=json_digest(outside(after))
+    if before_hash!=after_hash:raise ValueError('Eye refresh changed state outside the selected Blink bindings')
+    bindings={(v['parameter']['name'],v['target']['uuid'],v['name']):v for v in after['bindings'].values()}
+    verified=0
+    for op in ops:
+        b=bindings.get((op['parameter'],op['target'],'deform'))
+        if b is None:
+            if np.any(op['values']):raise ValueError('Eye binding was not saved')
+            continue
+        i,j=[next(k for k,v in enumerate(a) if abs(v-q)<1e-6) for a,q in zip(b['axisValues'],op['key'])]
+        if not b['data']['isSet'][i][j] or np.max(abs(np.asarray(b['data']['values'][i][j]).ravel()-op['values']))>.0003:
+            raise ValueError('Saved eye key differs from the generated value')
+        verified+=1
+    report={k:v for k,v in previous.items() if k!='content_sha256'}
+    report['parameters']={**previous['parameters'],**specs}
+    report['operations']=[op for op in previous['operations'] if op['parameter'] not in selected]+ops
+    report['eye_generation']={'policy':POLICY,'generator_sha256':digest(Path(__file__)),
+        'eyelash_shape_sha256':digest(Path(__file__).with_name('eyelash_shape.py')),
+        'scope':sorted(selected),'outside_blink_state_sha256':after_hash}
+    report['content_sha256']=json_digest(report)
+    write_json(run/'shape-controls-program.json',report)
+    state['shape_controls_sha256']=report['content_sha256'];state['control_specs']=report['parameters']
+    write_json(run/'native-state.json',state)
+    findings=validate_shapes(run,state,after);write_json(run/'shape-readback.json',findings)
+    write_json(run/'shape-controls-readback.json',{'passed':True,'verified_keys':findings['verified_keys'],
+        'program_sha256':report['content_sha256'],'scope':'current saved keys; non-Blink model state preserved'})
+    write_json(run/'eye-controls-readback.json',{'selected_parameters':sorted(selected),'verified_eye_keys':verified,
+        'other_model_state_unchanged':True,'before_outside_blink_sha256':before_hash,'after_outside_blink_sha256':after_hash,
+        'numerical_findings':findings['findings'],'program_sha256':report['content_sha256']})
+    print('Saved eyes only:',len(selected),'parameters,',verified,'keys; all other model state unchanged',flush=True)
