@@ -42,7 +42,6 @@ description: '外部のキャラクター入力をPSD一つに限定し、骨格
 
 正しい頬補正でもGrid・深度・骨・AutoMeshは書き換えない。必要な個別Part補正を一律撤去せず、誤った方式を共通の生成元で直す。陰影などの関連素材も無条件に追加対象とせず、同じ手前側の補正領域への所属を根拠にする。全キーの由来と保存値、補正前後の実画像、奥側の追加変位がゼロであることを区別して記録する。検証モデルはPSDから新規生成する。
 
-2026-10-04の明示指示では、Akaの頬Partの**単機能確認**は前のINXで行う。フルパイプラインの新規生成検証と混同しない。`--single-feature-check --contour-only` は既存の同じRigを開いたまま、由来と保存値が一致する頬キーだけを置換する。新規取込・OpenFile・撮影は行わず、NJCで読み取ったAutoMesh UVと前後の変形キーから元PSDの顔alpha輪郭を線で重ね、変化領域と移動量を描画する。親Face Gridは固定し、全身の実描画検証を済ませたとは報告しない。
 
 目と口はDynamicComposite自身にもNJCのGrid AutoMeshを適用する。子Partや親Face GridへのAutoMeshだけで代用しない。既存の目口Compositeを保持し、平坦な入力には意味観測で集約した目口Compositeを初期構築する。分割数と外周余白は指定された両参照のComposite実測から共通化した `structures/composite-automesh.json` に従う。初期階層の確定後、パラメータを作る前に生成し、auto_resized=falseと頂点・三角形を保存後に読み戻す。
 

@@ -270,43 +270,24 @@ def comparison_sheet(run, before, after, capture, skin):
     return {'file': str(path), 'sha256': digest(path), 'crop_pixels': list(crop)}
 
 
-def apply(run, njc, *, single_feature_check=False, contour_only=False):
+def apply(run, njc):
     from .live import Live
     from .model import observe_model
     from bake_depth_angles import angle_bindings, fixed_inputs, check_bindings
     from build_native import require_single_rig
     run = Path(run); state = read_json(run/'native-state.json'); program = read_json(run/'program.json')
-    previous = None
-    if state.get('shape_corrections_sha256'):
-        if not single_feature_check:
-            raise ValueError('Start a fresh PSD model; existing INX needs explicit --single-feature-check')
-        previous = read_json(run/'shape-corrections-program.json')
-        signature = previous['content_sha256']
-        if signature != state['shape_corrections_sha256'] or signature != json_digest({k: v for k, v in previous.items() if k != 'content_sha256'}):
-            raise ValueError('Existing cheek program ownership does not match the current INX state')
-        for key in ('program_sha256', 'source_uv_program_sha256', 'depth_angle_program_sha256'):
-            if previous[key] != state[key]: raise ValueError('Existing cheek program has different '+key)
+    if state.get('shape_corrections_sha256'): raise ValueError('Start a fresh PSD model instead of patching the cheek stage')
     n = Live(njc, run/'shape-corrections-journal')
     n.call('ToolCommand_ModelEditMode'); n.call('ViewportCommand_ResetParameters')
     require_single_rig(n, state['rig_root'], state['bones'].values())
     bake = read_json(run/'depth-angle-program.json')
     if bake['content_sha256'] != state['depth_angle_program_sha256']: raise ValueError('Native depth bake identity mismatch')
-    before = angle_bindings(n); check_bindings(state, before, previous); fixed_before = json_digest(fixed_inputs(n, state))
-    if previous:
-        existing = {(b['target']['uuid'], b['parameter']['name']): b for b in before if b['name'] == 'deform'}
-        for op in previous['operations']:
-            if op['target'] not in previous['bound_targets']: continue
-            b = existing[op['target'], op['parameter']]
-            i, j = [axis.index(q) for axis, q in zip(b['axisValues'], op['key'])]
-            if np.max(abs(np.asarray(b['data']['values'][i][j]).ravel()-op['values'])) > .0003:
-                raise ValueError('Existing Part has edits outside the owned cheek program')
+    before = angle_bindings(n); check_bindings(state, before); fixed_before = json_digest(fixed_inputs(n, state))
     nodes = {row['uuid']: row for row in observe_model(client=n, require_parameters=False)['nodes']}
     face = next(d for d in program['domains'] if d['semantic_chart'] == 'head/face')
     grid = n.read(state['grids'][face['id']])['item']['data']
     capture = read_json(run/'capture.json')
     report = compile_corrections(read_json(run/'evidence.json'), capture, nodes, program, state, bake, grid)
-    report['execution_scope'] = 'existing INX single-feature check' if single_feature_check else 'fresh PSD full pipeline'
-    report['comparison_mode'] = 'native UV contour overlay' if contour_only else 'PNG pose comparison'
     targets = {op['target'] for op in report['operations'] if np.any(op['values'])}
     report['bound_targets'] = sorted(targets); report['content_sha256'] = json_digest(report)
     write_json(run/'shape-corrections-pending.json', report)
@@ -314,14 +295,7 @@ def apply(run, njc, *, single_feature_check=False, contour_only=False):
     for op in operations:
         n.preflight_call('ModelCommand_SetDeformBinding', bindingName='deform', values=op['values'],
                          context={'parameters': [state['parameters'][op['parameter']]], 'nodes': [op['target']], 'parameterValue': op['key']})
-    before_images = [] if contour_only else capture_poses(n, run, state, 'before')
-    if contour_only:
-        comparison_ids = {report['profile']['skin_part'], state['grids'][face['id']]}
-        write_json(run/'cheek-contour-before-bindings.json', [b for b in before if b['target']['uuid'] in comparison_ids])
-    if previous:
-        for uid in previous['bound_targets']:
-            n.call('BindingCommand_RemoveBinding', context={'parameters': [state['parameters'][PARAMETER]],
-                   'bindings': [{'target': uid, 'name': 'deform'}]})
+    before_images = capture_poses(n, run, state, 'before')
     for op in sorted(operations, key=lambda op: not np.any(op['values'])):
         n.call('ModelCommand_SetDeformBinding', bindingName='deform', values=op['values'],
                context={'parameters': [state['parameters'][op['parameter']]], 'nodes': [op['target']], 'parameterValue': op['key']})
@@ -342,16 +316,9 @@ def apply(run, njc, *, single_feature_check=False, contour_only=False):
     (run/'shape-corrections-pending.json').unlink()
     write_json(run/'shape-corrections-readback.json', {'verified_keys': len(operations), 'maximum_saved_error': maximum,
                'native_grid_depth_bones_unchanged': True, 'program_sha256': report['content_sha256'], 'visually_reviewed': False})
-    review = {'program_sha256': program['content_sha256'], 'correction_sha256': report['content_sha256'],
-              'execution_scope': report['execution_scope'], 'comparison_mode': report['comparison_mode'],
-              'visually_reviewed': False}
-    if contour_only:
-        from .cheek_contours import compare
-        skin = report['profile']['skin_part']; material = next(m for m in capture['materials'] if m['part'] == skin)
-        review['contours'] = compare(run, report, nodes[skin], material, face, state['grids'][face['id']], before, after)
-    else:
-        after_images = capture_poses(n, run, state, 'after')
-        sheet = comparison_sheet(run, before_images, after_images, capture, report['profile']['skin_part'])
-        review.update(before=before_images, after=after_images, sheet=sheet)
-    write_json(run/'cheek-review.json', review)
+    after_images = capture_poses(n, run, state, 'after')
+    sheet = comparison_sheet(run, before_images, after_images, capture, report['profile']['skin_part'])
+    write_json(run/'cheek-review.json', {'program_sha256': program['content_sha256'],
+               'correction_sha256': report['content_sha256'], 'before': before_images, 'after': after_images,
+               'sheet': sheet, 'visually_reviewed': False})
     print('Saved PSD cheek Part corrections:', len(targets), 'Parts,', len(operations), 'keys', flush=True)
