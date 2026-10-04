@@ -72,7 +72,7 @@ def build(root):
             if current and (file=='registered-neutral.png' or v or (file=='review-head-support.jpg' and support_review.get('program_sha256')==program.get('content_sha256'))) and (run/file).is_file():images.append(f'<figure><a href="{html.escape(psd.stem)}/{file}"><img loading="lazy" src="{html.escape(psd.stem)}/{file}"></a><figcaption>{label}</figcaption></figure>')
         mechanisms=[]
         cheek_review=read(run/'cheek-review.json') if cheek else {}
-        if cheek_review.get('correction_sha256')==s.get('shape_corrections_sha256'):
+        if cheek_review and cheek_review.get('correction_sha256')==s.get('shape_corrections_sha256'):
             panels=[]
             for before,after in zip(cheek_review['before'],cheek_review['after']):
                 for label,item in [('補正前',before),('補正後',after)]:
