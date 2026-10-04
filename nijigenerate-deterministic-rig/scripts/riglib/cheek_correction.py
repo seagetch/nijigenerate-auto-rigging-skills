@@ -157,6 +157,30 @@ def capture_poses(n, run, state, label):
     return files
 
 
+def comparison_sheet(run, before, after, capture, skin):
+    from PIL import ImageDraw
+    material = next(m for m in capture['materials'] if m['part'] == skin)
+    bounds = np.asarray(material['model_bounds']); center = (bounds[:2]+bounds[2:])/2
+    extent = (bounds[2:]-bounds[:2])*.9
+    camera = read_json(run/'render-camera.json')['data']; transform = camera['transform']
+    viewport = np.asarray(camera['viewport']); scale = np.asarray(transform['scale'])
+    camera_center = np.asarray(transform['trans'][:2])
+    lo = (center-extent-camera_center)/scale+viewport/2
+    hi = (center+extent-camera_center)/scale+viewport/2
+    crop = tuple(np.r_[np.floor(lo), np.ceil(hi)].astype(int))
+    width, height = 420, 400
+    sheet = Image.new('RGB', (width*2, height*len(before)), (32, 38, 48)); draw = ImageDraw.Draw(sheet)
+    for row, pair in enumerate(zip(before, after)):
+        for col, item in enumerate(pair):
+            with Image.open(item['file']) as source:
+                tile = source.convert('RGBA').crop(crop); tile.thumbnail((width, height-30))
+                sheet.paste(tile, (col*width+(width-tile.width)//2, row*height), tile)
+            draw.text((col*width+8, row*height+height-24),
+                      ('before ' if col == 0 else 'after ')+str(item['key']), fill='white')
+    path = run/'review-cheek-before-after.jpg'; sheet.save(path)
+    return {'file': str(path), 'sha256': digest(path), 'crop_pixels': list(crop)}
+
+
 def apply(run, njc):
     from .live import Live
     from .model import observe_model
@@ -173,7 +197,8 @@ def apply(run, njc):
     nodes = {row['uuid']: row for row in observe_model(client=n, require_parameters=False)['nodes']}
     face = next(d for d in program['domains'] if d['semantic_chart'] == 'head/face')
     grid = n.read(state['grids'][face['id']])['item']['data']
-    report = compile_corrections(read_json(run/'evidence.json'), read_json(run/'capture.json'), nodes, program, state, bake, grid)
+    capture = read_json(run/'capture.json')
+    report = compile_corrections(read_json(run/'evidence.json'), capture, nodes, program, state, bake, grid)
     targets = {op['target'] for op in report['operations'] if np.any(op['values'])}
     report['bound_targets'] = sorted(targets); report['content_sha256'] = json_digest(report)
     write_json(run/'shape-corrections-pending.json', report)
@@ -202,7 +227,8 @@ def apply(run, njc):
     write_json(run/'shape-corrections-readback.json', {'verified_keys': len(operations), 'maximum_saved_error': maximum,
                'native_grid_depth_bones_unchanged': True, 'program_sha256': report['content_sha256'], 'visually_reviewed': False})
     after_images = capture_poses(n, run, state, 'after')
+    sheet = comparison_sheet(run, before_images, after_images, capture, report['profile']['skin_part'])
     write_json(run/'cheek-review.json', {'program_sha256': program['content_sha256'],
                'correction_sha256': report['content_sha256'], 'before': before_images, 'after': after_images,
-               'visually_reviewed': False})
+               'sheet': sheet, 'visually_reviewed': False})
     print('Saved PSD cheek Part corrections:', len(targets), 'Parts,', len(operations), 'keys', flush=True)
