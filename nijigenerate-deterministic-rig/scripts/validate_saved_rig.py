@@ -1,4 +1,5 @@
 """Save the active rig, read its public state and render without reloading it."""
+from riglib.run_options import render_images
 import argparse
 from pathlib import Path
 import time
@@ -70,7 +71,8 @@ def validate(state_path,out,executable,baseline=None):
         for material in evidence['static_materials']:
             uid=material['part'];chain=[];cursor=uid
             while cursor is not None:chain.append(cursor);cursor=parents[cursor]
-            if set(chain)&bound or any(public_nodes[k]['type'] in ('GridDeformer','DepthBone') for k in chain):
+            if set(chain)&bound or any((public_nodes[k]['type']=='DepthBone' or
+                    (public_nodes[k]['type']=='GridDeformer' and public_nodes[k].get('bone_sources'))) for k in chain):
                 raise ValueError('Static PSD background still has an animated support')
             static_checked.append({'part':uid,'animated_supports':False,'source_rendering_retained':public_nodes[uid]['enabled']})
     humanoid=program.get('kind','humanoid')=='humanoid'
@@ -112,7 +114,7 @@ def validate(state_path,out,executable,baseline=None):
     n.call('ViewportCommand_FitViewportToModel')
     time.sleep(.5)
     rendered=[]
-    for label,values in cases:
+    for label,values in (cases if render_images(Path(state_path).parent) else []):
         n.call('ViewportCommand_ResetParameters')
         for name,value in values.items():
             n.call('ParameditCommand_SetParameterKeypoint',context={'parameters':[state['parameters'][name]],'parameterValue':value})
@@ -129,8 +131,12 @@ def validate(state_path,out,executable,baseline=None):
         'static_materials_verified':static_checked,
         'readback_equal':True,'save_reopen_performed':False,'readback_scope':'current_model_after_save',
         'scaffold_validation_passed':anatomical['passed'],
-        'rendered_key_coverage':'all_saved_parameter_axes',
+        'render_images':render_images(Path(state_path).parent),
+        'rendered_key_coverage':'all_saved_parameter_axes' if rendered else 'not_requested',
         'visual_review_required':True,'rig_complete':False})
+    if not rendered:
+        print('Public readback matched; image capture disabled; numerical findings:',len(failures),flush=True)
+        return
     # Contact sheets derive their crop from the neutral render only.
     neutral=Image.open(out/'neutral.png').convert('RGBA'); box=neutral.getchannel('A').getbbox()
     for family,names in [('body',[r['label'] for r in rendered if r['label'].startswith('Body-') or r['label']=='combined']),

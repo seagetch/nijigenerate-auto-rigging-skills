@@ -1,4 +1,5 @@
 """Verify a PSD import and expose an explicit root through the public NJC API."""
+from riglib.run_options import render_images
 import argparse
 from pathlib import Path
 from riglib.data import read_json, write_json
@@ -73,15 +74,16 @@ def prepare(manifest_path, destination, executable):
                 n.call('NodeMaskCommand_AddMask',maskSrc=base,mode='Mask',context={'nodes':[item['uuid']]})
     n.call('ViewportCommand_ResetParameters')
     n.call('ViewportCommand_FitViewportToModel')
-    n.call('ViewCommand_SaveScreenshot', filename=str(out/'import-neutral.png'))
+    if render_images(out): n.call('ViewCommand_SaveScreenshot', filename=str(out/'import-neutral.png'))
     root = created_id(n.call('NodeCommand_AddNode', className='Node', _suffix='', context={'nodes':[]}))
     n.call('NodeCommand_SetNodeName', newNames=['Source::PSD'], context={'nodes':[root]})
     n.call('NodeCommand_MoveNode', newParent=root, index=0, context={'nodes':[i['uuid'] for i in items]})
     observation = annotate_observation(observe_model(client=n),pairs)
     from riglib.render_camera import create,capture
-    camera=create(n,root,manifest,observation,pairs,Path(manifest_path).resolve().parent)
-    write_json(out/'render-camera.json',camera)
-    observation = annotate_observation(observe_model(client=n),pairs)
+    if render_images(out):
+        camera=create(n,root,manifest,observation,pairs,Path(manifest_path).resolve().parent)
+        write_json(out/'render-camera.json',camera)
+        observation = annotate_observation(observe_model(client=n),pairs)
     parts = {r['uuid']:r for r in observation['nodes'] if r['type']=='Part'}
     blend_modes={'norm':'Normal','mul ':'Multiply','scrn':'Screen','over':'Overlay',
         'dark':'Darken','lite':'Lighten','div ':'ColorDodge','lddg':'LinearDodge',
@@ -114,11 +116,12 @@ def prepare(manifest_path, destination, executable):
     # Saving allocates texture atlas slots that do not exist on fresh imports.
     # The active snapshot after saving is the compiler source identity.
     write_json(out/'observation.json', reread)
-    capture(n,out,out/'registered-neutral.png')
-    from riglib.data import digest,json_digest
-    write_json(out/'registered-neutral.json',{'file':str(out/'registered-neutral.png'),
-        'sha256':digest(out/'registered-neutral.png'),'observation_sha256':json_digest(reread),
-        'public_source_sha256':reread['source']['metadata_sha256'],'saved_reopen_equal':None,'save_reopen_performed':False,'saved_active_readback_verified':True})
+    if render_images(out):
+        capture(n,out,out/'registered-neutral.png')
+        from riglib.data import digest,json_digest
+        write_json(out/'registered-neutral.json',{'file':str(out/'registered-neutral.png'),
+            'sha256':digest(out/'registered-neutral.png'),'observation_sha256':json_digest(reread),
+            'public_source_sha256':reread['source']['metadata_sha256'],'saved_reopen_equal':None,'save_reopen_performed':False,'saved_active_readback_verified':True})
     print('Verified PSD mapping, explicit root and saved source snapshot', flush=True)
 
 

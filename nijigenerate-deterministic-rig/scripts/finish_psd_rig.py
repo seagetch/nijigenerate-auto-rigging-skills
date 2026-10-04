@@ -1,4 +1,5 @@
 """Finish and verify a compiled PSD-derived rig through NJC."""
+from riglib.run_options import render_images
 import argparse
 import subprocess
 import sys
@@ -48,8 +49,11 @@ def finish(run,njc,start_at=None,refresh_controls=False):
         stage('bake_depth_angles.py','--run',run,'--njc',njc)
         stage('apply_shape_corrections.py','--run',run,'--njc',njc)
     stage('validate_saved_rig.py','--state',run/'native-state.json','--out',run,'--njc',njc)
-    if humanoid:stage('review_head_support.py','--run',run,'--njc',njc)
-    stage('validate_neutral.py','--run',run,'--njc',njc)
+    if render_images(run):
+        if humanoid:stage('review_head_support.py','--run',run,'--njc',njc)
+        stage('validate_neutral.py','--run',run,'--njc',njc)
+    report['render_images']=render_images(run)
+    report['image_stages']='executed' if render_images(run) else 'not_requested'
     if humanoid:
         stage('validate_reference_transfer.py','--run',run,'--njc',njc)
         stage('validate_semantic_reconstruction.py','--template',scripts.parent/'structures/reference-humanoid.registered.json',
@@ -61,7 +65,7 @@ def finish(run,njc,start_at=None,refresh_controls=False):
     neutral=read_json(run/'neutral-comparison.json') if (run/'neutral-comparison.json').is_file() else {}
     report['deformation_findings']=len(validation.get('numerical_failures',[]))
     report['numerical_stages_passed']=bool(not report['stage_errors'] and
-        not report['deformation_findings'] and neutral.get('passed'))
+        not report['deformation_findings'] and (not render_images(run) or neutral.get('passed')))
     report['rendered_images']=len(validation.get('rendered',[]))
     report['visual_review_required']=True
     write_json(run/'completion-stages.json',report)

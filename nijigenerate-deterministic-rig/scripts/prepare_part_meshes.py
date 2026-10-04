@@ -1,4 +1,5 @@
 """Generate Parts through NJC AutoMesh, save and capture native arrays."""
+from riglib.run_options import render_images
 import argparse
 from collections import defaultdict
 from pathlib import Path
@@ -72,7 +73,7 @@ def prepare(run,out,njc):
         'parts':{uid:{k:v for k,v in row.items() if k not in ('vertices','indices')} for uid,row in meshes.items()},
         'visual_acceptance':False})
     n.call('ViewportCommand_FitViewportToModel')
-    n.call('ViewCommand_SaveScreenshot',filename=str(out/'automesh-neutral.png'))
+    if render_images(run): n.call('ViewCommand_SaveScreenshot',filename=str(out/'automesh-neutral.png'))
     print('NJC AutoMesh generated and saved/read back',len(meshes),'Parts',flush=True)
 
 

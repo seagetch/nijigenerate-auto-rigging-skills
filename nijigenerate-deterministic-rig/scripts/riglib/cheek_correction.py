@@ -295,7 +295,8 @@ def apply(run, njc):
     for op in operations:
         n.preflight_call('ModelCommand_SetDeformBinding', bindingName='deform', values=op['values'],
                          context={'parameters': [state['parameters'][op['parameter']]], 'nodes': [op['target']], 'parameterValue': op['key']})
-    before_images = capture_poses(n, run, state, 'before')
+    from .run_options import render_images
+    before_images = capture_poses(n, run, state, 'before') if render_images(run) else []
     for op in sorted(operations, key=lambda op: not np.any(op['values'])):
         n.call('ModelCommand_SetDeformBinding', bindingName='deform', values=op['values'],
                context={'parameters': [state['parameters'][op['parameter']]], 'nodes': [op['target']], 'parameterValue': op['key']})
@@ -316,8 +317,8 @@ def apply(run, njc):
     (run/'shape-corrections-pending.json').unlink()
     write_json(run/'shape-corrections-readback.json', {'verified_keys': len(operations), 'maximum_saved_error': maximum,
                'native_grid_depth_bones_unchanged': True, 'program_sha256': report['content_sha256'], 'visually_reviewed': False})
-    after_images = capture_poses(n, run, state, 'after')
-    sheet = comparison_sheet(run, before_images, after_images, capture, report['profile']['skin_part'])
+    after_images = capture_poses(n, run, state, 'after') if render_images(run) else []
+    sheet = comparison_sheet(run, before_images, after_images, capture, report['profile']['skin_part']) if render_images(run) else None
     write_json(run/'cheek-review.json', {'program_sha256': program['content_sha256'],
                'correction_sha256': report['content_sha256'], 'before': before_images, 'after': after_images,
                'sheet': sheet, 'visually_reviewed': False})

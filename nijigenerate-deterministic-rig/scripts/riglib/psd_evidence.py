@@ -23,12 +23,14 @@ def section(cloud,fraction,axis=None):
     return np.median(q@perpendicular)*perpendicular+station*axis
 
 
-def derive(run,skill):
+def derive(run,skill,njc=None):
     run=Path(run).resolve();skill=Path(skill).resolve()
     src=read_json(run/'psd-source.json');reg=read_json(run/'registration.json')
     obs=read_json(run/'observation.json');spec=read_json(skill/'structures/material-roles.json')
     if src['source']['sha256']!=reg['psd_sha256']:raise ValueError('PSD registration hash mismatch')
-    materials,assembly,semantics=observe_semantics(run,obs,src,reg,spec)
+    from .psd_groups import prepare as prepare_groups
+    groups=(lambda materials: prepare_groups(run,njc,obs,reg,materials)) if njc else None
+    materials,assembly,semantics=observe_semantics(run,obs,src,reg,spec,prepare_groups=groups)
     write_json(run/'observation.json',obs)
     active=[m for m in materials if m['active'] and not m.get('rig_static')]
     capture=[];offsets=[]

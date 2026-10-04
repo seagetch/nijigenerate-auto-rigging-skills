@@ -1,4 +1,5 @@
 """Compile/apply a generated humanoid program using the live public NJC API."""
+from riglib.run_options import render_images
 import argparse
 import itertools
 import math
@@ -212,7 +213,7 @@ def apply_program(program, executable, source, output, journal):
     write_json(Path(journal).parent/'native-state.json',state)
     write_json(Path(journal).parent/'hierarchy-applied.json',validate_hierarchy(reader,state,program))
     n.call('ViewportCommand_FitViewportToModel')
-    n.call('ViewCommand_SaveScreenshot',filename=str(Path(journal).parent/'structure-neutral.png'))
+    if render_images(Path(journal).parent): n.call('ViewCommand_SaveScreenshot',filename=str(Path(journal).parent/'structure-neutral.png'))
     for spec in program['parameters']:
         n.call('ViewportCommand_ResetParameters')
         if spec['vec2']:

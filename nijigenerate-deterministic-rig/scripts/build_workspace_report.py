@@ -5,7 +5,7 @@ import argparse,json,html,re
 
 def build(root):
     root=Path(root).resolve();rows=[];sections=[];executed=0;reopened=0;image_count=0;running=False
-    columns=['PSD','取込・登録','意味観測','Part AutoMesh','TPS・格子設計','骨格・Grid','Grid AutoMeshの実出力','目・口のComposite AutoMesh','頭の接続・回転方向','目口眉・UV','深度の実測','深度・骨から角度生成','頬Part補正','保存・状態読取','変形画像','現在の処理・観測事項']
+    columns=['PSD','取込・登録','PSD階層のGrid化','意味観測','Part AutoMesh','TPS・格子設計','骨格・Grid','Grid AutoMeshの実出力','目・口のComposite AutoMesh','頭の接続・回転方向','目口眉・UV','深度の実測','深度・骨から角度生成','頬Part補正','保存・状態読取','変形画像','現在の処理・観測事項']
     def read(path):
         # A running stage may be replacing this small manifest while the
         # gallery refreshes. Keep the report available until its next update.
@@ -56,7 +56,10 @@ def build(root):
         grid_result=(f'{len(grids)}面をNJCで生成。既定の1×1格子: {len(defaults)}面。'
                      + ('carrier-local座標で生成' if current else '旧生成分・再生成対象')) if grids else '未'
         if defaults:grid_result+=' 対象: '+', '.join(defaults)
+        source_groups=read(run/'source-group-meshes.json').get('groups',[])
+        group_count=sum(g['type']=='GridDeformer' for g in source_groups)
         cells=[psd.name,'済' if (run/'registration.json').is_file() else '未',
+            (f'{group_count}群・10×10 / 目口Composite {len(source_groups)-group_count}群' if (run/'source-group-meshes.json').is_file() else '未'),
             '済' if (run/'evidence.json').is_file() else '未',
             f'済・{len(evidence.get("part_meshes",{}))} Parts' if (run/'automesh-readback.json').is_file() else '実行中' if reason.startswith('NJC AutoMesh') else '未',
             '済' if (run/'program.json').is_file() else '未',
@@ -70,21 +73,22 @@ def build(root):
             ('未達：補正0キー・画像変化なし' if cheek_review.get('correction_complete') is False else
              f'{cheek["verified_keys"]}キーを保存照合・外観確認は別途') if cheek else '未実行',
             ('済・現在モデルの保存後状態' if v.get('save_reopen_performed') is False else '済・再読込') if v.get('readback_equal') else '未',
-            f'{len(v.get("rendered",[]))}枚',reason]
+            (f'{len(v.get("rendered",[]))}枚' if read(run/'run-origin.json').get('render_images') else '画像取得OFF'),reason]
         rows.append('<tr><td><a href="#model-'+str(index)+'">'+html.escape(str(cells[0]))+'</a></td>'+''.join('<td>'+html.escape(str(x))+'</td>' for x in cells[1:])+'</tr>')
+        captures_enabled=read(run/'run-origin.json').get('render_images') is True
         images=[]
         for file,label in [('review-head-support.jpg','頭の接続・左右・複合姿勢'),('registered-neutral.png','PSD取込時・中立'),('neutral.png','保存リグ・中立'),('body-sheet.jpg','体・全保存キー'),('review-head-body-yaw.jpg','Body::Yaw-Pitch時の頭部・全保存キー'),('review-face-angles.jpg','Face駆動時の頭部・全保存キー')]:
-            if current and (file=='registered-neutral.png' or v or (file=='review-head-support.jpg' and support_review.get('program_sha256')==program.get('content_sha256'))) and (run/file).is_file():images.append(f'<figure><a href="{html.escape(psd.stem)}/{file}"><img loading="lazy" src="{html.escape(psd.stem)}/{file}"></a><figcaption>{label}</figcaption></figure>')
+            if current and captures_enabled and (file=='registered-neutral.png' or v.get('rendered') or (file=='review-head-support.jpg' and support_review.get('program_sha256')==program.get('content_sha256'))) and (run/file).is_file():images.append(f'<figure><a href="{html.escape(psd.stem)}/{file}"><img loading="lazy" src="{html.escape(psd.stem)}/{file}"></a><figcaption>{label}</figcaption></figure>')
         mechanisms=[]
         cheek_review=read(run/'cheek-review.json') if cheek else {}
-        if cheek_review and cheek_review.get('correction_sha256')==s.get('shape_corrections_sha256'):
+        if captures_enabled and cheek_review.get('before') and cheek_review.get('correction_sha256')==s.get('shape_corrections_sha256'):
             panels=[]
             for before,after in zip(cheek_review['before'],cheek_review['after']):
                 for label,item in [('補正前',before),('補正後',after)]:
                     url=html.escape(psd.stem+'/'+Path(item['file']).name)
                     panels.append(f'<figure style="width:440px"><a href="{url}"><img loading="lazy" src="{url}"></a><figcaption>{label} {item["key"]}</figcaption></figure>')
             images.append('<details open><summary>頬Part補正の前後・同じ9姿勢</summary>'+''.join(panels)+'</details>')
-        for file in (sorted(run.glob('review-*.jpg')) if current and v else []):
+        for file in (sorted(run.glob('review-*.jpg')) if current and captures_enabled and v.get('rendered') else []):
             if file.name in ('review-core.jpg','review-face-angles.jpg','review-head-body-yaw.jpg','review-head-support.jpg'):continue
             url=html.escape(psd.stem+'/'+file.name)
             mechanisms.append(f'<figure><a href="{url}"><img loading="lazy" src="{url}"></a><figcaption>{html.escape(file.stem)}</figcaption></figure>')
@@ -104,7 +108,7 @@ def build(root):
                 label=html.escape(mesh_row['name'])
                 panels.append(f'<figure><svg viewBox="0 0 360 270" width="360" role="img" aria-label="{label}のNJC生成メッシュ"><path d="{paths}" fill="none" stroke="#80d5ff" stroke-width="0.7"/></svg><figcaption>{label}: {mesh["vertex_count"]}頂点・{mesh["triangle_count"]}三角形</figcaption></figure>')
             images.append('<details open><summary>目・口Composite自身のAutoMesh出力（NJC読取）</summary>'+''.join(panels)+'</details>')
-        if current and v and (run/'depth-sheet.jpg').is_file():
+        if current and captures_enabled and v.get('rendered') and (run/'depth-sheet.jpg').is_file():
             url=html.escape(psd.stem+'/depth-sheet.jpg')
             images.append(f'<details><summary>全Gridの保存深度（XYZ同一縮尺）</summary><a href="{url}"><img loading="lazy" src="{url}"></a><p>NJCで読み戻した固定深度のワイヤーフレーム。表示用に位置のみ中央へ移動。変形画像や検収判定ではありません。</p></details>')
         frames=[]

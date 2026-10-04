@@ -118,7 +118,7 @@ def source_materials(run, observation, manifest, registration):
     return result
 
 
-def observe_semantics(run,observation,manifest,registration,spec):
+def observe_semantics(run,observation,manifest,registration,spec,prepare_groups=None):
     materials=source_materials(run,observation,manifest,registration)
     from .static_materials import classify
     static=classify(run,materials)
@@ -164,6 +164,7 @@ def observe_semantics(run,observation,manifest,registration,spec):
     if unresolved:
         write_json(run/'semantic-diagnostics.json',{'unresolved':unresolved,'kind':kind})
         raise ValueError('No structural candidates for PSD layers: '+', '.join(unresolved))
+    if prepare_groups is not None: prepare_groups(materials)
     # Partial mechanisms do not instantiate a humanoid body.
     if kind!='humanoid':
         assembly=None

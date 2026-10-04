@@ -9,7 +9,7 @@ from riglib.data import read_json,write_json,digest
 from build_workspace_report import build as build_report
 
 
-def batch(directory,out,njc,only=None,stop_after=None,resume=False):
+def batch(directory,out,njc,only=None,stop_after=None,resume=False,render_images=False):
     directory=Path(directory).resolve();out=Path(out).resolve()
     if out!=directory:raise ValueError('Use the PSD directory itself; process-specific output directories are forbidden')
     sources=sorted(directory.glob('*.psd'),key=lambda p:p.name.casefold())
@@ -31,6 +31,7 @@ def batch(directory,out,njc,only=None,stop_after=None,resume=False):
         report['items'].append(row);write_json(target/'run-status.json',row)
         command=[sys.executable,'-B',str(entry),'--psd',str(psd),'--out',str(target),'--njc',str(njc)]
         if stop_after:command+=['--stop-after',stop_after]
+        if render_images:command+=['--render-images']
         print(f'{index}/{len(sources)} {psd.name}',flush=True)
         with (target/'run.log').open('a' if resume else 'w',encoding='utf-8') as log:
             if resume:log.write('\nContinuing remaining stages under the user instruction to record inspection findings without stopping.\n')
@@ -63,4 +64,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--directory',required=True);p.add_argument('--out',required=True)
     p.add_argument('--njc',required=True);p.add_argument('--only',nargs='+');p.add_argument('--stop-after',choices=['evidence'])
     p.add_argument('--resume',action='store_true')
-    a=p.parse_args();raise SystemExit(batch(a.directory,a.out,a.njc,a.only,a.stop_after,a.resume))
+    p.add_argument('--render-images',action='store_true',help='Export optional review images for each PSD')
+    a=p.parse_args();raise SystemExit(batch(a.directory,a.out,a.njc,a.only,a.stop_after,a.resume,a.render_images))

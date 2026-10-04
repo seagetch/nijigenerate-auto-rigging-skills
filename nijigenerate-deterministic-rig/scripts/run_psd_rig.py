@@ -5,7 +5,7 @@ from riglib.live import Live
 from riglib.data import digest,write_json,read_json
 
 
-def run(psd,out,njc,stop_after=None):
+def run(psd,out,njc,stop_after=None,render_images=False):
     psd=Path(psd).resolve();out=Path(out).resolve();out.mkdir(parents=True,exist_ok=True)
     if out!=psd.parent/psd.stem:raise ValueError('Outputs must stay directly in the PSD-named sibling directory')
     scripts=Path(__file__).resolve().parent
@@ -22,7 +22,7 @@ def run(psd,out,njc,stop_after=None):
             raise ValueError('Output directory is not owned by this PSD generator')
     # Retire current-generation manifests before constructing new UUIDs. Old
     # pictures cannot be counted as evidence for this fresh model.
-    for name in ('program.json','native-state.json','completion-stages.json','validation.json',
+    for name in ('render-camera.json','registered-neutral.json','source-group-meshes.json','program.json','native-state.json','completion-stages.json','validation.json',
                  'neutral-comparison.json','visual-review.json','head-support-review.json',
                  'hierarchy-applied.json','hierarchy-readback.json','depth-angle-program.json',
                  'reference-transfer-readback.json','shape-corrections-program.json',
@@ -33,6 +33,7 @@ def run(psd,out,njc,stop_after=None):
     skill=scripts.parent
     sources=sorted([*scripts.rglob('*.py'),* (skill/'structures').glob('*.json'),* (skill/'templates').rglob('*.json')])
     write_json(out/'run-origin.json',{'external_character_input':str(psd),'psd_sha256':digest(psd),
+        'render_images':bool(render_images),
         'starting_point':'fresh PSD extraction and NJC import; no existing model or observation input',
         'code_and_rules':{str(p.relative_to(skill)):digest(p) for p in sources}})
     def command(name,*args):
@@ -47,7 +48,7 @@ def run(psd,out,njc,stop_after=None):
     n=Live(njc,out/'import-journal')
     n.call('FileCommand_ImportPSD',path=str(psd),keepStructure=True,layerGroupNodeType='DynamicComposite')
     command('prepare_live_psd.py','--manifest',out/'psd-source.json','--out',out,'--njc',njc)
-    command('derive_psd_evidence.py','--run',out)
+    command('derive_psd_evidence.py','--run',out,'--njc',njc)
     if stop_after=='evidence':return
     command('prepare_part_meshes.py','--run',out,'--njc',njc)
     if read_json(out/'evidence.json')['kind']!='humanoid':
@@ -63,4 +64,5 @@ def run(psd,out,njc,stop_after=None):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--psd',required=True);p.add_argument('--out',required=True);p.add_argument('--njc',required=True)
     p.add_argument('--stop-after',choices=['evidence'])
-    a=p.parse_args();run(a.psd,a.out,a.njc,a.stop_after)
+    p.add_argument('--render-images',action='store_true',help='Export optional review PNGs and image sheets (default: disabled)')
+    a=p.parse_args();run(a.psd,a.out,a.njc,a.stop_after,a.render_images)
