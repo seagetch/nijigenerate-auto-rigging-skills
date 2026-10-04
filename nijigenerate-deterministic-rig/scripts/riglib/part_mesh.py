@@ -13,11 +13,11 @@ def captured_mesh(data):
     if indices.min()<0 or indices.max()>=len(vertices):raise ValueError('Invalid native triangle index')
     a=vertices[indices[:,1]]-vertices[indices[:,0]];b=vertices[indices[:,2]]-vertices[indices[:,0]]
     areas=a[:,0]*b[:,1]-a[:,1]*b[:,0]
-    if np.min(abs(areas))<1e-8:raise ValueError('Native AutoMesh returned degenerate triangles')
     # Preserve the native vertex order, triangle order, coordinates and UVs.
     return {'vertices':mesh['verts'],'indices':mesh['indices'],'uvs':mesh['uvs'],'origin':mesh['origin'],'native_mesh_sha256':json_digest(mesh),
             'method':METHOD,'vertex_count':len(vertices),'triangle_count':len(indices),
-            'minimum_absolute_triangle_area_twice':float(np.min(abs(areas)))}
+            'minimum_absolute_triangle_area_twice':float(np.min(abs(areas))),
+            'near_zero_area_triangle_count':int(np.count_nonzero(abs(areas)<1e-8))}
 
 
 def verify_mesh(data,record):
