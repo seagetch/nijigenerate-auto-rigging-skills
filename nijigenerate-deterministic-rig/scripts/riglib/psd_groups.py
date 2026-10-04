@@ -21,8 +21,7 @@ def prepare(run, njc, observation, registration, materials):
             parent = nodes[parent]['parent']
     records = []
     # Finish type conversion from parents to children before generating meshes.
-    # Replacing a parent after meshing its child samples the child's evaluated
-    # deformation into the native conversion's world-transform preservation.
+    # Mesh generation starts only after the requested node types are in place.
     groups = sorted(registration['groups'], key=lambda r: len(nodes[r['node']].get('source_index_path', [])))
     axis = [i/10 for i in range(11)]
     for group in groups:
