@@ -5,6 +5,10 @@ description: Run complete nijigenerate 自動リグ/auto-rigging through njc in 
 
 # Nijigenerate Automatic Rigging
 
+1. まず `nijigenerate-deterministic-rig` を実行する。
+2. その後、本スキルに記載している手順に従った結果となっているかを確認する。
+3. その確認で未実施と判明した `nijigenerate-post-rig-adjustment` 以降の手順を、記載手順に従って実行する。
+
 This is the canonical entry point for automatic rigging. Do not substitute the
 old onboarding order or merge it with another generic rigging sequence.
 
