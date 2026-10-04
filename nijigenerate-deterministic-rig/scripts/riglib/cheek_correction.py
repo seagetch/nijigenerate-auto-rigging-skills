@@ -86,6 +86,22 @@ def cheek_field(world, profile, domain, offsets):
     return result
 
 
+def anchor_vertices(rest, indices, anchors):
+    """Pin native triangles carrying the face origin and feature anchors.
+
+    A zero analytic residual at a point is insufficient on a coarse mesh:
+    its containing triangle must also carry zero residual to retain children.
+    """
+    triangles = np.asarray(indices, int).reshape(-1, 3); pinned = np.zeros(len(rest), bool)
+    for tri in triangles:
+        a, b, c = rest[tri]; matrix = np.column_stack((b-a, c-a))
+        if abs(np.linalg.det(matrix)) < 1e-10: continue
+        q = (anchors-a)@np.linalg.inv(matrix).T
+        if np.any((q[:, 0] >= -1e-7) & (q[:, 1] >= -1e-7) & (q.sum(axis=1) <= 1.+1e-7)):
+            pinned[tri] = True
+    return pinned
+
+
 def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
     domain = next(d for d in program['domains'] if d['semantic_chart'] == 'head/face')
     if grid.get('dynamic'): raise ValueError('Cheek residual requires standard static face Grid sampling')
@@ -103,17 +119,27 @@ def compile_corrections(evidence, capture, nodes, program, state, bake, grid):
         if node['type'] != 'Part': raise ValueError('Cheek output must target a Part')
         matrix = np.asarray(node['nominal_world_matrix']); linear = matrix[:2, :2]
         rest = np.asarray(node['mesh']['vertices']); world = rest@linear.T+matrix[:2, 3]
+        pinned = np.zeros(len(rest), bool)
+        if uid == skin:
+            anchors = [matrix[:2, 3], *evidence.get('facial_landmarks_model', {}).values()]
+            feature_ids = {u for e in evidence.get('eyes', []) for ids in e['part_groups'].values() for u in ids}
+            feature_ids.update(evidence.get('mouth', {}).get('parts', []))
+            anchors.extend(np.asarray(nodes[u]['nominal_world_matrix'])[:2, 3] for u in feature_ids)
+            local_anchors = (np.asarray(anchors)-matrix[:2, 3])@np.linalg.inv(linear).T
+            pinned = anchor_vertices(rest, node['mesh']['indices'], local_anchors)
         for i, x in enumerate(binding['axisValues'][0]):
             for j, y in enumerate(binding['axisValues'][1]):
                 delta = (np.zeros_like(rest) if x == 0 and y == 0 else
                          cheek_field(world, profile, domain, binding['data']['values'][i][j])@np.linalg.inv(linear).T)
                 delta = np.round(delta, 5)
+                delta[pinned] = 0.
                 if not np.isfinite(delta).all(): raise ValueError('Nonfinite cheek residual')
                 ratio = float(area_ratios(rest, delta, node['mesh']['indices']).min())
                 observations.append({'target': uid, 'key': [x, y], 'maximum_local_residual': float(abs(delta).max()),
                                      'minimum_local_area_ratio': ratio})
                 ops.append({'parameter': PARAMETER, 'target': uid, 'key': [x, y],
-                            'mechanism': MECHANISM, 'values': delta.ravel().tolist()})
+                            'mechanism': MECHANISM, 'protected_vertices': np.flatnonzero(pinned).tolist(),
+                            'values': delta.ravel().tolist()})
     return {'policy': POLICY, 'profile': profile, 'operations': ops, 'observations': observations,
             'axes': binding['axisValues'], 'face_targets': sorted(face_ids),
             'program_sha256': program['content_sha256'], 'evidence_sha256': json_digest(evidence),
@@ -139,6 +165,8 @@ def load_owned(run, state):
     for op in report['operations']:
         if op['target'] not in allowed or op['parameter'] != PARAMETER or op['mechanism'] != MECHANISM:
             raise ValueError('Part angle correction escaped the PSD cheek scope')
+        if np.any(np.asarray(op['values']).reshape(-1, 2)[op['protected_vertices']]):
+            raise ValueError('Cheek correction moved a protected origin or feature triangle')
     return report
 
 
