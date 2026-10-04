@@ -69,13 +69,8 @@ def support(world, indices, profile, frame):
             t = np.divide(level-p[:, 1], dy, out=np.zeros_like(dy), where=abs(dy) > 1e-12)
             x = p[:, 0]+t*(q[:, 0]-p[:, 0])
             outside |= intersects & (side*(x-center) <= 0)
-    # A contour texel can lie inside a triangle whose support vertex is
-    # below the chin or above the temple. Free that support ring instead
-    # of freezing the visible jaw together with its transparent padding.
-    crosses_band = ((points[triangles, 1].max(axis=1) >= profile['temple_y']) &
-                    (points[triangles, 1].min(axis=1) <= profile['y'][-1]))
-    in_band = np.zeros(len(points), bool)
-    in_band[triangles[crosses_band].ravel()] = True
+    in_band = (points[:, 1] >= profile['temple_y']) & (points[:, 1] <= profile['y'][-1])
+    outside |= ~in_band[triangles].all(axis=1)
     allowed[triangles[outside].ravel()] = False
     allowed &= in_band
     return allowed
