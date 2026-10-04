@@ -7,7 +7,8 @@ from .live import Live,created_id
 from .model import observe_model
 from .face_draw_order import plan as face_order_plan
 
-POLICY={'version':'1.4','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
+POLICY={'version':'1.5','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
+        'blink_expression_range':.3,
         'eye_gaze_width_ratio':.18,'expression_width_ratio':.035,
         'brow_width_ratio':.08,'local_bend_radians':.55,
         'axes':[-1.,-.5,0.,.5,1.],
@@ -147,13 +148,14 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         ax,top,bottom=profile(cloud,basis,origin,width);height=float(np.median(bottom-top))
         # The first sclera is also the native Iris clipping source. Its open
         # lower alpha boundary, not the shadow or the aperture midpoint,
-        # defines the down-close row. Flat joins the boundary's two ends;
-        # smile reflects its arch across that chord. All three rows share
-        # endpoints, and both painted lids and white use the same target.
+        # defines the full down-close reference. The authored expression
+        # range blends from its straight endpoint chord toward that reference
+        # or the reflected smile arch. Lids and white share the same target.
         white_owner=groups['sclera'][0]
         down_close=contact_profile(source_cloud(capture,[white_owner],translation),basis,origin,width,True,smooth=False)
         flat_close=np.linspace(down_close[0],down_close[-1],len(ax))
-        smile_close=2*flat_close-down_close
+        expression_offset=POLICY['blink_expression_range']*(down_close-flat_close)
+        smile_close=flat_close-expression_offset
         # The white aperture is not the painted lash boundary. Move the
         # lower edge of the upper stroke and the upper edge of the lower
         # stroke to one shared contact curve. The displacement is constant
@@ -176,7 +178,7 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         lashes=detect(capture,groups,origin,basis)
         def blink(uid,world,x,y):
             p=(world-origin)@basis;t=np.clip(p[:,0]/(width/2),-1,1)
-            seam=np.interp(p[:,0],ax,flat_close-y*(down_close-flat_close))
+            seam=np.interp(p[:,0],ax,flat_close-y*expression_offset)
             role=lookup[uid];delta=np.zeros_like(p)
             if role=='sclera':delta[:,1]=x*(1-POLICY['closed_height_ratio'])*(seam-p[:,1])
             elif role=='lower':delta[:,1]=x*(seam-np.interp(p[:,0],ax,lower_contact))
@@ -193,10 +195,12 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             specs[blink_name]['contact_curves']={'frame_origin':origin.tolist(),'frame_basis':basis.tolist(),
                 'tangent':ax.tolist(),'upper_lower_edge':upper_contact.tolist(),'lower_upper_edge':lower_contact.tolist(),
                 'upper_parts':upper_contact_parts,'lower_parts':groups.get('lower',[]),
-                'target':'shared smile / flat / open-sclera-lower-boundary curves',
+                'target':'shared smile / flat / down-close within authored expression range',
                 'white_boundary_owner':white_owner,'neutral_target':flat_close.tolist(),
-                'expression_targets':{'-1':down_close.tolist(),'0':flat_close.tolist(),'1':smile_close.tolist()},
-                'expression_meanings':{'-1':'down_close_on_open_sclera_lower_edge','0':'flat','1':'smile'}}
+                'open_sclera_lower_reference':down_close.tolist(),
+                'expression_range':POLICY['blink_expression_range'],
+                'expression_targets':{'-1':(flat_close+expression_offset).tolist(),'0':flat_close.tolist(),'1':smile_close.tolist()},
+                'expression_meanings':{'-1':'down_close','0':'flat','1':'smile'}}
         mechanism('Eye::'+eye['side']+'::X-Y',[POLICY['axes'],[-1.,0.,1.]],groups.get('iris',[]),
                   lambda uid,w,x,y:np.tile(np.array([x*width*.18,y*height*.18])@basis.T,(len(w),1)))
         def brow(uid,world,x,y):
