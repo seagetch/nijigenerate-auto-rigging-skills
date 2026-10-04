@@ -5,7 +5,7 @@ import argparse,json,html,re
 
 def build(root):
     root=Path(root).resolve();rows=[];sections=[];executed=0;reopened=0;image_count=0;running=False
-    columns=['PSD','取込・登録','意味観測','Part AutoMesh','TPS・格子設計','骨格・Grid','Grid AutoMeshの実出力','目・口のComposite AutoMesh','頭の接続・回転方向','目口眉・UV','深度の実測','深度・骨から角度生成','構造補償の撤去','保存・状態読取','変形画像','現在の処理・観測事項']
+    columns=['PSD','取込・登録','意味観測','Part AutoMesh','TPS・格子設計','骨格・Grid','Grid AutoMeshの実出力','目・口のComposite AutoMesh','頭の接続・回転方向','目口眉・UV','深度の実測','深度・骨から角度生成','頬Part補正','保存・状態読取','変形画像','現在の処理・観測事項']
     def read(path):
         # A running stage may be replacing this small manifest while the
         # gallery refreshes. Keep the report available until its next update.
@@ -25,7 +25,8 @@ def build(root):
         if status.get('status')=='queued':
             current=False;completed={};v={}
         running=running or status.get('status') in ('running','queued')
-        executed+=int(bool(completed.get('all_stages_attempted') and not completed.get('stage_errors')))
+        cheek=read(run/'shape-corrections-readback.json') if s.get('shape_corrections_sha256') else {}
+        executed+=int(bool(completed.get('all_stages_attempted') and not completed.get('stage_errors') and cheek))
         reopened+=int(bool(v.get('readback_equal')))
         image_count+=len(v.get('rendered',[]))
         log=run/'run.log';lines=log.read_text(encoding='utf-8',errors='replace').splitlines() if log.is_file() else []
@@ -36,6 +37,7 @@ def build(root):
         if status.get('phase')=='evidence' and status.get('status')=='phase_passed':reason='取込・観測のみ完了。リグ生成は未完了。'
         if completed.get('all_stages_attempted'):
             reason='全工程を実行・保存。数値による合否判定はしていません。'
+            if not cheek:reason='旧工程の実行記録。頬Part補正は未実行。'
             if completed.get('stage_errors'):reason+='実行エラー: '+', '.join(completed['stage_errors'])
         if status.get('status')=='running':
             reason='継続処理中: '+next((x for x in reversed(lines) if x.strip()),'モデルを開いています')
@@ -61,7 +63,7 @@ def build(root):
             f'済・{len(s.get("control_specs",{}))}操作' if s.get('shape_controls_sha256') else '未',
             '記録済' if (run/'depth-input-validation.json').is_file() else '未',
             '済' if s.get('depth_angle_program_sha256') else '未',
-            '生成経路から撤去済' if current else '旧生成物・再生成対象',
+            f'{cheek["verified_keys"]}キーを保存照合・外観確認は別途' if cheek else '未実行',
             ('済・現在モデルの保存後状態' if v.get('save_reopen_performed') is False else '済・再読込') if v.get('readback_equal') else '未',
             f'{len(v.get("rendered",[]))}枚',reason]
         rows.append('<tr><td><a href="#model-'+str(index)+'">'+html.escape(str(cells[0]))+'</a></td>'+''.join('<td>'+html.escape(str(x))+'</td>' for x in cells[1:])+'</tr>')
@@ -69,6 +71,14 @@ def build(root):
         for file,label in [('review-head-support.jpg','頭の接続・左右・複合姿勢'),('registered-neutral.png','PSD取込時・中立'),('neutral.png','保存リグ・中立'),('body-sheet.jpg','体・全保存キー'),('review-head-body-yaw.jpg','Body::Yaw-Pitch時の頭部・全保存キー'),('review-face-angles.jpg','Face駆動時の頭部・全保存キー')]:
             if current and (file=='registered-neutral.png' or v or (file=='review-head-support.jpg' and support_review.get('program_sha256')==program.get('content_sha256'))) and (run/file).is_file():images.append(f'<figure><a href="{html.escape(psd.stem)}/{file}"><img loading="lazy" src="{html.escape(psd.stem)}/{file}"></a><figcaption>{label}</figcaption></figure>')
         mechanisms=[]
+        cheek_review=read(run/'cheek-review.json') if cheek else {}
+        if cheek_review.get('correction_sha256')==s.get('shape_corrections_sha256'):
+            panels=[]
+            for before,after in zip(cheek_review['before'],cheek_review['after']):
+                for label,item in [('補正前',before),('補正後',after)]:
+                    url=html.escape(psd.stem+'/'+Path(item['file']).name)
+                    panels.append(f'<figure style="width:440px"><a href="{url}"><img loading="lazy" src="{url}"></a><figcaption>{label} {item["key"]}</figcaption></figure>')
+            images.append('<details open><summary>頬Part補正の前後・同じ9姿勢</summary>'+''.join(panels)+'</details>')
         for file in (sorted(run.glob('review-*.jpg')) if current and v else []):
             if file.name in ('review-core.jpg','review-face-angles.jpg','review-head-body-yaw.jpg','review-head-support.jpg'):continue
             url=html.escape(psd.stem+'/'+file.name)

@@ -91,7 +91,18 @@ def validate(run,njc):
             if not np.asarray(b['data']['isSet']).all() or not np.allclose(expected,b['data']['values'],rtol=0,atol=.0003):
                 raise ValueError('Saved bone driver differs from common template')
             bone_count+=1
+    from riglib.cheek_correction import load_owned
+    correction=load_owned(run,state)
     report['material_keys_verified']=0
+    if correction:
+        for op in correction['operations']:
+            if op['target'] not in correction['bound_targets']:continue
+            binding=available[op['target'],op['parameter'],'deform']
+            i,j=[a.index(v) for a,v in zip(binding['axisValues'],op['key'])]
+            if not binding['data']['isSet'][i][j] or not np.allclose(
+                    np.asarray(binding['data']['values'][i][j]).ravel(),op['values'],rtol=0,atol=.0003):
+                raise ValueError('Saved PSD cheek correction differs')
+            report['material_keys_verified']+=1
     from bake_depth_angles import validate as validate_depth_angles
     report['depth_angles']=validate_depth_angles(run,n,available)
     report['bone_curves_verified']=bone_count;report['passed']=report['depth_angles']['passed']

@@ -2,7 +2,7 @@
 
 ## 現行入口の更新
 
-以下の経路が現行実装であり、後段の旧経路の記述に優先する。目・口・眉の局所Part調整は実装されているが、PSD形状に基づくFace/Body角度の輪郭・遮蔽Part補正は未実装である。構造補償の撤回を、正しい個別Part補正も不要になったことと解釈してはならない。
+以下の経路が現行実装であり、後段の旧経路の記述に優先する。目・口・眉の局所Part調整に加え、PSD輪郭とnative親Grid投影から頬のPart残差を求める工程を追加した。構造補償の撤回を、正しい個別Part補正も不要になったことと解釈してはならない。他のFace/Body Part補正と全モデルの外観確認は、この追加だけでは完了しない。
 
 - 登録はPSD index pathと親階層を照合する。重複名・末尾NUL・可視性・合成モード・opacityを検査し、合成グループとクリッピングを保持する。
 - `riglib/semantic_observation.py` は名称・祖先・alphaから意味候補を生成し、候補の由来を保存する。クリッピングから物理支持を継承しても、瞳など既知の局所機能は上書きしない。
@@ -12,7 +12,7 @@
 - GridもAutoMeshで生成する。軸に平行なcarrierを先に配置し、同じcarrier-local座標でalpha範囲と分割位置を対応付ける。native float32正規化で一致する格子線をまとめてAdvancedへ渡し、生成格子を保持する。目・口のDynamicComposite自身にも共通規則によるGrid AutoMeshを適用する。
 - `preserve_source_uv.py` はsource UVから親座標への対応をPartのTRSで合わせる。AutoMeshの頂点・UV・三角形・originは変更しない。起点Partへ子を接続する前に座標登録を完了し、目口はその後に生成する。登録hashを各変形programへ記録する。適用直後と保存再読取後の配列一致を検査し、共通NJC adapterではDefineMesh/DefineGridを拒否する。
 - `apply_shape_controls.py` は入力PSDの輪郭から目・眉・口・局所曲げのキーを生成する。参照Partの変位は使用しない。
-- `apply_shape_corrections.py` による構造の接触補償は撤回。初期生成の `riglib/hierarchy.py` と `riglib/initial_tree.py` で、body起点Part → Head起点 → 頭面、顔起点Part → 顔の局所機構を構築する。保存済みリグへの補償処理は実行しない。
+- `apply_shape_corrections.py` は構造の接触補償を行わず、PSDの頬輪郭に限定したPart補正をnative角度生成後に実行する。初期生成の `riglib/hierarchy.py` と `riglib/initial_tree.py` で、body起点Part → Head起点 → 頭面、顔起点Part → 顔の局所機構を構築する。検証は毎回新規PSDから行う。
 - 口・顔・局所素材は `build_local.py` を通る。全身19骨を素材要件にしない。
 - `riglib/render_camera.py` の固定カメラで登録時と保存後を比較する。表示のFit結果を同一カメラとみなさない。フィルタ境界には1 texel相当のbbox許容を使い、RGB・alpha誤差は従来の数値閾値で別に検査する。
 - `riglib/shape_validation.py` はUV座標補正後の保存キー・三角形の向きも検査する。状態確認済みの現行モデルは再利用し、OpenFileの成功応答だけでモデルが切り替わったと判定しない。

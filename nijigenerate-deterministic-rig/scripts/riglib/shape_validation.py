@@ -28,7 +28,10 @@ def validate(run,state,snapshot):
         for key in ('uvs','origin'):
             if key in record and mesh[key]!=record[key]:
                 raise ValueError('Saved Part '+key+' differs from original native AutoMesh readback')
-    for filename,signature in [('shape-controls-program.json','shape_controls_sha256')]:
+    from .cheek_correction import load_owned
+    correction=load_owned(run,state)
+    for filename,signature in [('shape-controls-program.json','shape_controls_sha256'),
+                               ('shape-corrections-program.json','shape_corrections_sha256')]:
         if signature not in state:continue
         program=read_json(run/filename);signed={k:v for k,v in program.items() if k!='content_sha256'}
         if json_digest(signed)!=program['content_sha256'] or program['content_sha256']!=state[signature]:raise ValueError('PSD-shape program identity mismatch')
@@ -36,7 +39,8 @@ def validate(run,state,snapshot):
         for op in program['operations']:
             name=op['parameter'];uid=op['target']
             if name in ('Face::Yaw-Pitch','Face::Roll','Body::Yaw-Pitch','Body::Roll'):
-                raise ValueError('PSD-shape Part angle correction provenance validation is not implemented')
+                if correction is None or filename!='shape-corrections-program.json':
+                    raise ValueError('Part angle correction has no dedicated PSD-shape provenance')
             expected=np.asarray(op['values']).reshape(-1,2)
             b=bindings.get((name,uid,'deform'))
             if b is None:
@@ -53,5 +57,6 @@ def validate(run,state,snapshot):
             if ratio<=0:findings.append({'part':uid,'parameter':name,'key':op['key'],'minimum_area_ratio':ratio})
             verified+=1
     return {'passed':not findings,'findings':findings,'native_automesh_parts_verified':len(uv['parts']),
+            'cheek_correction_verified':correction is not None,
             'native_automesh_composites_verified':len(composites),
             'verified_keys':verified,'maximum_saved_error':maximum,'minimum_part_area_ratio':minimum}

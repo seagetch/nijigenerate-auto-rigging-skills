@@ -27,6 +27,7 @@ def run(psd,out,njc,stop_after=None):
                  'hierarchy-applied.json','hierarchy-readback.json','depth-angle-program.json',
                  'reference-transfer-readback.json','shape-corrections-program.json',
                  'shape-corrections-pending.json','shape-controls-program.json',
+                 'shape-corrections-readback.json','cheek-review.json',
                  'source-uv-program.json','source-uv-applied-check.json','head-drive-observation.json'):
         (out/name).unlink(missing_ok=True)
     skill=scripts.parent

@@ -87,14 +87,20 @@ def head_drive_observation(program,state,bindings):
             'parameters':rows}
 
 
-def check_bindings(state,bindings):
+def check_bindings(state,bindings,part_program=None):
     bones=set(state['bones'].values());grids=set(grid_ids(state))
+    owned=set() if part_program is None else {
+        (op['target'],op['parameter'],'deform') for op in part_program['operations']
+        if op['target'] in part_program['bound_targets']}
     for b in bindings:
         uid=b['target']['uuid']
+        if (uid,b['parameter']['name'],b['name']) in owned:
+            if not np.asarray(b['data']['isSet']).all():raise ValueError('Incomplete PSD Part correction keys')
+            continue
         if uid not in bones and (uid not in grids or b['name']!='deform'):
             raise ValueError('Unaccounted face angle binding on artwork: '+str(b['target']))
         if b['name']=='deform' and uid not in grids:
-            raise ValueError('PSD-shape Part angle provenance validation is not implemented')
+            raise ValueError('Part angle deformation has no matching PSD-shape provenance')
         if not np.asarray(b['data']['isSet']).all():raise ValueError('Incomplete native angle keys')
     for parameter in DEPTH_ANGLE_PARAMETERS:
         found={b['target']['uuid'] for b in bindings if b['parameter']['name']==parameter and b['name']=='deform' and b['target']['uuid'] in grids}
@@ -148,7 +154,7 @@ def bake(run,njc,*,save=True):
     checks=head_projection_checks(p,state,bindings)
     write_json(run/'head-drive-observation.json',head_drive_observation(p,state,bindings))
     result={'program_sha256':p['content_sha256'],'generator_sha256':digest(Path(__file__)),
-            'method':'Grid angle keys: NJC DepthBoneCommand_ApplyDepthBoneDeform only; PSD-shape Part angle corrections remain unimplemented',
+            'method':'Grid angle keys: NJC DepthBoneCommand_ApplyDepthBoneDeform only; PSD Part residuals authored in the following separate stage',
             'fixed_public_inputs_sha256':json_digest(before),'fixed_inputs_unchanged':True,
             'bindings':bindings,'head_projection_checks':checks,'part_angle_binding_count_at_grid_bake':0,
             'native_refresh_observations':refresh_observations,
@@ -165,7 +171,9 @@ def validate(run,n,available):
     if json_digest(signed)!=sig or sig!=state['depth_angle_program_sha256'] or expected['program_sha256']!=p['content_sha256']:
         raise ValueError('Native depth angle evidence mismatch')
     actual=[b for b in available.values() if b['parameter']['name'] in DEPTH_ANGLE_PARAMETERS]
-    check_bindings(state,actual)
+    from riglib.cheek_correction import load_owned
+    part_program=load_owned(run,state)
+    check_bindings(state,actual,part_program)
     lookup={(b['target']['uuid'],b['parameter']['name'],b['name']):b for b in actual}
     maximum=0.;keys=0;differences=[]
     for b in expected['bindings']:
@@ -182,7 +190,7 @@ def validate(run,n,available):
     checks=head_projection_checks(p,state,actual)
     write_json(run/'head-drive-observation.json',head_drive_observation(p,state,actual))
     return {'passed':not differences,'binding_differences':differences,'native_surface_keys_verified':keys,'maximum_saved_error':maximum,
-            'separate_part_angle_binding_count':0,'fixed_inputs_unchanged':True,
+            'separate_part_angle_binding_count':len(part_program['bound_targets']) if part_program else 0,'fixed_inputs_unchanged':True,
             'maximum_affine_xyz_residual_model':max(c['maximum_affine_xyz_residual_model'] for c in checks)}
 
 
