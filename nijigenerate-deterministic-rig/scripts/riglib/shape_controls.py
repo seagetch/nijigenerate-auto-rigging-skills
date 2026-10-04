@@ -7,9 +7,9 @@ from .live import Live,created_id
 from .model import observe_model
 from .face_draw_order import plan as face_order_plan
 
-POLICY={'version':'1.6','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
+POLICY={'version':'1.7','closed_height_ratio':.015,'mouth_open_width_ratio':.20,
         'blink_expression_range':.3,
-        'smile_inner_drop_width_ratio':.05,
+        'smile_inner_drop_width_ratio':.08,
         'eye_gaze_width_ratio':.18,'expression_width_ratio':.035,
         'brow_width_ratio':.08,'local_bend_radians':.55,
         'axes':[-1.,-.5,0.,.5,1.],
@@ -95,6 +95,15 @@ def contact_profile(points,basis,origin,width,lower_edge,smooth=True):
     return np.polynomial.polynomial.polyval(t,coefficients)
 
 
+def endpoint_cubic(axis,values):
+    """Fit one smooth closure curve while retaining both canthus positions."""
+    t=(axis-axis[0])/(axis[-1]-axis[0])
+    chord=values[0]*(1-t)+values[-1]*t
+    basis=np.c_[t*(1-t),t*(1-t)*(2*t-1)]
+    coefficients=np.linalg.lstsq(basis,values-chord,rcond=None)[0]
+    return chord+basis@coefficients
+
+
 def shared_brow_support(eyes,capture,translation):
     """Detect one PSD Part containing substantial alpha on both eye sides."""
     if len(eyes)!=2:return set()
@@ -178,8 +187,9 @@ def compile_controls(evidence,capture,nodes,parameters=None):
         lookup={uid:role for role,ids in groups.items() for uid in ids}
         lashes=detect(capture,groups,origin,basis)
         # Identify the medial endpoint anatomically, independently of Part
-        # names and screen side. Ease only the inner half down in a smile;
-        # preserve the arch center, outer endpoint, flat and down-close rows.
+        # names and screen side. Fit one cubic arch, then lower its medial
+        # endpoint using the cubic Bezier endpoint basis. This moves the end
+        # and its tangent continuously, without a separate inner-half bend.
         references=[np.mean(e['canthi_model'],axis=0) for e in eyes if e is not eye]
         if not references and evidence.get('mouth'):
             references=[np.mean(evidence['mouth']['axis_model'],axis=0)]
@@ -192,12 +202,14 @@ def compile_controls(evidence,capture,nodes,parameters=None):
             inner_source='opposite_detected_outer_side'
         inner_drop=np.zeros(len(ax))
         if inner_index is not None:
-            medial=np.clip(ax/(width/2)*(1 if inner_index else -1),0,1)
-            inner_drop=width*POLICY['smile_inner_drop_width_ratio']*medial*medial*(3-2*medial)
-        smile_close=smile_close+inner_drop
+            medial=(ax-ax[0])/(ax[-1]-ax[0])
+            if not inner_index:medial=1-medial
+            inner_drop=width*POLICY['smile_inner_drop_width_ratio']*medial**3
+        smile_close=endpoint_cubic(ax,smile_close)+inner_drop
         def blink(uid,world,x,y):
             p=(world-origin)@basis;t=np.clip(p[:,0]/(width/2),-1,1)
-            seam=np.interp(p[:,0],ax,flat_close-y*expression_offset+max(y,0)*inner_drop)
+            target=flat_close+y*(smile_close-flat_close) if y>0 else flat_close-y*expression_offset
+            seam=np.interp(p[:,0],ax,target)
             role=lookup[uid];delta=np.zeros_like(p)
             if role=='sclera':delta[:,1]=x*(1-POLICY['closed_height_ratio'])*(seam-p[:,1])
             elif role=='lower':delta[:,1]=x*(seam-np.interp(p[:,0],ax,lower_contact))
@@ -219,7 +231,8 @@ def compile_controls(evidence,capture,nodes,parameters=None):
                 'open_sclera_lower_reference':down_close.tolist(),
                 'expression_range':POLICY['blink_expression_range'],
                 'smile_inner_corner':{'endpoint_index':inner_index,'source':inner_source,
-                    'drop_model_units':float(inner_drop.max()),'drop_profile':inner_drop.tolist()},
+                    'drop_model_units':float(inner_drop.max()),'drop_profile':inner_drop.tolist(),
+                    'curve':'single endpoint-constrained cubic with lowered medial endpoint'},
                 'expression_targets':{'-1':(flat_close+expression_offset).tolist(),'0':flat_close.tolist(),'1':smile_close.tolist()},
                 'expression_meanings':{'-1':'down_close','0':'flat','1':'smile'}}
         mechanism('Eye::'+eye['side']+'::X-Y',[POLICY['axes'],[-1.,0.,1.]],groups.get('iris',[]),
