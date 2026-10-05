@@ -132,7 +132,10 @@ def register_program(program,observation,evidence,template=None):
         domain.update({'reference_component':name,'registration_frame':f,'carrier_frame':carrier,
             'support_bounds':np.r_[root_corners.min(0),root_corners.max(0)].tolist(),'axis_x':xs.tolist(),'axis_y':ys.tolist(),
             'depth_model_units':depth.tolist(),'reference_deformations':{},'resampling':resampling})
-    by_role={d.get('reference_component'):d for d in program['domains']}
+    # A bilateral surface has two reference roles on one shared Grid. The
+    # single-arm shoulder adjustment below applies only to separate arm Grids.
+    by_role={d['reference_component']:d for d in program['domains']
+             if isinstance(d.get('reference_component'),str)}
     body=by_role.get('torso')
     if body is not None:
         for side in ('L','R'):
