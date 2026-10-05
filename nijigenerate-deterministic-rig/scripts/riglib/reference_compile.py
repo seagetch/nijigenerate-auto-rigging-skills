@@ -91,12 +91,9 @@ def register_program(program,observation,evidence,template=None):
     face_width=face_bounds[2]-face_bounds[0]
     for bone in scaffold['bones']:
         bone['pose_origin_z']=template['bone_z'][bone['id']]*torso
-    # Chest Bone follows the axial Spine-Neck line; breast relief stays in Grid depth.
-    spine,chest,neck=(bones[name] for name in ('Spine','Chest','Neck'))
-    lower=np.linalg.norm(np.asarray(chest['head'][:2])-spine['head'][:2])
-    upper=np.linalg.norm(np.asarray(neck['head'][:2])-chest['head'][:2])
-    if lower+upper<=0:raise ValueError('Collapsed Spine-Chest-Neck axis')
-    chest['pose_origin_z']=(upper*spine['pose_origin_z']+lower*neck['pose_origin_z'])/(lower+upper)
+    # Clavicles attach to the chest axis; breast relief belongs to Grid depth.
+    bones['Chest']['pose_origin_z']=min(bones['Clavicle.L']['pose_origin_z'],
+                                      bones['Clavicle.R']['pose_origin_z'])
     install_support(scaffold,template,frames,torso)
     domain_errors=[]
     for domain in program['domains']:
