@@ -202,6 +202,27 @@ def apply_program(program, executable, source, output, journal):
         domain['bone_influence_rule']=binding['influenceRule']
         print(f'Surface {index+1}/{len(program["domains"])} {domain["id"]}',flush=True)
     tree.assemble()
+    state['child_grids']=[]
+    carriers={state['grids'][domain['id']]:domain for domain in program['domains']}
+    for uid_text,node in tree.source.items():
+        if node['type']!='GridDeformer':continue
+        uid=int(uid_text)
+        parent=tree.parents.get(uid)
+        while parent is not None and parent not in carriers:parent=tree.parents.get(parent)
+        if parent is None:continue
+        state['child_grids'].append(uid)
+        domain=carriers[parent]
+        grid=reader.read(uid)['item']['data']
+        xy=np.array([[x,y] for y in grid['grid_axis_y'] for x in grid['grid_axis_x']])
+        points=np.c_[xy,np.zeros(len(xy)),np.ones(len(xy))]
+        carrier_xy=(points@tree.world[uid].T@np.linalg.inv(tree.world[parent]).T)[:,:2]
+        depths=sample(domain['axis_x'],domain['axis_y'],domain['depth_model_units'],carrier_xy)[:,0]
+        n.call('DepthMapCommand_SetDepths',target=uid,
+               depths=np.round(depths/program['native_depth_scale'],6).tolist())
+        for source_name in domain['bone_sources']:
+            n.call('DepthBoneCommand_AddDepthBoneSource',root=root,target=uid,bone=state['bones'][source_name])
+        n.call('DepthBoneCommand_SetDepthBoneInfluenceRule',root=root,target=uid,
+               rule=json.dumps(domain['bone_influence_rule']))
     from riglib.shoulder_welding import apply as apply_shoulder_welding
     state['shoulder_welding']=apply_shoulder_welding(n,program,Path(journal).parent)
     from riglib.composite_mesh import build as build_composite_meshes

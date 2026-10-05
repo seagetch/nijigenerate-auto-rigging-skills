@@ -8,7 +8,7 @@ from riglib.live import Live
 from riglib.reference_fields import DEPTH_ANGLE_PARAMETERS
 from riglib.carrier import to_root,to_local,rotation
 from build_native import require_single_rig,wait_for_baked_key,apply_registered_fields
-def grid_ids(state):return list(state['grids'].values())
+def grid_ids(state):return [*state['grids'].values(),*state.get('child_grids',[])]
 
 
 def angle_bindings(n):

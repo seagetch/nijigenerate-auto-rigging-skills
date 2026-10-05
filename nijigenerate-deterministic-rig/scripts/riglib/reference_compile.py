@@ -129,6 +129,28 @@ def register_program(program,observation,evidence,template=None):
         domain.update({'reference_component':name,'registration_frame':f,'carrier_frame':carrier,
             'support_bounds':np.r_[root_corners.min(0),root_corners.max(0)].tolist(),'axis_x':xs.tolist(),'axis_y':ys.tolist(),
             'depth_model_units':depth.tolist(),'reference_deformations':{},'resampling':resampling})
+    by_role={d.get('reference_component'):d for d in program['domains']}
+    body=by_role.get('torso')
+    if body is not None:
+        for side in ('L','R'):
+            arm=by_role.get('arm/'+side.lower())
+            if arm is None:continue
+            bone=bones['UpperArm.'+side]
+            shoulder=np.asarray(bone['head'][:2],float)
+            elbow=np.asarray(bone['tail'][:2],float)
+            axis=elbow-shoulder
+            local_shoulder=to_local([shoulder],arm['carrier_frame'])
+            body_z=float(sample(body['axis_x'],body['axis_y'],body['depth_model_units'],
+                                to_local([shoulder],body['carrier_frame']))[0,0])
+            arm_z=float(sample(arm['axis_x'],arm['axis_y'],arm['depth_model_units'],local_shoulder)[0,0])
+            xy=np.array([[x,y] for y in arm['axis_y'] for x in arm['axis_x']])
+            world=to_root(xy,arm['carrier_frame'])
+            t=np.clip(((world-shoulder)@axis)/(axis@axis),0.,1.)
+            weight=(1.-t)**2*(1.+2.*t)
+            anchor=float(sample(arm['axis_x'],arm['axis_y'],weight,local_shoulder)[0,0])
+            if anchor<=0.:raise ValueError('Arm shoulder is outside its depth field')
+            arm['depth_model_units']=(np.asarray(arm['depth_model_units'])+
+                                      (body_z-arm_z)*weight/anchor).tolist()
     by_domain={d['id']:d for d in program['domains']};order_reports=[]
     for constraint in evidence.get('depth_order_constraints',[]):
         aliases=program.get('domain_aliases',{})
