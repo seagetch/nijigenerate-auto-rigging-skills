@@ -110,6 +110,10 @@ def apply_program(program, executable, source, output, journal):
     n.save(output)
     if model_structure(reader)!=source_structure:
         raise RuntimeError('Open did not load the designated source; no rig nodes were created')
+    # A PSD Grid left selected by group conversion makes the visible Inspector
+    # create a DepthRigRoot binding with no BoneSources when the root appears.
+    # A mode transition clears that UI selection before constructing the rig.
+    n.call('ToolCommand_AnimEditMode')
     n.call('ToolCommand_ModelEditMode');n.call('ViewportCommand_ResetParameters')
     state={'program_sha256':program['content_sha256'],'bones':{},'grids':{},'groups':{},'parameters':{},'output':str(Path(output).resolve())}
     assigned={p['uuid'] for d in program['domains'] for p in d['parts']}
