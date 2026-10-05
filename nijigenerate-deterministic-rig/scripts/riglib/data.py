@@ -42,8 +42,10 @@ def read_json(path):
 def write_json(path, value):
     destination = _non_model_path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(json.dumps(value, ensure_ascii=False, sort_keys=True,
-                                     indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    with destination.open("w", encoding="utf-8") as stream:
+        json.dump(value, stream, ensure_ascii=False, sort_keys=True,
+                  indent=2, allow_nan=False)
+        stream.write("\n")
 
 
 def digest(path):
@@ -56,8 +58,12 @@ def digest(path):
 
 
 def json_digest(value):
-    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
-                                    separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+    hasher = hashlib.sha256()
+    encoder = json.JSONEncoder(sort_keys=True, ensure_ascii=False,
+                               separators=(",", ":"), allow_nan=False)
+    for chunk in encoder.iterencode(value):
+        hasher.update(chunk.encode("utf-8"))
+    return hasher.hexdigest()
 
 
 def finite(value, label):

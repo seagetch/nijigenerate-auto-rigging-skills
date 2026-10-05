@@ -1,5 +1,5 @@
 """PSD-only entry point: generate every intermediate afresh, then verify output."""
-import argparse,subprocess,sys
+import argparse,os,subprocess,sys
 from pathlib import Path
 from riglib.live import Live
 from riglib.data import digest,write_json,read_json
@@ -38,8 +38,11 @@ def run(psd,out,njc,stop_after=None,render_images=False):
         'code_and_rules':{str(p.relative_to(skill)):digest(p) for p in sources}})
     def command(name,*args):
         print('Running',name,flush=True)
+        environment=os.environ.copy()
+        environment.update(OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
         with subprocess.Popen([sys.executable,'-B',str(scripts/name),*map(str,args)],
                 stdout=subprocess.PIPE,stderr=subprocess.STDOUT,encoding='utf-8',errors='replace',
+                env=environment,
                 creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0)) as process:
             for line in process.stdout:print(line,end='',flush=True)
             code=process.wait()
