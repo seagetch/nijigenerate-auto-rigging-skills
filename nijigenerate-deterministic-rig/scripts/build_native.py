@@ -202,6 +202,8 @@ def apply_program(program, executable, source, output, journal):
         domain['bone_influence_rule']=binding['influenceRule']
         print(f'Surface {index+1}/{len(program["domains"])} {domain["id"]}',flush=True)
     tree.assemble()
+    from riglib.shoulder_welding import apply as apply_shoulder_welding
+    state['shoulder_welding']=apply_shoulder_welding(n,program,Path(journal).parent)
     from riglib.composite_mesh import build as build_composite_meshes
     state['composite_automesh']=build_composite_meshes(tree,read_json(Path(journal).parent/'evidence.json'),
         read_json(Path(__file__).resolve().parent.parent/'structures/composite-automesh.json'))

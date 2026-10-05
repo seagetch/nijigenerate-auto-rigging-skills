@@ -32,20 +32,25 @@ def prepare(run,out,njc):
     # region classification adapt to the source texture size and contour.
     # Grid AutoMesh is reserved for GridDeformer and eye/mouth composites.
     materials={m['part']:m for m in read_json(run/'capture.json')['materials']}
+    from riglib.shoulder_welding import prepare as prepare_shoulder_welding
+    seam_settings=prepare_shoulder_welding(run,assembly,evidence,materials)
     groups=defaultdict(list)
     for uid in targets:
         # Optimum uses max(texture_size / div_per_part, min_distance).
         # Its 10px default otherwise overrides the requested density on small
         # PSD layers, leaving too few contour samples to form triangles.
         distance=min(SIMPLE['min_distance'],max(1.,max(materials[uid]['size'])/SIMPLE['div_per_part']))
-        groups[distance].append(uid)
+        settings=seam_settings.get(uid,{})
+        groups[(settings.get('min_distance',distance),settings.get('div_per_part',SIMPLE['div_per_part']),tuple(settings.get('scales',SIMPLE['scales'])),tuple(sorted(settings.get('advanced',{}).items())))].append(uid)
     n.call('AutoMesh_SetAdvanced_optimum',**ADVANCED)
     configurations=[]
-    for distance,ids in sorted(groups.items()):
-        simple={**SIMPLE,'min_distance':distance}
+    for (distance,divisions,scales,overrides),ids in sorted(groups.items()):
+        advanced={**ADVANCED,**dict(overrides)}
+        n.call('AutoMesh_SetAdvanced_optimum',**advanced)
+        simple={**SIMPLE,'min_distance':distance,'div_per_part':divisions,'scales':list(scales)}
         n.call('AutoMesh_SetSimple_optimum',**simple)
         n.call('AutoMesh_Apply_optimum',context={'nodes':ids})
-        configurations.append({'processor':'optimum','simple':simple,'advanced':ADVANCED,'targets':ids})
+        configurations.append({'processor':'optimum','simple':simple,'advanced':advanced,'targets':ids})
         print('NJC AutoMesh optimum:',len(ids),'Parts; minimum spacing',distance,flush=True)
     meshes={}
     for uid,response in zip(targets,n.read_many(targets)):
