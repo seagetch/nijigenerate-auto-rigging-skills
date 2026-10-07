@@ -98,6 +98,19 @@ def solve_scaffold(evidence, prior):
             row[index[role]] = value*np.sqrt(constraint["weight"])
         rows.append(row); target.append([0,0])
     fitted = basis @ np.linalg.lstsq(np.asarray(rows) @ basis, target, rcond=None)[0]
+    # Terminal Head orientation is inferred from Neck -> Head node positions.
+    # The shoulder observation must not pull that axis off the facial frame.
+    head_root, head_top = fitted[index['head_root']], fitted[index['head_top']]
+    head_down = head_root-head_top
+    head_down /= np.linalg.norm(head_down)
+    station = float((fitted[index['neck_base']]-head_root) @ head_down)
+    if station <= 0:
+        raise ValueError('Neck attachment must be below Head along the facial axis')
+    fitted[index['neck_base']] = head_root+station*head_down
+    axis_policy=prior['torso_axis']
+    origin, tip=fitted[index[axis_policy['start']]], fitted[index[axis_policy['end']]]
+    for role, fraction in axis_report['station_fractions'].items():
+        fitted[index[role]]=(1-fraction)*origin+fraction*tip
     points = {r:fitted[index[r]].tolist() for r in roles}
     height = float(np.linalg.norm(fitted[index['head_top']] - (fitted[index['foot_tip.L']]+fitted[index['foot_tip.R']])/2))
     residual = np.linalg.norm(fitted-np.asarray(source),axis=1)

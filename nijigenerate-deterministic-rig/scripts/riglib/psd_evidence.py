@@ -3,8 +3,9 @@ from pathlib import Path
 import numpy as np
 from .data import read_json,write_json,json_digest,digest
 from .semantic_observation import observe_semantics
+from .neck import infer_neck_base, infer_head_frame
 
-POLICY={'version':'2.2','alpha_threshold':32,'elbow_fraction':.52,'knee_fraction':.47,
+POLICY={'version':'2.3','alpha_threshold':32,'elbow_fraction':.52,'knee_fraction':.47,
         'merged_hand_start':.82,'section_band':.025,
         'arm_anatomy_support':'skin arm when present; sleeve only when the arm is concealed',
         'hip_support':'proximal leg alpha; garment hem is not a hip observation',
@@ -137,12 +138,19 @@ def derive(run,skill,njc=None):
         print('Derived local structure:',evidence['kind'],flush=True);return
     torso=joined(select({'torso','bodice','waistwear'}))
     if not len(face) or not len(torso):raise ValueError('Humanoid needs observed head and torso support regions')
-    face_top=section(face,0);face_root=section(face,1)
-    neck=joined(select({'neck'}));neck_base=section(neck,.9) if len(neck) else section(torso,.02)
+    centers=[np.mean([face_landmarks['eye_'+side+'_inner'],face_landmarks['eye_'+side+'_outer']],axis=0)-translation
+             for side in ('r','l')]
+    head_frame=infer_head_frame(face,*centers)
+    evidence['head_frame']=head_frame
+    face_top=np.asarray(head_frame['head_top']);face_root=np.asarray(head_frame['head_root'])
+    neck=joined(select({'neck'}))
+    neck_inference=infer_neck_base(face,neck,joined(select({'torso'})),joined(select({'bodice','waistwear'})),head_frame)
+    neck_base=np.asarray(neck_inference['xy'])
+    evidence['neck_inference']=neck_inference
     landmarks={};radii={};regions=[]
     def put(name,p,provenance='measured',method='PSD alpha section'):
         landmarks[name]={'xy':np.asarray(p).tolist(),'provenance':provenance,'weight':1.,'method':method,'source_sha256':src['source']['sha256']}
-    put('head_top',face_top);put('head_root',face_root);put('neck_base',neck_base,'measured' if len(neck) else 'prior','neck alpha or proximal torso support')
+    put('head_top',face_top);put('head_root',face_root);put('neck_base',neck_base,neck_inference['provenance'],neck_inference['method'])
     put('chest',section(torso,.4));put('waist',section(torso,.9))
     for side in ('R','L'):
         tag=side.lower()
