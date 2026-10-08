@@ -48,6 +48,8 @@ def finish(run,njc,start_at=None,refresh_controls=False):
         stage('validate_depth_inputs.py','--run',run,'--njc',njc)
         stage('bake_depth_angles.py','--run',run,'--njc',njc)
         stage('apply_shape_corrections.py','--run',run,'--njc',njc)
+        stage('apply_physics.py','--run',run,'--njc',njc)
+        stage('verify_physics.py','--run',run,'--njc',njc)
     stage('validate_saved_rig.py','--state',run/'native-state.json','--out',run,'--njc',njc)
     if render_images(run):
         if humanoid:stage('review_head_support.py','--run',run,'--njc',njc)

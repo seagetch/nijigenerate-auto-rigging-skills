@@ -128,3 +128,24 @@ INX/INPの直接解析、ファイルコピー・置換、直接書込、HTTP/MC
 このセッションではテストfixtureの生成を一切行わない。作業対象の実素材・実INXを使い、保存内容の再読取と実描画で確認する。
 
 1つの作業モデルにDepthRigRootは1個だけ置く。読み込みAPIの成功応答だけを根拠に新規作成しない。読み込み直後に元入力との構造一致を確認し、構築後と保存後にRigRootの個数・UUIDおよび骨の所属を確認する。既存のRigRootを残して追加生成することを禁止する。
+
+
+## PSD-derived secondary physics
+
+The humanoid finishing workflow runs `apply_physics.py` after shape corrections,
+then `verify_physics.py` before final rig validation. The provided Python physics
+implementation lives in this skill, using the existing NumPy, SciPy and Pillow
+dependencies and NJC transport. No separate physics package is required.
+
+Alpha observations and anatomical evidence determine fixed/free regions, support
+frames and supported child attachments. Existing Part meshes receive nine keys;
+mesh topology and unrelated bindings are preserved. SimplePhysics uses the bundled
+SpringPendulum/XY policy. Unresolved materials remain explicitly recorded.
+
+All artifacts use `physics-` filenames directly in the PSD output directory.
+Optional endpoint sheets and overlays follow the run's `--render-images` setting.
+Runtime verification captures actual model geometry, protected anatomy, compound
+poses, solver response and neutral restoration. Numerical observations do not
+constitute visual acceptance. Stages retain the same live model: saving does not
+trigger a document reopen. Generated auto-resized composite bounds are reported
+separately from authored node state.

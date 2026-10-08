@@ -1,0 +1,21 @@
+{
+  "source": "User-provided phys implementation",
+  "files": {
+    "scripts/apply_physics.py": "7211cd83113067885ecbb2e0acdc29bf13e2339f297eeba0581d4241ab26be78",
+    "scripts/verify_physics.py": "1b31490d962d00b31296071f2fbbc9eb7a31ed1252d7eb7b6d986b8bcfc6b1e7",
+    "scripts/overlay_physics.py": "0ff6ba4a06b59958e83764af53f1694fdfbd2d087559a8c66c58d6a30bf3de4d",
+    "scripts/riglib/physics_fields.py": "4857983b6b0962d753615181717ce8891965c63776da1b0ea32b3052a0aa99c3",
+    "scripts/riglib/physics_structure.py": "3d6cbfda3ef170169dd9252225e4edf12f0baacf7f28ce6c223b32be1d872e91",
+    "structures/material-roles.json": "3c5664be941782b8269b959344442dff7b9127185d02bb52faac48c4bd59f931",
+    "structures/physics-policy.json": "ed213837962acc62cc080b516b7315d96bf3316843a0beb9e4d32684796260cb"
+  },
+  "integration_changes": [
+    "Reuse existing riglib package and NJC adapter; retain screenshot response metadata",
+    "Prefix flat output artifacts with physics-",
+    "Connect authoring and runtime verification after shape corrections",
+    "Read saved live state without reopening the model",
+    "Respect optional endpoint/overlay image rendering",
+    "Pause physics and restore neutral parameters even when runtime verification fails",
+    "Record models with no supported groups without inventing motion"
+  ]
+}

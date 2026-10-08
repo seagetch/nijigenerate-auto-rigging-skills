@@ -142,6 +142,7 @@ class Live:
         if "result" not in payload:
             raise NJCTransportError("NJC JSON-RPC response has no result")
         result = payload["result"]
+        self.last_envelope = payload
         entries = result.get("content", result.get("contents", [])) if isinstance(result, dict) else []
         if not isinstance(entries, list) or any(not isinstance(entry, dict) for entry in entries):
             raise NJCTransportError("NJC content is not a list of objects")
