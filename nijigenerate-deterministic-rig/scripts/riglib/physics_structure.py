@@ -48,8 +48,13 @@ def compile_structure(run, policy):
     assets = psd_materials(run, evidence)
     affine = np.asarray(evidence['source_to_model']); joints = {
         k: np.asarray(v['xy'])@affine[:2, :2].T+affine[:2, 2] for k,v in evidence['landmarks'].items()}
-    materials = {m['part']:m for m in assembly['materials']}; inventory = []; candidates = []
     current_roles=read_json(Path(__file__).resolve().parents[2]/'structures/physics-material-roles.json')
+    materials = {m['part']:dict(m,role=dict(m['role'])) for m in assembly['materials']}; inventory = []; candidates = []
+    receivers={m['part']:m['receiver'] for m in evidence['semantic_materials'] if m.get('receiver')}
+    for uid,m in materials.items():
+        current_role,_=_classification(normalized_name(m['name'].rstrip('\0')),current_roles)
+        if uid in receivers or current_role and current_role['usage']=='decoration':
+            m['role']['usage']='decoration'
     for uid, m in sorted(materials.items()):
         role = m['role']; usage = role['usage']; p = assets[uid]['points']; name=m['name'].casefold()
         row = {'target':uid, 'name':m['name'], 'owner':m['owner'], 'chart':m['chart'], 'decision':'exclude'}
@@ -179,8 +184,13 @@ def compile_structure(run, policy):
         spec['targets']=[spec['target']]
     for uid,other in materials.items():
         if other['role']['usage']!='decoration':continue
-        possible=[s for s in candidates if materials[s['target']]['chart']==other['chart']
-                  and s['profile'] in ('sheet','hair','sleeve')]
+        receiver=receivers.get(uid);visited=set()
+        while receiver in materials and materials[receiver]['role']['usage']=='decoration' and receiver not in visited:
+            visited.add(receiver)
+            if receiver not in receivers:break
+            receiver=receivers[receiver]
+        possible=[s for s in candidates if (s['target']==receiver if receiver is not None else
+                  materials[s['target']]['chart']==other['chart'] and s['profile'] in ('sheet','hair','sleeve'))]
         if possible:
             spec=max(possible,key=lambda s:len(assets[s['target']]['points']))
             spec['targets'].append(uid)
